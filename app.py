@@ -18,3 +18,7 @@ def test2():
 @app.route('/test3')
 def test3():
     return render_template("index.html", test3=True)
+
+@app.route('/signup')
+def signup():
+    return render_template("signup.html")
