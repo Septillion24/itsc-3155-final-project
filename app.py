@@ -1,11 +1,14 @@
-from flask import Flask, abort, redirect, render_template, request
+from flask import Flask, abort, jsonify, redirect, render_template, request
+from classes.DataBaseHandler import DataBaseHandler
 from models import db, Discussion, Comment, User
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
+db = DataBaseHandler.getInstance()
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db.init_app(app)
 
 with app.app_context():
     db.create_all()
@@ -23,21 +26,45 @@ def get_comments_for_discussion(discussion_id):
 def index():
     return render_template("index.html")
 
-@app.route('/test1')
-def test1():
-    return render_template("index.html", test1=True)
-
-@app.route('/test2')
-def test2():
-    return render_template("index.html", test2=True)
-
-@app.route('/test3')
-def test3():
-    return render_template("index.html", test3=True)
-
-@app.route('/signup')
-def signup():
+@app.get('/signup')
+def signupPage():
     return render_template("signup.html")
+
+@app.route('/signup', methods = ['POST'])
+def signup():
+    userName = request.form['userName']
+    passWord = request.form['passWord']  # TODO: set up 
+    result = doSignInProcess()
+    if result:    
+        return redirect("/index")
+    else:
+        return "Failed to create an account", 400
+
+@app.get('/login')
+def loginPage():
+    return render_template("login.html")
+
+@app.route('/login', methods=['POST'])     
+def login():
+    userName = request.form['userName']
+    passWord = request.form['passWord']  # TODO: set up OAuth2
+    result = doLoginProcess()
+    if result:    
+        return redirect("/index")
+    else:
+        return "Failed to log in", 401    
+
+@app.route("/forum/post", methods=['POST'])
+def createPost():
+    title = request.post["title"]
+    postContent = request.post["postContent"]
+    user = request.post["user"] #TODO: authentication
+    db.createPost(user,title,postContent)
+
+@app.get("/forum/posts")
+def getPosts():
+    posts = db.getPosts()
+    return jsonify(posts)
 
 @app.route('/forum/discussion/<int:discussion_id>')
 def forum_discussion(discussion_id):
@@ -101,3 +128,9 @@ def seed_db_command():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+    
+def doLoginProcess():
+    pass
+def doSignInProcess():
+    pass
