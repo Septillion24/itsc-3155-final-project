@@ -4,14 +4,15 @@ from models import db, Discussion, Comment, User
 
 app = Flask(__name__)
 
-db = DataBaseHandler.getInstance()
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # db.init_app(app)
+db = DataBaseHandler.getInstance()
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+    # db.create_all()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -59,7 +60,11 @@ def createPost():
     title = request.post["title"]
     postContent = request.post["postContent"]
     user = request.post["user"] #TODO: authentication
-    db.createPost(user,title,postContent)
+    response = db.createPost(user,title,postContent)
+    if response:
+        return "OK", 200
+    else:
+        return "Failed to create post", 400
 
 @app.get("/forum/posts")
 def getPosts():

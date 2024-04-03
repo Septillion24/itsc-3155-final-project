@@ -9,18 +9,18 @@ class DataBaseHandler:
         
     @classmethod
     def getInstance(cls):
-        if cls.instance != None:
+        if cls.instance is None:
             cls.instance = cls()
         return cls.instance
     
     # these methods are not final, change them if you will
-    def getPosts():
+    def getPosts(self):
         pass
-    def createPost(user:User, title:str, content:str):
+    def createPost(self, user:User, title:str, content:str):
         pass
-    def getUsers():
+    def getUsers(self):
         pass
-    def createUser():
+    def createUser(self):
         pass
         
     
