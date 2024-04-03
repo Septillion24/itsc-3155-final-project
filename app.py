@@ -17,11 +17,11 @@ db = DataBaseHandler.getInstance()
 if __name__ == '__main__':
     app.run(debug=True)
 
-def get_discussion_by_id(discussion_id):
-    return Discussion.query.get(discussion_id)
+def get_discussion_by_id(post_id):
+    return Discussion.query.get(post_id)
 
-def get_comments_for_discussion(discussion_id):
-    return Comment.query.filter_by(discussion_id=discussion_id).all()
+def get_comments_for_discussion(post_id):
+    return Comment.query.filter_by(post_id=post_id).all()
 
 @app.route('/')
 def index():
@@ -71,13 +71,13 @@ def getPosts():
     posts = db.getPosts()
     return jsonify(posts)
 
-@app.route('/forum/discussion/<int:discussion_id>')
-def forum_discussion(discussion_id):
-    discussion = get_discussion_by_id(discussion_id)
+@app.route('/forum/post/<int:post_id>')
+def forum_discussion(post_id):
+    discussion = get_discussion_by_id(post_id)
     if discussion is None:
         abort(404)
     
-    comments = get_comments_for_discussion(discussion_id)
+    comments = get_comments_for_discussion(post_id)
     
     comments_formatted = [
         {
@@ -112,8 +112,8 @@ def seed_database():
     db.session.commit()
     
     comments = [
-        Comment(content='Interesting point about the site.', discussion_id=discussions[0].id, user_id=users[0].id),
-        Comment(content='I have seen similar sightings!', discussion_id=discussions[1].id, user_id=users[1].id)
+        Comment(content='Interesting point about the site.', post_id=discussions[0].id, user_id=users[0].id),
+        Comment(content='I have seen similar sightings!', post_id=discussions[1].id, user_id=users[1].id)
     ]
     
     for comment in comments:
