@@ -55,7 +55,7 @@ def login():
     else:
         return "Failed to log in", 401    
 
-@app.route("/forum/post", methods=['POST'])
+@app.route("/forum/makepost", methods=['POST'])
 def createPost():
     title = request.post["title"]
     postContent = request.post["postContent"]
