@@ -72,22 +72,11 @@ def getPosts():
     return jsonify(posts)
 
 @app.route('/forum/post/<int:post_id>')
-def forum_discussion(post_id):
-    discussion = get_discussion_by_id(post_id)
+def getPostFromID(post_id):
+    discussion = db.gePostByID(post_id)
     if discussion is None:
         abort(404)
-    
-    comments = get_comments_for_discussion(post_id)
-    
-    comments_formatted = [
-        {
-            'username': comment.user.username,
-            'avatar_url': comment.user.avatar_url,
-            'content': comment.content
-        } for comment in comments
-    ]
-    
-    return render_template("forum.html", discussion=discussion, comments=comments_formatted)
+    return discussion, 200
 
 def seed_database():
     users = [
