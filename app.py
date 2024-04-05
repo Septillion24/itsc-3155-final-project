@@ -73,10 +73,14 @@ def getPosts():
 
 @app.route('/forum/post/<int:post_id>')
 def getPostFromID(post_id):
-    discussion = db.gePostByID(post_id)
+    discussion = db.getPostByID(post_id)
     if discussion is None:
         abort(404)
     return discussion, 200
+
+@app.route('/user/<str:username>')
+def getUserByID():
+    pass
 
 def seed_database():
     users = [
