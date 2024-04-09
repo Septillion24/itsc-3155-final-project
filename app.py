@@ -1,61 +1,86 @@
-from flask import Flask, abort, redirect, render_template, request
+from flask import Flask, abort, jsonify, redirect, render_template, request
+from classes.DataBaseHandler import DataBaseHandler
 from models import db, Discussion, Comment, User
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
 
-with app.app_context():
-    db.create_all()
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# db.init_app(app)
+db = DataBaseHandler.getInstance()
+
+# with app.app_context():
+    # db.create_all()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-def get_discussion_by_id(discussion_id):
-    return Discussion.query.get(discussion_id)
+def get_discussion_by_id(post_id):
+    return Discussion.query.get(post_id)
 
-def get_comments_for_discussion(discussion_id):
-    return Comment.query.filter_by(discussion_id=discussion_id).all()
+def get_comments_for_discussion(post_id):
+    return Comment.query.filter_by(post_id=post_id).all()
 
 @app.route('/')
 def index():
     return render_template("index.html")
 
-@app.route('/test1')
-def test1():
-    return render_template("index.html", test1=True)
-
-@app.route('/test2')
-def test2():
-    return render_template("index.html", test2=True)
-
-@app.route('/test3')
-def test3():
-    return render_template("index.html", test3=True)
-
-@app.route('/signup')
-def signup():
+@app.get('/signup')
+def signupPage():
     return render_template("signup.html")
 
-@app.route('/forum/discussion/<int:discussion_id>')
-def forum_discussion(discussion_id):
-    discussion = get_discussion_by_id(discussion_id)
+@app.post('/signup', methods = ['POST'])
+def signup():
+    userName = request.form['userName']
+    passWord = request.form['passWord']  # TODO: set up 
+    result = doSignInProcess()
+    if result:    
+        return redirect("/index")
+    else:
+        return "Failed to create an account", 400
+
+@app.get('/login')
+def loginPage():
+    return render_template("login.html")
+
+@app.post('/login', methods=['POST'])     
+def login():
+    userName = request.form['userName']
+    passWord = request.form['passWord']  # TODO: set up OAuth2
+    result = doLoginProcess()
+    if result:    
+        return redirect("/index")
+    else:
+        return "Failed to log in", 401    
+
+@app.post("/forum/makepost", methods=['POST'])
+def createPost():
+    title = request.post["title"]
+    postContent = request.post["postContent"]
+    user = request.post["user"] #TODO: authentication
+    response = db.createPost(user,title,postContent)
+    if response:
+        return "OK", 200
+    else:
+        return "Failed to create post", 400
+
+@app.get("/forum/posts")
+def getPosts():
+    posts = db.getPosts()
+    return jsonify(posts)
+
+@app.get('/forum/post/<int:post_id>')
+def getPostFromID(post_id):
+    discussion = db.getPostByID(post_id)
     if discussion is None:
         abort(404)
-    
-    comments = get_comments_for_discussion(discussion_id)
-    
-    comments_formatted = [
-        {
-            'username': comment.user.username,
-            'avatar_url': comment.user.avatar_url,
-            'content': comment.content
-        } for comment in comments
-    ]
-    
-    return render_template("forum.html", discussion=discussion, comments=comments_formatted)
+    return discussion, 200
+
+@app.get('/user/<str:username>')
+def getUserByID():
+    pass
 
 def seed_database():
     users = [
@@ -80,8 +105,8 @@ def seed_database():
     db.session.commit()
     
     comments = [
-        Comment(content='Interesting point about the site.', discussion_id=discussions[0].id, user_id=users[0].id),
-        Comment(content='I have seen similar sightings!', discussion_id=discussions[1].id, user_id=users[1].id)
+        Comment(content='Interesting point about the site.', post_id=discussions[0].id, user_id=users[0].id),
+        Comment(content='I have seen similar sightings!', post_id=discussions[1].id, user_id=users[1].id)
     ]
     
     for comment in comments:
@@ -101,3 +126,9 @@ def seed_db_command():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+    
+def doLoginProcess():
+    pass
+def doSignInProcess():
+    pass
