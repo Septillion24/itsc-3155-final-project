@@ -31,7 +31,7 @@ def index():
 def signupPage():
     return render_template("signup.html")
 
-@app.route('/signup', methods = ['POST'])
+@app.post('/signup', methods = ['POST'])
 def signup():
     userName = request.form['userName']
     passWord = request.form['passWord']  # TODO: set up 
@@ -45,7 +45,7 @@ def signup():
 def loginPage():
     return render_template("login.html")
 
-@app.route('/login', methods=['POST'])     
+@app.post('/login', methods=['POST'])     
 def login():
     userName = request.form['userName']
     passWord = request.form['passWord']  # TODO: set up OAuth2
@@ -55,7 +55,7 @@ def login():
     else:
         return "Failed to log in", 401    
 
-@app.route("/forum/makepost", methods=['POST'])
+@app.post("/forum/makepost", methods=['POST'])
 def createPost():
     title = request.post["title"]
     postContent = request.post["postContent"]
@@ -71,14 +71,14 @@ def getPosts():
     posts = db.getPosts()
     return jsonify(posts)
 
-@app.route('/forum/post/<int:post_id>')
+@app.get('/forum/post/<int:post_id>')
 def getPostFromID(post_id):
     discussion = db.getPostByID(post_id)
     if discussion is None:
         abort(404)
     return discussion, 200
 
-@app.route('/user/<str:username>')
+@app.get('/user/<str:username>')
 def getUserByID():
     pass
 
