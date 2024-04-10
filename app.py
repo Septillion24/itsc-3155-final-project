@@ -82,6 +82,20 @@ def getPostFromID(post_id):
 def getUserByID():
     pass
 
+@app.get('/voting')
+def votingPage():
+    return render_template('voting.html')
+
+@app.post('/voting')
+
+
+@app.get('/voting')
+def votingPage():
+    return render_template('voting.html')
+
+@app.post('/voting')
+
+
 def seed_database():
     users = [
         User(username='User1', avatar_url="images/avatar1.png"),
@@ -126,6 +140,7 @@ def seed_db_command():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
     
     
 def doLoginProcess():
