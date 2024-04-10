@@ -57,6 +57,13 @@ def forum_discussion(discussion_id):
     
     return render_template("forum.html", discussion=discussion, comments=comments_formatted)
 
+@app.get('/voting')
+def votingPage():
+    return render_template('voting.html')
+
+@app.post('/voting')
+
+
 def seed_database():
     users = [
         User(username='User1', avatar_url="images/avatar1.png"),
