@@ -25,8 +25,7 @@ def get_comments_for_discussion(post_id):
 
 @app.route('/')
 def index():
-    return render_template("index.html")
-
+    return render_template("home_temp.html") # TODO: change to home_jinja or add jinja
 @app.get('/signup')
 def signupPage():
     return render_template("signup.html")
