@@ -1,0 +1,38 @@
+{% extends '_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<!-- all the jinja is placeholder -->
+<div class="container mt-4">
+    <h6 style="color:green" class="text-center">Forum Discussion</h3>
+    <h1 class="mb-4 text-center">Horror/Paranormal Sightings</h1>
+
+    <!-- Search bar (does nothing rn) -->
+    <div class="mb-3 form-outline" data-mdb-input-init>
+        <input type="search" id="form1" class="form-control" placeholder="Search by Discussion Title" aria-label="Search" />
+      </div>
+
+    <div class="list-group">
+      {% for discussion in discussions %}
+      <a href="{{ url_for('discussion_detail', discussion_id=discussion.id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ discussion.title }}</h5>
+          <small>{{ discussion.time_since_posted }} ago</small>
+        </div>
+        <p class="mb-1">{{ discussion.user }}</p>
+        <small>{{ discussion.comments_count }} comments</small>
+      </a>
+      {% endfor %}
+    </div>
+    
+    <nav aria-label="Forum page navigation">
+      <ul class="pagination justify-content-center">
+        {% for page_num in pagination_pages %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('forum_page', page=page_num) }}">{{ page_num }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+    
+  </div>
+{% endblock %}
