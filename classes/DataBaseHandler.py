@@ -14,15 +14,15 @@ class DataBaseHandler:
             cls.instance = cls()
         return cls.instance
     
-    # these methods are not final, change them if you will
+    
     def getPosts(self):
         with psycopg.connect(
         conninfo = db_info()
         ) as conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT * FROM posts')
+                cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM post')
                 rows = cur.fetchall()
-                return
+                return rows
             
     def createPost(self, user:User, content:str, commentIDs:list):
         with psycopg.connect(
