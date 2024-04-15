@@ -1,9 +1,15 @@
-from classes.User import User
+from classes.DataTypes import User, Post, Comment
 import psycopg
 from db_secrets import db_info
 
 class DataBaseHandler:
     instance = None
+    #userID : user instance
+    userDict = {}
+    #postID : post instance
+    postDict = {}
+    
+    
     # TODO: @James, fill this out
     def __init__(self):
         pass    
