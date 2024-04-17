@@ -13,20 +13,24 @@ class User:
         }
         
 class Post:
+    postID = None
+    owner = None
     title = None
-    content = None
-    parentUserID = None
+    imageID = None
+    textContent = None
+    timestamp = None 
     
-    def __init__(self, title:str, content:str, parentUserID:int):
+    def __init__(self, title:str, content:str, parentUserID:int, ):
         self.title = title
         self.content = content
         self.parentUserID = parentUserID
-        
+        #need to generate
     def to_dict(self):
         return {
             "title" : self.title,
             "content": self.content,
             "parentUserID": self.parentUserID
+            #need to generate
         }
         
 class Comment:
