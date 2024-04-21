@@ -76,10 +76,15 @@ def createPost():
 
 #/user
 
-@app.get('/user/<str:username>')
-def getUserByID():
-    pass
-
+@app.get('/user/<int:userID>')
+def getUserByID(userID:int):
+    user = db.getUserByID(userID)
+    return render_template("user.html", user=user)
+@app.get("/user/<int:userID>/posts")
+def getPostsByUserID(userID:int):
+    posts = db.getPostsByUserID(userID) # TODO: implement this
+    return jsonify(posts)
+    
 #voting
 
 @app.get('/voting')
@@ -88,9 +93,21 @@ def votingPage():
 
 @app.post('/voting/submitvote')
 def submitVote():
-    # get post content
-    # do stuff with it
-    pass
+    """
+        'selection': boolean -- Either yes or no for the vote.
+        'pollID': int -- The poll that is being voted on
+        'userID': int -- The id for the user that is voting
+    """
+    pollID = request.form['pollID']
+    userID = request.form['userID']
+    selection = request.form['selection']
+    authstuff = None #placeholder for oauth stuff so i dont forget later
+    status = db.createUserVoteOnPoll(pollID,userID, selection) # TODO: implement this
+    
+    if status:
+        return 200, "Poll vote successfully submitted"
+    else:
+        return 400, "Poll vote unsuccessful"
 
 @app.get('/voting')
 def votingPage():
