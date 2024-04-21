@@ -20,16 +20,19 @@ class DataBaseHandler:
             cls.instance = cls()
         return cls.instance
     
-    # these methods are not final, change them if you will
-    def getPosts(self):
+    
+    def getPosts(self) -> list[Post]:
         with psycopg.connect(
         conninfo = db_info()
         ) as conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT * FROM posts')
+                cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM post')
                 rows = cur.fetchall()
-                return
-            
+                posts = []
+                for post in rows:
+                    posts.add()#finish after generation
+
+                #sneed to update VVV
     def createPost(self, user:User, content:str, commentIDs:list):
         with psycopg.connect(
         conninfo = db_info()
@@ -39,7 +42,7 @@ class DataBaseHandler:
                 cur.execute(F'''INSERT INTO posts (username, content, commentIDs) VALUES
                     ('{user.name}', '{content}', '{commentIDs}')''')
                 
-
+                #sneed to update VVV
     def getPostByID(self, postID: int):
         with psycopg.connect(
         conninfo = db_info()
@@ -48,6 +51,8 @@ class DataBaseHandler:
                 cur.execute(f'SELECT * FROM posts WHERE posts.postID = {postID}')
                 rows = cur.fetchall()
                 return rows
+            
+            #sneed to update VVV
     def getUsers(self):
         with psycopg.connect(
         conninfo = db_info()
@@ -56,10 +61,10 @@ class DataBaseHandler:
                 cur.execute('SELECT * FROM users')
                 rows = cur.fetchall()
                 return rows
-
+            #sneed to make VVV
     def createUser(self):
         pass
-
+            #sneed to update VVV
     def getUserByID(self, userID: str):
         with psycopg.connect(
         conninfo = db_info()
