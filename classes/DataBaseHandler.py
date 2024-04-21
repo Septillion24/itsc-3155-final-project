@@ -48,31 +48,42 @@ class DataBaseHandler:
         conninfo = db_info()
         ) as conn:
             with conn.cursor() as cur:
-                cur.execute(f'SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM posts WHERE posts.postID = {postID}')
+                cur.execute(f'SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Post.postID = {postID}')
                 rows = cur.fetchall()
                 selectedPost = Post(rows[0].keys[0], rows[0].keys[1], rows[0].keys[2], rows[0].keys[3], rows[0].keys[4], rows[0].keys[5])
                 return selectedPost
             
-            #sneed to update VVV
-    def getUsers(self):
+            
+    def getUsers(self) -> list[User]: #needs testing
         with psycopg.connect(
         conninfo = db_info()
         ) as conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT * FROM users')
+                cur.execute('SELECT UserID, Username, Email, FirstName, LastName, Password FROM User;')
                 rows = cur.fetchall()
-                return rows
-            #sneed to make VVV
-    def createUser(self):
-        pass
-            #sneed to update VVV
-    def getUserByID(self, userID: str):
+                users = []
+                for userrow in rows:
+                    users.add(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5]))
+                return users
+            
+    def createUser(self, Username: str, Email: str, FirstName: str, LastName: str, Password: str) -> None: #needs testing
         with psycopg.connect(
         conninfo = db_info()
         ) as conn:
             with conn.cursor() as cur:
-                cur.execute(f'select * from users where users.username = \'{userID}\'')
+                cur.execute(f'''INSERT INTO User (Username, Email, FirstName, LastName, Password) 
+                            VALUES ('{Username}', '{Email}', '{FirstName}', '{LastName}', 
+                            '{Password}'); ''')
+                
+            
+    def getUserByID(self, userID: str) -> User:#needs testing
+        with psycopg.connect(
+        conninfo = db_info()
+        ) as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'SELECT UserID, Username, Email, FirstName, LastName, Password FROM User WHERE UserID = \'{userID}\'')
                 rows = cur.fetchall()
-                print(rows)
+                userrow = rows[0]
+                return User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5])
         
-    
+    #add createUserVoteOnPoll
