@@ -89,7 +89,8 @@ def getPostsByUserID(userID:int):
 
 @app.get('/voting')
 def votingPage():
-    return render_template('voting.html')
+    activeVote = db.getActiveVote()
+    return render_template('voting.html', activeVote=activeVote)
 
 @app.post('/voting/submitvote')
 def submitVote():
@@ -109,9 +110,6 @@ def submitVote():
     else:
         return 400, "Poll vote unsuccessful"
 
-@app.get('/voting')
-def votingPage():
-    return render_template('voting.html')
 
 
 if __name__ == '__main__':
