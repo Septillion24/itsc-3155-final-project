@@ -93,3 +93,5 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
                                 VALUES ({userID}, {pollID}, {voteFor}); ''')
+    def getPostsByUserID() -> list[Post]:
+        
