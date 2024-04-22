@@ -86,4 +86,10 @@ class DataBaseHandler:
                 userrow = rows[0]
                 return User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5])
         
-    #add createUserVoteOnPoll
+    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> None:
+        with psycopg.connect(
+        conninfo = db_info()
+        ) as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
+                                VALUES ({userID}, {pollID}, {voteFor}); ''')
