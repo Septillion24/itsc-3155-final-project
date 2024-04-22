@@ -93,5 +93,14 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
                                 VALUES ({userID}, {pollID}, {voteFor}); ''')
-    def getPostsByUserID() -> list[Post]:
-        
+    def getPostsByUserID(self, userID: int) -> list[Post]:
+        with psycopg.connect(
+        conninfo = db_info()
+        ) as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent FROM Post WHERE Owner = {userID}; ''')
+                rows = cur.fetchall()
+                posts = []
+                for postrow in rows:
+                    posts.add(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4]))
+                return posts
