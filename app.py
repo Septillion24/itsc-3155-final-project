@@ -47,7 +47,7 @@ def login():
 
 @app.get("/forum")
 def forumPage():
-    return render_template("forum.html")
+    return render_template("home_jinja.html")
 
 @app.get("/forum/getposts")
 def getPostsForForumPage():
