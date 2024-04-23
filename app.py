@@ -38,7 +38,7 @@ def login():
     username = request.form['usermame']
     password = request.form['password']  # TODO: set up OAuth2
     result = doLoginProcess()
-    if result:    
+    if result:
         return redirect("/index")
     else:
         return "Failed to log in", 401    
@@ -52,7 +52,7 @@ def forumPage():
 @app.get("/forum/getposts")
 def getPostsForForumPage():
     numPosts = request.args.get('numPosts', default=10, type=int)
-    topPosts = getTopPosts(numPosts)
+    topPosts = db.getTopPosts(numPosts)
     return jsonify(topPosts), 200
 
 @app.get('/forum/post/<int:post_id>')

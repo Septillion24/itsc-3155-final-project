@@ -1,7 +1,9 @@
 {% extends '_layout.html' %}
 
 {% block title %}Home{% endblock %}
-
+{% block scripts %}
+    <script src="static\scripts\loadPosts.js" defer></script>
+{% endblock %}
 {% block body %}
 <!-- all the jinja is placeholder -->
 <div class="container mt-4">
@@ -13,18 +15,8 @@
         <input type="search" id="form1" class="form-control" placeholder="Search by Discussion Title" aria-label="Search" />
       </div>
 
-    <div class="list-group">
-      {% for discussion in discussions %}
-      <a href="{{ url_for('discussion_detail', discussion_id=discussion.id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">{{ discussion.title }}</h5>
-          <small>{{ discussion.time_since_posted }} ago</small>
-        </div>
-        <p class="mb-1">{{ discussion.user }}</p>
-        <small>{{ discussion.comments_count }} comments</small>
-      </a>
-      {% endfor %}
-    </div>
+      <div id="postsContainer"></div>  
+      
     
     <nav aria-label="Forum page navigation">
       <ul class="pagination justify-content-center">
