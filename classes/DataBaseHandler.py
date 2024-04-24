@@ -45,7 +45,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
-                    posts.add(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4], postrow.keys[5]))
+                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
                 return posts
 
                 
@@ -74,7 +74,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 users = []
                 for userrow in rows:
-                    users.add(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5]))
+                    users.append(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5]))
                 return users
             
     def createUser(self, Username: str, Email: str, FirstName: str, LastName: str, Password: str) -> None: #needs testing
@@ -109,16 +109,16 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
-                    posts.add(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4]))
+                    posts.append(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4]))
                 return posts
     def getTopPosts(self, numberOfPosts: int) -> list[Post]:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent FROM Post ORDER BY Timestamp DESC LIMIT {numberOfPosts}; ''')
+                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post ORDER BY Timestamp DESC LIMIT {numberOfPosts}; ''')
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
-                    posts.add(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4]))
+                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
                 return posts
             
