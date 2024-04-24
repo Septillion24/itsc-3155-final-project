@@ -4,6 +4,9 @@
 {% block scripts %}
     <script src="static\scripts\loadPosts.js" defer></script>
 {% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
+{% endblock %}
 {% block body %}
 <!-- all the jinja is placeholder -->
 <div class="container mt-4">
