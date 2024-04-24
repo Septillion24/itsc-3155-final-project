@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS User (
+CREATE TABLE IF NOT EXISTS Users (
     UserID serial PRIMARY KEY,
     Username varchar(255),
     Email varchar(255),
@@ -8,12 +8,12 @@ CREATE TABLE IF NOT EXISTS User (
 );
 CREATE TABLE IF NOT EXISTS FriendRelationship (
     id serial PRIMARY KEY,
-    user1 int REFERENCES User(UserID),
-    user2 int REFERENCES User(UserID)
+    user1 int REFERENCES Users(UserID),
+    user2 int REFERENCES Users(UserID)
 );
 CREATE TABLE IF NOT EXISTS Post (
     PostID serial PRIMARY KEY,
-    Owner int REFERENCES User(UserID),
+    Owner int REFERENCES Users(UserID),
     Title varchar(255),
     ImageID int,
     TextContent text,
@@ -22,11 +22,11 @@ CREATE TABLE IF NOT EXISTS Post (
 CREATE TABLE IF NOT EXISTS Image (
     ImageID serial PRIMARY KEY,
     URL text,
-    Author int REFERENCES User(UserID)
+    Author int REFERENCES Users(UserID)
 );
 CREATE TABLE IF NOT EXISTS Comment (
     CommentID serial PRIMARY KEY,
-    Owner int REFERENCES User(UserID),
+    Owner int REFERENCES Users(UserID),
     PostID int REFERENCES Post(PostID),
     Content text,
     Timestamp timestamp
@@ -39,13 +39,13 @@ CREATE TABLE IF NOT EXISTS Poll (
 );
 CREATE TABLE IF NOT EXISTS Vote (
     VoteID serial PRIMARY KEY,
-    Owner int REFERENCES User(UserID),
+    Owner int REFERENCES Users(UserID),
     PollID int REFERENCES Poll(PollID),
     VoteFor boolean,
     Timestamp timestamp without time zone
 );
 
-INSERT INTO User (Username, Email, FirstName, LastName, Password) VALUES
+INSERT INTO Users (Username, Email, FirstName, LastName, Password) VALUES
 ('john_doe', 'john.doe@example.com', 'John', 'Doe', 'hashedpassword1'),
 ('jane_smith', 'jane.smith@example.com', 'Jane', 'Smith', 'hashedpassword2');
 

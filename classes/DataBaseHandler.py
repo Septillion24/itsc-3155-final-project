@@ -1,9 +1,31 @@
-from classes.User import User
+from classes.DataTypes import User, Post, Comment
 import psycopg
-from db_secrets import db_info
+from dotenv import load_dotenv
+import datetime
+import os
+from psycopg_pool import ConnectionPool
 
+
+load_dotenv()
+
+pool = None
+
+
+def get_pool():
+    global pool
+    if pool is None:
+        pool = ConnectionPool(
+            conninfo=os.getenv('DB_CONNECTION_STRING', ''),
+        )
+    return pool
 class DataBaseHandler:
     instance = None
+    #userID : user instance
+    userDict = {}
+    #postID : post instance
+    postDict = {}
+    
+    
     # TODO: @James, fill this out
     def __init__(self):
         pass    
@@ -14,53 +36,89 @@ class DataBaseHandler:
             cls.instance = cls()
         return cls.instance
     
-    # these methods are not final, change them if you will
-    def getPosts(self):
-        with psycopg.connect(
-        conninfo = db_info()
-        ) as conn:
-            with conn.cursor() as cur:
-                cur.execute('SELECT * FROM posts')
-                rows = cur.fetchall()
-                return
-            
-    def createPost(self, user:User, content:str, commentIDs:list):
-        with psycopg.connect(
-        conninfo = db_info()
-        ) as conn:
-            with conn.cursor() as cur:
-                # double check commentIDs value passing
-                cur.execute(F'''INSERT INTO posts (username, content, commentIDs) VALUES
-                    ('{user.name}', '{content}', '{commentIDs}')''')
-                
-
-    def getPostByID(self, postID: int):
-        with psycopg.connect(
-        conninfo = db_info()
-        ) as conn:
-            with conn.cursor() as cur:
-                cur.execute(f'SELECT * FROM posts WHERE posts.postID = {postID}')
-                rows = cur.fetchall()
-                return rows
-    def getUsers(self):
-        with psycopg.connect(
-        conninfo = db_info()
-        ) as conn:
-            with conn.cursor() as cur:
-                cur.execute('SELECT * FROM users')
-                rows = cur.fetchall()
-                return rows
-
-    def createUser(self):
-        pass
-
-    def getUserByID(self, userID: str):
-        with psycopg.connect(
-        conninfo = db_info()
-        ) as conn:
-            with conn.cursor() as cur:
-                cur.execute(f'select * from users where users.username = \'{userID}\'')
-                rows = cur.fetchall()
-                print(rows)
-        
     
+    def getPosts(self) -> list[Post]: #needs testing 
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post')
+                rows = cur.fetchall()
+                posts = []
+                for postrow in rows:
+                    posts.add(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4], postrow.keys[5]))
+                return posts
+
+                
+    def createPost(self, owner: int, title: str, image_id: int, text_content: str, timestamp: datetime): #needs testing 
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(F'''INSERT INTO Post (Owner, Title, ImageID, TextContent, Timestamp) VALUES
+                    ('{owner}', '{title}', '{image_id}', '{text_content}', '{timestamp}')''')
+                
+    def getPostByID(self, postID: int, owner: int, title: str, image_id: int, text_content: str, timestamp: datetime) -> Post: #needs testing
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Post.postID = {postID}')
+                rows = cur.fetchall()
+                selectedPost = Post(rows[0].keys[0], rows[0].keys[1], rows[0].keys[2], rows[0].keys[3], rows[0].keys[4], rows[0].keys[5])
+                return selectedPost
+            
+            
+    def getUsers(self) -> list[User]: #needs testing
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('SELECT UserID, Username, Email, FirstName, LastName, Password FROM Users;')
+                rows = cur.fetchall()
+                users = []
+                for userrow in rows:
+                    users.add(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5]))
+                return users
+            
+    def createUser(self, Username: str, Email: str, FirstName: str, LastName: str, Password: str) -> None: #needs testing
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Users (Username, Email, FirstName, LastName, Password) 
+                            VALUES ('{Username}', '{Email}', '{FirstName}', '{LastName}', 
+                            '{Password}'); ''')
+                
+            
+    def getUserByID(self, userID: str) -> User:#needs testing
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'SELECT UserID, Username, Email, FirstName, LastName, Password FROM Users WHERE UserID = \'{userID}\'')
+                rows = cur.fetchall()
+                userrow = rows[0]
+                return User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5])
+        
+    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
+                                VALUES ({userID}, {pollID}, {voteFor}); ''')
+    def getPostsByUserID(self, userID: int) -> list[Post]:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent FROM Post WHERE Owner = {userID}; ''')
+                rows = cur.fetchall()
+                posts = []
+                for postrow in rows:
+                    posts.add(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4]))
+                return posts
+    def getTopPosts(self, numberOfPosts: int) -> list[Post]:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent FROM Post ORDER BY Timestamp DESC LIMIT {numberOfPosts}; ''')
+                rows = cur.fetchall()
+                posts = []
+                for postrow in rows:
+                    posts.add(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4]))
+                return posts
+            

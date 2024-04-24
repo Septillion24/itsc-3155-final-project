@@ -1,39 +1,28 @@
 from flask import Flask, abort, jsonify, redirect, render_template, request
 from classes.DataBaseHandler import DataBaseHandler
-from models import db, Discussion, Comment, User
+from classes.DataTypes import Post, User, Comment
 
 app = Flask(__name__)
 
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db.init_app(app)
 db = DataBaseHandler.getInstance()
-
-# with app.app_context():
-    # db.create_all()
-
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-def get_discussion_by_id(post_id):
-    return Discussion.query.get(post_id)
-
-def get_comments_for_discussion(post_id):
-    return Comment.query.filter_by(post_id=post_id).all()
-
 @app.route('/')
 def index():
-    return render_template("home_temp.html") # TODO: change to home_jinja or add jinja
+    return redirect("/forum")
+
+#account management
+
 @app.get('/signup')
 def signupPage():
     return render_template("signup.html")
 
-@app.post('/signup', methods = ['POST'])
+@app.post('/signup')
 def signup():
-    userName = request.form['userName']
-    passWord = request.form['passWord']  # TODO: set up 
+    username = request.form['username']
+    password = request.form['password']  # TODO: set up 
     result = doSignInProcess()
     if result:    
         return redirect("/index")
@@ -44,17 +33,36 @@ def signup():
 def loginPage():
     return render_template("login.html")
 
-@app.post('/login', methods=['POST'])     
+@app.post('/login')
 def login():
-    userName = request.form['userName']
-    passWord = request.form['passWord']  # TODO: set up OAuth2
+    username = request.form['usermame']
+    password = request.form['password']  # TODO: set up OAuth2
     result = doLoginProcess()
     if result:    
         return redirect("/index")
     else:
         return "Failed to log in", 401    
 
-@app.post("/forum/makepost", methods=['POST'])
+#/forum
+
+@app.get("/forum")
+def forumPage():
+    return render_template("home_jinja.html")
+
+@app.get("/forum/getposts")
+def getPostsForForumPage():
+    numPosts = request.args.get('numPosts', default=10, type=int)
+    topPosts = getTopPosts(numPosts)
+    return jsonify(topPosts), 200
+
+@app.get('/forum/post/<int:post_id>')
+def getPostFromID(post_id):
+    discussion = db.getPostByID(post_id)
+    if discussion is None:
+        abort(404)
+    return discussion, 200
+
+@app.post("/forum/makepost")
 def createPost():
     title = request.post["title"]
     postContent = request.post["postContent"]
@@ -65,84 +73,53 @@ def createPost():
     else:
         return "Failed to create post", 400
 
-@app.get("/forum/posts")
-def getPosts():
-    posts = db.getPosts()
+
+#/user
+
+@app.get('/user/<int:userID>')
+def getUserByID(userID:int):
+    user = db.getUserByID(userID)
+    return render_template("user.html", user=user)
+@app.get("/user/<int:userID>/posts")
+def getPostsByUserID(userID:int):
+    posts = db.getPostsByUserID(userID) # TODO: implement this
     return jsonify(posts)
-
-@app.get('/forum/post/<int:post_id>')
-def getPostFromID(post_id):
-    discussion = db.getPostByID(post_id)
-    if discussion is None:
-        abort(404)
-    return discussion, 200
-
-@app.get('/user/<str:username>')
-def getUserByID():
-    pass
+    
+#voting
 
 @app.get('/voting')
 def votingPage():
-    return render_template('voting.html')
+    activeVote = db.getActiveVote()
+    return render_template('voting.html', activeVote=activeVote)
 
-@app.post('/voting')
+@app.post('/voting/submitvote')
+def submitVote():
+    """
+        'selection': boolean -- Either yes or no for the vote.
+        'pollID': int -- The poll that is being voted on
+        'userID': int -- The id for the user that is voting
+    """
+    pollID = request.form['pollID']
+    userID = request.form['userID']
+    selection = request.form['selection']
+    authstuff = None #placeholder for oauth stuff so i dont forget later
+    status = db.createUserVoteOnPoll(pollID,userID, selection) # TODO: implement this
+    
+    if status:
+        return 200, "Poll vote successfully submitted"
+    else:
+        return 400, "Poll vote unsuccessful"
 
 
-@app.get('/voting')
-def votingPage():
-    return render_template('voting.html')
-
-@app.post('/voting')
-
-
-def seed_database():
-    users = [
-        User(username='User1', avatar_url="images/avatar1.png"),
-        User(username='User2', avatar_url="images/avatar2.png")
-    ]
-    
-    for user in users:
-        if not User.query.filter_by(username=user.username).first():
-            db.session.add(user)
-    
-    db.session.commit()
-    
-    discussions = [
-        Discussion(title='Is this a confirmed paranormal site?', image_url="images/discussion_image1.jpg"),
-        Discussion(title='UFO sighting discussion', image_url="images/discussion_image2.jpg")
-    ]
-    
-    for discussion in discussions:
-        db.session.add(discussion)
-    
-    db.session.commit()
-    
-    comments = [
-        Comment(content='Interesting point about the site.', post_id=discussions[0].id, user_id=users[0].id),
-        Comment(content='I have seen similar sightings!', post_id=discussions[1].id, user_id=users[1].id)
-    ]
-    
-    for comment in comments:
-        db.session.add(comment)
-    
-    db.session.commit()
-
-@app.cli.command('seed-db')
-def seed_db_command():
-    """Seeds the database with initial data."""
-    with app.app_context():
-        if User.query.first() is None:
-            seed_database()
-            print('Database seeded.')
-        else:
-            print('Database already seeded.')
 
 if __name__ == '__main__':
     app.run(debug=True)
 
     
-    
 def doLoginProcess():
     pass
 def doSignInProcess():
+    pass
+
+def getTopPosts(numPosts:int) -> list[Post]:
     pass
