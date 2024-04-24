@@ -1,0 +1,16 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to Render
+      run: curl -X POST -d '' https://api.render.com/v1/services/srv-cokp7cmd3nmc739j6kpg/deploy
+      env:
+        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
