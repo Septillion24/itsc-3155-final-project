@@ -136,3 +136,40 @@ class DataBaseHandler:
                 cur.execute(f'''SELECT ImageID, URL, Author FROM Image WHERE ImageID = {imageID}; ''')
                 rows = cur.fetchall()
                 return Image(rows[0][0], rows[0][1], rows[0][2])
+    
+    def createFriendRelationship(self, user1: int, user2: int) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Friends (User1, User2) VALUES ({user1}, {user2}); ''')
+    
+    def getFriends(self, userID: int) -> list[User]:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT User1, User2 FROM Friends WHERE User1 = {userID} OR User2 = {userID}; ''')
+                rows = cur.fetchall()
+                friends = []
+                for friendrow in rows:
+                    friends.append(User(friendrow[0], friendrow[1]))
+                return friends
+    def createImage(self, url: str, author: int) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Image (URL, Author) VALUES ('{url}', {author}); ''')
+    def createComment(self, postID: int, owner: int, text: str, timestamp: datetime) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Comment (PostID, Owner, Text, Timestamp) VALUES ({postID}, {owner}, '{text}', '{timestamp}'); ''')
+    def getCommentsByPostID(self, postID: int) -> list[Comment]:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT CommentID, PostID, Owner, Text, Timestamp FROM Comment WHERE PostID = {postID}; ''')
+                rows = cur.fetchall()
+                comments = []
+                for commentrow in rows:
+                    comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
+                return comments
