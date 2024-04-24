@@ -65,7 +65,7 @@ class Post:
             'title': self.title,
             'image_id': self.image_id,
             'text_content': self.text_content,
-            'timestamp': self.timestamp
+            'timestamp': str(self.timestamp)
         }
 
 class Image:
