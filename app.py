@@ -53,7 +53,7 @@ def forumPage():
 def getPostsForForumPage():
     numPosts = request.args.get('numPosts', default=10, type=int)
     topPosts = db.getTopPosts(numPosts)
-    return jsonify(topPosts), 200
+    return jsonify([post.to_dict() for post in topPosts]), 200
 
 @app.get('/forum/post/<int:post_id>')
 def getPostFromID(post_id):
