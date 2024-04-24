@@ -2,12 +2,15 @@
     <div class="postTitle">
         <p>${item.title}</p>
     </div>
-    <div class="postUser">
-        <p>${item.owner}</p> 
+
+    <div class="userInfo">
+        <div class="userAvatar"><img src="static/images/avatar2.png" /></div>
+        <div>
+            <div class="postUser">${item.owner}</div>
+            <div class="postTimestamp">${relativeTime}</div>
+        </div>
     </div>
-    <div class="postTimestamp">
-        <p>${item.timestamp}</p>
-    </div>
+   
     <div class="postBody">
         <p>${item.text_content}</p>
     </div>

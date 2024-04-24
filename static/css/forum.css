@@ -18,11 +18,12 @@
 .postTimestamp {
     grid-area: timestamp;
     color: gray;
-    font-size:18pt;
+    font-size: 16pt;
 }
 .postUser {
     grid-area: user;
-    font-size:20pt;
+    font-size: 20pt;
+    margin-bottom:-1vmin;
 }
 .postBody {
     grid-area: body;
@@ -31,6 +32,27 @@
 .postComments {
     grid-area: comments;
 }
+.userInfo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .userAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
 
 body {
     background-color: rgba(246, 248, 253, 255);
