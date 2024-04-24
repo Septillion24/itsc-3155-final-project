@@ -1,10 +1,15 @@
 from flask import Flask, abort, jsonify, redirect, render_template, request
 from classes.DataBaseHandler import DataBaseHandler
 from classes.DataTypes import Post, User, Comment
+import requests
+import random
 
 app = Flask(__name__)
 
 db = DataBaseHandler.getInstance()
+
+MapsKey = 'AIzaSyBkaqZWoj0HgduAKegpLcz0NRfZ4iIg_JY'
+votes = {'yes': 0, 'no': 0}
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -89,8 +94,17 @@ def getPostsByUserID(userID:int):
 
 @app.get('/voting')
 def votingPage():
-    activeVote = db.getActiveVote()
-    return render_template('voting.html', activeVote=activeVote)
+    #activeVote = db.getActiveVote()
+    return render_template('voting.html', votes=votes) #, activeVote=activeVote)
+
+@app.route('/vote', methods=['POST'])
+def vote():
+    choice = request.form['vote']
+    if choice == 'yes':
+        votes['yes'] += 1
+    elif choice == 'no':
+        votes['no'] += 1
+    return render_template('voting.html', votes=votes)
 
 @app.post('/voting/submitvote')
 def submitVote():
@@ -109,6 +123,36 @@ def submitVote():
         return 200, "Poll vote successfully submitted"
     else:
         return 400, "Poll vote unsuccessful"
+    
+#maps
+
+@app.get('/newsearch')
+def newPostPage():
+    return render_template('search.html')
+
+@app.route('/search', methods=['POST'])
+def search():
+    location = request.form['location']
+
+    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={location}&key={MapsKey}'
+
+    response = requests.get(url)
+    data = response.json()
+
+    if data['status'] == 'OK':
+        lat = data['results'][0]['geometry']['location']['lat']
+        lng = data['results'][0]['geometry']['location']['lng']
+        elevation_url = f'https://maps.googleapis.com/maps/api/elevation/json?locations={lat},{lng}&key={MapsKey}'
+        elevation_response = requests.get(elevation_url)
+        elevation_data = elevation_response.json()
+        if elevation_data['status'] == 'OK':
+            elevation = elevation_data['results'][0]['elevation']
+        else:
+            elevation = 'Unknown'
+        haunted = random.choice(["Definitely Haunted", "Probably Haunted", "Not Haunted (as far as we know)"])
+        return render_template('result.html', location=location, lat=lat, lng=lng, elevation=elevation, haunted = haunted)
+    else:
+        return 400, "Unsuccessful"
 
 
 
