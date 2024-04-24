@@ -1,4 +1,4 @@
-from classes.DataTypes import User, Post, Comment
+from classes.DataTypes import User, Post, Comment, Image
 import psycopg
 from dotenv import load_dotenv
 import datetime
@@ -109,7 +109,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
-                    posts.append(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4]))
+                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4]))
                 return posts
     def getTopPosts(self, numberOfPosts: int) -> list[Post]:
         pool = get_pool()
@@ -121,4 +121,18 @@ class DataBaseHandler:
                 for postrow in rows:
                     posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
                 return posts
+    def numberOfComments(self, postID: int) -> int:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT COUNT(*) FROM Comment WHERE PostID = {postID}; ''')
+                rows = cur.fetchall()
+                return rows[0]
             
+    def getImageByID(self, imageID: int) -> str:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT ImageID, URL, Author FROM Image WHERE ImageID = {imageID}; ''')
+                rows = cur.fetchall()
+                return Image(rows[0][0], rows[0][1], rows[0][2])
