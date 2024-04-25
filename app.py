@@ -86,8 +86,13 @@ def getUserByID(userID:int):
     return render_template("user.html", user=user)
 @app.get("/user/<int:userID>/posts")
 def getPostsByUserID(userID:int):
-    posts = db.getPostsByUserID(userID) # TODO: implement this
+    posts = db.getPostsByUserID(userID)
     return jsonify(posts)
+@app.get("/user/<int:userID>/comments")
+def getCommentsByUserID(userID:int):
+    posts = db.getCommentsByUserID(userID)
+    return jsonify(posts)
+    
     
 #voting
 
