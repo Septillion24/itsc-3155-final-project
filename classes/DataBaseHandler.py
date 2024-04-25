@@ -1,4 +1,4 @@
-from classes.DataTypes import User, Post, Comment
+from classes.DataTypes import User, Post, Comment, Image
 import psycopg
 from dotenv import load_dotenv
 import datetime
@@ -109,7 +109,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
-                    posts.append(Post(postrow.keys[0], postrow.keys[1], postrow.keys[2], postrow.keys[3], postrow.keys[4]))
+                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4]))
                 return posts
     def getTopPosts(self, numberOfPosts: int) -> list[Post]:
         pool = get_pool()
@@ -121,4 +121,55 @@ class DataBaseHandler:
                 for postrow in rows:
                     posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
                 return posts
+    def numberOfComments(self, postID: int) -> int:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT COUNT(*) FROM Comment WHERE PostID = {postID}; ''')
+                rows = cur.fetchall()
+                return rows[0]
             
+    def getImageByID(self, imageID: int) -> str:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT ImageID, URL, Author FROM Image WHERE ImageID = {imageID}; ''')
+                rows = cur.fetchall()
+                return Image(rows[0][0], rows[0][1], rows[0][2])
+    
+    def createFriendRelationship(self, user1: int, user2: int) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Friends (User1, User2) VALUES ({user1}, {user2}); ''')
+    
+    def getFriends(self, userID: int) -> list[User]:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT User1, User2 FROM Friends WHERE User1 = {userID} OR User2 = {userID}; ''')
+                rows = cur.fetchall()
+                friends = []
+                for friendrow in rows:
+                    friends.append(User(friendrow[0], friendrow[1]))
+                return friends
+    def createImage(self, url: str, author: int) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Image (URL, Author) VALUES ('{url}', {author}); ''')
+    def createComment(self, postID: int, owner: int, text: str, timestamp: datetime) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Comment (PostID, Owner, Text, Timestamp) VALUES ({postID}, {owner}, '{text}', '{timestamp}'); ''')
+    def getCommentsByPostID(self, postID: int) -> list[Comment]:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT CommentID, PostID, Owner, Text, Timestamp FROM Comment WHERE PostID = {postID}; ''')
+                rows = cur.fetchall()
+                comments = []
+                for commentrow in rows:
+                    comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
+                return comments
