@@ -91,10 +91,11 @@ def userProfilePage():
 def getUserByID(userID:int):
     user = db.getUserByID(userID)
     return render_template("user.html", user=user)
+
 @app.get("/user/<int:userID>/posts")
 def getPostsByUserID(userID:int):
-    posts = db.getPostsByUserID(userID) # TODO: implement this
-    return jsonify(posts)
+    posts = db.getPostsByUserID(userID)
+    return jsonify([post.to_dict() for post in posts]), 200
     
 #voting
 
