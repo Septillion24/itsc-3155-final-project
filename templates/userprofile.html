@@ -1,0 +1,27 @@
+{% extends '_layout.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block scripts %}
+    <script src="static\scripts\loadProfilePosts.js"></script>
+    <script src="static\scripts\loadProfileComments.js"></script>
+{% endblock scripts %}
+
+{% block stylesheet %}
+{% endblock stylesheet %}
+
+{% block body %}
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="static/images/avatar2.png" alt="User Profile Picture" class="profile-picture"> <!-- Assuming we will enable users to upload custom profile pictures, need to jinja later -->
+            <div class="username">{{ user.username }}</div>
+        </div>
+        <div class="content-buttons"> <!-- Add buttons  -->
+            
+        </div>
+
+        <!-- Add functionality to load posts and comments based on button press. -->
+        <div class="postsContainer"></div>
+        <div class="commentsContainer"></div>
+    </div>
+{% endblock %}
