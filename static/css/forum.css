@@ -57,3 +57,37 @@
 body {
     background-color: rgba(246, 248, 253, 255);
 }
+
+/* Dark mode styles for forum elements */
+body.dark-mode {
+    background-color: #2b2b2b; /* Dark background for the body */
+}
+
+body.dark-mode .postContainer {
+    background-color: #1e1e1e; /* Dark background for post containers */
+    color: #ddd; /* Light text color for readability in dark mode */
+}
+
+body.dark-mode .postTitle {
+    color: #fff; /* Light color for post titles in dark mode */
+}
+
+body.dark-mode .postTimestamp {
+    color: #ccc; /* Lighter gray for timestamps in dark mode */
+}
+
+body.dark-mode .postUser {
+    color: #ddd; /* Light text color for user info in dark mode */
+}
+
+body.dark-mode .postBody {
+    color: #ccc; /* Slightly lighter text color for the post body in dark mode */
+}
+
+body.dark-mode .postComments {
+    color: #ccc; /* Light color for comments in dark mode */
+}
+
+body.dark-mode .userInfo {
+    color: #ddd; /* Light color for user info area in dark mode */
+}

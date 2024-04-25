@@ -173,3 +173,13 @@ class DataBaseHandler:
                 for commentrow in rows:
                     comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
                 return comments
+    def getCommentsByUserID(self, userID: int) -> list[Comment]:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT CommentID, PostID, Owner, Text, Timestamp FROM Comment WHERE Owner = {userID}; ''')
+                rows = cur.fetchall()
+                comments = []
+                for commentrow in rows:
+                    comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
+                return comments
