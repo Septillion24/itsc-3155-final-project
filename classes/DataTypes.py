@@ -1,5 +1,5 @@
 from datetime import datetime
-from DataBaseHandler import getUserByID, getImageByID
+from DataBaseHandler import getUserByID, getImageByID, numberOfComments
 class User:
     user_id  = None
     username  = None
@@ -70,6 +70,7 @@ class Post:
     image: Image = None
     text_content: str = None
     timestamp: datetime = None
+    number_of_comments: int = None
 
     def __init__(self, post_id: int, ownerID: int, title: str, image_id: int, text_content: str, timestamp: datetime) -> None:
         self.post_id = post_id
@@ -78,6 +79,7 @@ class Post:
         self.image_id = getImageByID(image_id)
         self.text_content = text_content
         self.timestamp = timestamp
+        self.number_of_comments = numberOfComments(post_id)
 
     def to_dict(self) -> dict:
         return {
@@ -88,6 +90,8 @@ class Post:
             'text_content': self.text_content,
             'timestamp': str(self.timestamp)
         }
+    def updateNumberOfComments(self):
+        self.number_of_comments = numberOfComments(self.post_id)
 
 class Comment:
     comment_id: int = None
