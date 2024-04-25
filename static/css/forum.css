@@ -1,0 +1,59 @@
+.postContainer {
+    grid-template-areas:
+        "title title title title title title"
+        "user user user user timestamp timestamp"
+        "body body body body body body"
+        "comments comments comments comments comments comments";
+    padding: 22px;
+    padding-top: 6px;
+    margin-top: 15px;
+    border-radius: 10px;
+    background-color: white;
+}
+.postTitle {
+    grid-area: title;
+    font-weight: bold;
+    font-size: 24pt;
+}
+.postTimestamp {
+    grid-area: timestamp;
+    color: gray;
+    font-size: 16pt;
+}
+.postUser {
+    grid-area: user;
+    font-size: 20pt;
+    margin-bottom:-1vmin;
+}
+.postBody {
+    grid-area: body;
+    font-size: 16pt;
+}
+.postComments {
+    grid-area: comments;
+}
+.userInfo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .userAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+body {
+    background-color: rgba(246, 248, 253, 255);
+}
