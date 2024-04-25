@@ -76,6 +76,10 @@ def createPost():
 
 #/user
 
+@app.get('/userprofile')
+def userProfilePage():
+    return render_template("userprofile.html") # TODO: update this function to work with jinja
+
 @app.get('/user/<int:userID>')
 def getUserByID(userID:int):
     user = db.getUserByID(userID)
