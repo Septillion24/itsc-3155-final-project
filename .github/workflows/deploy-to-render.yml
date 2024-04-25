@@ -1,16 +1,18 @@
-name: Deploy to Render
+name: My Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Deploy to Render
-      run: curl -X POST -d '' https://api.render.com/v1/services/srv-cokp7cmd3nmc739j6kpg/deploy
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-success: true
