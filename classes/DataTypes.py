@@ -1,5 +1,8 @@
 from datetime import datetime
-from DataBaseHandler import getUserByID, getImageByID, numberOfComments
+from classes.DataBaseHandler import DataBaseHandler
+
+db = DataBaseHandler.getInstance()
+
 class User:
     user_id  = None
     username  = None
