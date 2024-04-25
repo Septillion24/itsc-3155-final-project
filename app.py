@@ -1,14 +1,17 @@
 from flask import Flask, abort, jsonify, redirect, render_template, request
 from classes.DataBaseHandler import DataBaseHandler
 from classes.DataTypes import Post, User, Comment
+from dotenv import load_dotenv
 import requests
 import random
+import os
 
 app = Flask(__name__)
+load_dotenv()
 
 db = DataBaseHandler.getInstance()
 
-MapsKey = 'AIzaSyBkaqZWoj0HgduAKegpLcz0NRfZ4iIg_JY'
+
 votes = {'yes': 0, 'no': 0}
 
 if __name__ == '__main__':
@@ -95,7 +98,7 @@ def getPostsByUserID(userID:int):
 def vote():
     if request.method == 'POST':
         option = request.form['option']
-        if option == 'yes':
+        if option == 'yes': # we will fix this later
             votes['yes'] += 1
         elif option == 'no':
             votes['no'] += 1
@@ -111,7 +114,7 @@ def newPostPage():
 def search():
     location = request.form['location']
 
-    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={location}&key={MapsKey}'
+    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={location}&key={os.getenv('MapsKey', '')}'
 
     response = requests.get(url)
     data = response.json()
@@ -119,7 +122,7 @@ def search():
     if data['status'] == 'OK':
         lat = data['results'][0]['geometry']['location']['lat']
         lng = data['results'][0]['geometry']['location']['lng']
-        elevation_url = f'https://maps.googleapis.com/maps/api/elevation/json?locations={lat},{lng}&key={MapsKey}'
+        elevation_url = f'https://maps.googleapis.com/maps/api/elevation/json?locations={lat},{lng}&key={os.getenv('MapsKey', '')}'
         elevation_response = requests.get(elevation_url)
         elevation_data = elevation_response.json()
         if elevation_data['status'] == 'OK':
@@ -127,7 +130,7 @@ def search():
         else:
             elevation = 'Unknown'
         haunted = random.choice(["Definitely Haunted", "Probably Haunted", "Not Haunted (as far as we know)"])
-        return render_template('result.html', location=location, lat=lat, lng=lng, elevation=elevation, haunted = haunted)
+        return render_template('result.html', location=location, lat=lat, lng=lng, elevation=elevation, haunted = haunted, googleKey = os.getenv('MapsKey', ''))
     else:
         return 400, "Unsuccessful"
 
