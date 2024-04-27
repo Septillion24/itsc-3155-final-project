@@ -119,7 +119,7 @@ def newPostPage():
 def search():
     location = request.form['location']
 
-    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={location}&key={os.getenv('MapsKey', '')}'
+    url = f"https://maps.googleapis.com/maps/api/geocode/json?address={location}&key={os.getenv('MapsKey', '')}"
 
     response = requests.get(url)
     data = response.json()
