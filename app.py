@@ -127,7 +127,7 @@ def search():
     if data['status'] == 'OK':
         lat = data['results'][0]['geometry']['location']['lat']
         lng = data['results'][0]['geometry']['location']['lng']
-        elevation_url = f'https://maps.googleapis.com/maps/api/elevation/json?locations={lat},{lng}&key={os.getenv('MapsKey', '')}'
+        elevation_url = f"https://maps.googleapis.com/maps/api/elevation/json?locations={lat},{lng}&key={os.getenv('MapsKey', '')}"
         elevation_response = requests.get(elevation_url)
         elevation_data = elevation_response.json()
         if elevation_data['status'] == 'OK':
