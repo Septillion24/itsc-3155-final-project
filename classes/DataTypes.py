@@ -72,14 +72,14 @@ class Post:
     timestamp: datetime = None
     number_of_comments: int = None
 
-    def __init__(self, post_id: int, ownerID: int, title: str, image_id: int, text_content: str, timestamp: datetime) -> None:
+    def __init__(self, post_id: int, owner: User, title: str, image: Image, text_content: str, timestamp: datetime) -> None:
         self.post_id = post_id
-        self.owner = getUserByID(ownerID)
+        self.owner = owner
         self.title = title
-        self.image_id = getImageByID(image_id)
+        self.image= image
         self.text_content = text_content
         self.timestamp = timestamp
-        self.number_of_comments = numberOfComments(post_id)
+        self.number_of_comments = (post_id)
 
     def to_dict(self) -> dict:
         return {
@@ -90,8 +90,8 @@ class Post:
             'text_content': self.text_content,
             'timestamp': str(self.timestamp)
         }
-    def updateNumberOfComments(self):
-        self.number_of_comments = numberOfComments(self.post_id)
+    def updateNumberOfComments(self, db): 
+        self.number_of_comments = db.numberOfComments(self.post_id)
 
 class Comment:
     comment_id: int = None
