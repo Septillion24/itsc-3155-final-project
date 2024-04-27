@@ -1,7 +1,4 @@
 from datetime import datetime
-from classes.DataBaseHandler import DataBaseHandler
-
-db = DataBaseHandler.getInstance()
 
 class User:
     user_id  = None
