@@ -6,9 +6,6 @@
     transform: skew(-5deg);
   }
 
-
-
-
 /* Style for the brand name */
 #brand-name {
   font-size: 1.5rem;
@@ -16,23 +13,15 @@
   font-weight: bold;
 }
 
-
 #brand-name.dark-mode {
-    font-size: 1.5rem;
-    font-family: 'Chiller';
-    font-weight: bold;
     color: #ffffff; /* Light text */
   }
 
-
-
-
 body {
-    background-color: #ffffff; /* Light background */
+    background-color: #f7f7f7; /* Light background */
     color: #000000; /* Dark text */
     font-family: 'Arial', sans-serif;
 }
-
 
 /* Dark mode styles */
 body.dark-mode {
@@ -47,44 +36,31 @@ body.dark-mode {
     border-bottom: 1px solid #ccc;
 }
 
-
 body.dark-mode .navbar {
     background-color: #1c1c1c; /* Dark navbar for dark mode */
     border-bottom: 1px solid #333;
 }
 
-
 .navbar a {
     color: #007bff; /* Default link color */
 }
-
 
 .navbar a:hover {
     color: #0056b3; /* Darker blue on hover */
 }
 
-
 /* Typography for headings and content */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Trebuchet MS', sans-serif;
     color: #212529; /* Dark text for light mode */
+    font-weight: bold;
 }
-
 
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+    font-family: 'Trebuchet MS', sans-serif;
     color: #eaeaea; /* Light text for dark mode */
+    font-weight: bold;
 }
-
-
-/* Specific styles for .spooky class in dark mode */
-.dark-mode .spooky {
-    font-family: 'Courier', 'Garamond', monospace;
-    color: #000;
-    text-shadow: 2px 2px 0px rgba(255,255,255,0.5),
-                 3px 3px 0px rgba(0,0,0,0.2);
-    transform: skew(-5deg);
-}
-
 
 /* Styling for forum posts and comments */
 .post, .comment {
@@ -94,7 +70,6 @@ body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body
     padding: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
 
 body.dark-mode .post, body.dark-mode .comment {
     background-color: #1e1e1e; /* Dark background for posts in dark mode */
@@ -133,33 +108,347 @@ body.dark-mode .post, body.dark-mode .comment {
   }
  
   /* Voting page styling */
-  .vote-button {
-    background-color: #333;
-    color: #aaa;
-    padding: 5px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  /* Base styles for voting buttons */
+.vote-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Yes and No specific styles */
+.vote-button.yes {
+  background-color: #4CAF50; /* Green */
+}
+
+.vote-button.no {
+  background-color: #F44336; /* Red */
+}
+
+/* Progress bar base style */
+.vote-progress {
+  position: relative;
+  height: 20px;
+  width: 100%;
+  background-color: #666;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.vote-progress-bar {
+  background-color: #ddd;
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+  transition: width 0.5s ease;
+}
+
+/* Interaction effects */
+.vote-button.yes:hover + .vote-button.no + .vote-progress .vote-progress-bar::after,
+.vote-button.yes:focus + .vote-button.no + .vote-progress .vote-progress-bar::after {
+  background-color: #4CAF50; /* Green glow */
+  box-shadow: 0 0 15px #4CAF50;
+  opacity: 1;
+}
+
+.vote-button.no:hover + .vote-progress .vote-progress-bar::after,
+.vote-button.no:focus + .vote-progress .vote-progress-bar::after {
+  background-color: #F44336; /* Red glow */
+  box-shadow: 0 0 15px #F44336;
+  opacity: 1;
+}
+
+/* Base button styles */
+.btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #5a5a5a; /* A muted base color */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative; /* Position relative for pseudo-elements */
+  overflow: hidden; /* Ensure pseudo-elements don't break the boundaries */
+}
+
+/* Light mode spooky effect */
+.btn:before {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #8b0000;
+  transition: all 0.4s ease;
+  z-index: 0;
+}
+
+.btn:hover:before {
+  left: 0;
+}
+
+.btn span {
+  position: relative;
+  z-index: 1;
+}
+
+/* Dark mode spooky effect */
+.dark-mode .btn {
+  background-color: #262626; 
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  color: #ff0000; 
+  animation: spookyPulse 1.5s infinite;
+}
+
+.dark-mode .btn:hover {
+  background-color: #444; 
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.75); 
+}
+
+/* button animation*/
+@keyframes spookyPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
   }
- 
-  .vote-button.active {
-    color: #4b9cd3;
+  50% {
+    box-shadow: 0 0 20px rgba(255, 0, 0, 1);
   }
- 
-  .vote-progress {
-    background-color: #666;
-    height: 20px;
-    border-radius: 10px;
-    overflow: hidden;
+}
+
+/* Active state */
+.btn:active, .dark-mode .btn:active {
+  background-color: #333;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Base styles for input fields */
+input[type="text"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 10px 0;
+  display: inline-block;
+  border: 2px solid #ff0000;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  background-color: #f0f0f0;
+  color: #333; 
+  font-size: 1rem;
+}
+
+/* Spooky focus state */
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #ff0000; 
+  background-color: #fff;
+  box-shadow: 0 0 8px 0 #ff0000; 
+}
+
+/* Styling for input fields in dark mode */
+.dark-mode input[type="text"],
+.dark-mode input[type="password"],
+.dark-mode textarea {
+  background-color: #333;
+  border-color: #808080; 
+  color: #ccc;
+}
+
+/* Dark mode focus state with a glowing effect */
+.dark-mode input[type="text"]:focus,
+.dark-mode input[type="password"]:focus,
+.dark-mode textarea:focus {
+  border-color: #ff0000; 
+  box-shadow: 0 0 10px 0 #ff0000; 
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  position: relative; 
+  border: 1px solid #ccc;
+  background-color: #fff;
+  caret-color: #ff0000;
+}
+
+input[type="text"]::after,
+input[type="password"]::after,
+textarea::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 2px;
+  height: 8px;
+  background: #ff0000;
+  animation: drip 2s infinite;
+  border-radius: 50%;
+}
+
+input[type="submit"] {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #5a5a5a;
+  background-color: #e9ecef; 
+  border: 2px solid #dee2e6; 
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase; 
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.1); 
+}
+
+input[type="submit"]:hover {
+  background-color: #d1d9df;
+  border-color: #cfd3d7; 
+}
+
+input[type="submit"]:active {
+  background-color: #bcc0c4; 
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15); 
+}
+
+input[type="search"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 10px 0;
+  display: inline-block;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  color: #333; 
+  font-size: 1rem; 
+  position: relative; 
+}
+
+input[type="search"]:focus {
+  outline: none;
+  border-color: #ff0000; 
+  box-shadow: 0 0 8px 0 #ff0000; 
+}
+
+input[type="search"]::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 2px;
+  height: 8px;
+  background: #ff0000;
+  animation: drip 2s infinite;
+  border-radius: 50%;
+}
+
+/* Dripping blood animation */
+@keyframes drip {
+  0%, 100% {
+    height: 8px;
+    opacity: 1;
+    transform: translateY(-10px) translateX(-1px) scale(1);
   }
- 
-  .vote-progress-bar {
-    height: 100%;
-    border-radius: 10px;
-    transition: width 0.3s ease;
+  50% {
+    height: 15px;
+    opacity: 0.7;
+    transform: translateY(0) translateX(-1px) scale(1.5);
   }
+  70% {
+    opacity: 0;
+  }
+}
 
+.postContainer {
+  grid-template-areas:
+      "title title title title title title"
+      "user user user user timestamp timestamp"
+      "body body body body body body"
+      "comments comments comments comments comments comments";
+  padding: 22px;
+  padding-top: 6px;
+  margin-top: 15px;
+  border-radius: 10px;
+  background-color: white;
+}
+.postTitle {
+  grid-area: title;
+  font-weight: bold;
+  font-size: 24pt;
+}
+.postTimestamp {
+  grid-area: timestamp;
+  color: gray;
+  font-size: 16pt;
+}
+.postUser {
+  grid-area: user;
+  font-size: 20pt;
+  margin-bottom:-1vmin;
+}
+.postBody {
+  grid-area: body;
+  font-size: 16pt;
+}
+.postComments {
+  grid-area: comments;
+}
+.userInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.userAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
+body.dark-mode .postContainer {
+  background-color: #1e1e1e; 
+  color: #ddd; /* Light text color for readability in dark mode */
+}
 
+body.dark-mode .postTitle {
+  color: #fff; /* Light color for post titles in dark mode */
+}
 
+body.dark-mode .postTimestamp {
+  color: #ccc; /* Lighter gray for timestamps in dark mode */
+}
+
+body.dark-mode .postUser {
+  color: #ddd; /* Light text color for user info in dark mode */
+}
+
+body.dark-mode .postBody {
+  color: #ccc; /* Slightly lighter text color for the post body in dark mode */
+}
+
+body.dark-mode .postComments {
+  color: #ccc; /* Light color for comments in dark mode */
+}
+
+body.dark-mode .userInfo {
+  color: #ddd; /* Light color for user info area in dark mode */
+}

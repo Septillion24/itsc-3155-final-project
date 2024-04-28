@@ -1,5 +1,4 @@
 from datetime import datetime
-
 class User:
     user_id  = None
     username  = None
@@ -43,7 +42,31 @@ class FriendRelationship:
             'user2': self.user2
         }
         
+class Post:
+    post_id: int = None
+    owner: int = None
+    title: str = None
+    image_id: int = None
+    text_content: str = None
+    timestamp: datetime = None
 
+    def __init__(self, post_id: int, owner: int, title: str, image_id: int, text_content: str, timestamp: datetime) -> None:
+        self.post_id = post_id
+        self.owner = owner
+        self.title = title
+        self.image_id = image_id
+        self.text_content = text_content
+        self.timestamp = timestamp
+
+    def to_dict(self) -> dict:
+        return {
+            'post_id': self.post_id,
+            'owner': self.owner,
+            'title': self.title,
+            'image_id': self.image_id,
+            'text_content': self.text_content,
+            'timestamp': str(self.timestamp)
+        }
 
 class Image:
     image_id: int = None
@@ -62,36 +85,6 @@ class Image:
             'author': self.author
         }
 from datetime import datetime
-
-class Post:
-    post_id: int = None
-    owner: User = None
-    title: str = None
-    image: Image = None
-    text_content: str = None
-    timestamp: datetime = None
-    number_of_comments: int = None
-
-    def __init__(self, post_id: int, owner: User, title: str, image: Image, text_content: str, timestamp: datetime) -> None:
-        self.post_id = post_id
-        self.owner = owner
-        self.title = title
-        self.image= image
-        self.text_content = text_content
-        self.timestamp = timestamp
-        self.number_of_comments = (post_id)
-
-    def to_dict(self) -> dict:
-        return {
-            'post_id': self.post_id,
-            'owner': self.owner,
-            'title': self.title,
-            'image_id': self.image_id,
-            'text_content': self.text_content,
-            'timestamp': str(self.timestamp)
-        }
-    def updateNumberOfComments(self, db): 
-        self.number_of_comments = db.numberOfComments(self.post_id)
 
 class Comment:
     comment_id: int = None
