@@ -1,33 +1,127 @@
 {% extends '_layout.html' %}
 
 {% block title %}Home{% endblock %}
+
 {% block scripts %}
     <script src="static\scripts\loadPosts.js" defer></script>
+    <script>
+        function openModal() {
+            document.getElementById('createPostModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('createPostModal').style.display = 'none';
+        }
+
+        function submitPost() {
+        // Get input values
+        var title = document.getElementById('title').value;
+        var content = document.getElementById('postContent').value;
+
+        // Create post HTML
+        var postHTML = `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">${title}</h5>
+                    <p class="card-text">${content}</p>
+                </div>
+            </div>
+        `;
+
+        // Append post HTML to posts container
+        var postsContainer = document.getElementById('postsContainer');
+        postsContainer.innerHTML += postHTML;
+
+        // Close modal
+        closeModal();
+    }
+    </script>
 {% endblock %}
+
 {% block stylesheet %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
+    <style>
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 100px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 {% endblock %}
+
 {% block body %}
-<!-- all the jinja is placeholder -->
 <div class="container mt-4">
-    <h6 style="color:green" class="text-center">Forum Discussion</h3>
+    <h6 style="color:green" class="text-center">Forum Discussion</h6>
     <h1 class="mb-4 text-center">Horror/Paranormal Sightings</h1>
 
     <!-- Search bar (does nothing rn) -->
     <div class="mb-3 form-outline" data-mdb-input-init>
         <input type="search" id="form1" class="form-control" placeholder="Search by Discussion Title" aria-label="Search" />
-      </div>
+    </div>
 
-      <div id="postsContainer"></div>  
-      
-    
+    <!-- Button to trigger modal -->
+    <button type="button" class="btn btn-primary" onclick="openModal()">
+        Create New Post
+    </button>
+
+    <!-- Modal -->
+    <div id="createPostModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <!-- Form to create a new post -->
+            <form action="/forum/makepost" method="POST">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
+                </div>
+                <div class="form-group">
+                    <label for="postContent">Content</label>
+                    <textarea class="form-control" id="postContent" name="postContent" rows="3" placeholder="Enter content"></textarea>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitPost()">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="postsContainer"></div>
+
     <nav aria-label="Forum page navigation">
-      <ul class="pagination justify-content-center">
-        {% for page_num in pagination_pages %}
-        <li class="page-item"><a class="page-link" href="{{ url_for('forum_page', page=page_num) }}">{{ page_num }}</a></li>
-        {% endfor %}
-      </ul>
+        <ul class="pagination justify-content-center">
+            {% for page_num in pagination_pages %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('forum_page', page=page_num) }}">{{ page_num }}</a></li>
+            {% endfor %}
+        </ul>
     </nav>
-    
-  </div>
+</div>
 {% endblock %}

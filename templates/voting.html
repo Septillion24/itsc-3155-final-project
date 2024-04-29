@@ -4,51 +4,140 @@
 
 {% block stylesheet %}
 <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav .backwards,
+    nav .forwards {
+        display: inline-block;
+        padding: 8px 15px;
+        background-color: #007bff;
+        border: 1px solid #fff;
+        border-radius: 5px;
+    }
+
+    nav .backwards {
+        float: left;
+    }
+
+    nav .forwards {
+        float: right;
+        margin-left: 10px;
+    }
+
+    nav .backwards a,
+    nav .forwards a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+        text-align: center;
+    }
+
+    h1 {
+        color: green;
+    }
+
+    .voting-image {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .vote-buttons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .vote-buttons button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+
+    .vote-buttons button[value="yes"] {
+        background-color: green;
+        color: white;
+    }
+
+    .vote-buttons button[value="no"] {
+        background-color: red;
+        color: white;
+    }
+
     .result-bar {
-        width: auto;
+        width: 100%;
         height: 20px;
         border: 1px solid #000;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         position: relative;
+        border-radius: 5px;
+        overflow: hidden;
     }
+
     .bar-fill {
         height: 100%;
         position: absolute;
         top: 0;
     }
+
     .yes-fill {
         background-color: green;
         left: 0;
     }
+
     .no-fill {
         background-color: red;
         right: 0;
     }
+
+    .result-text {
+        display: flex;
+        justify-content: space-between;
+    }
+
 </style>
 {% endblock stylesheet %}
 {% block body %}
 <nav>
-    <span class="backwards" style="float: left"><a href="/vote/previous">← Previous Week's Poll</a></span>
-    <span class="forwards" style="float: right"><a href="/vote/next">Preview Next Week's Poll →</a></span>
+    <span class="backwards"><a href="/vote/previous">← Previous Week's Poll</a></span>
+    <span class="forwards"><a href="/vote/next">Preview Next Week's Poll →</a></span>
 </nav>
-<h1 style="color:green; text-align:center;">Cast your Votes!</h1>
-<h2 style="text-align:center">Is the Battleship in Wilmington, North Carolina really haunted?</h2>
-<div class="voting-image">
-    <img src="static\images\voting_page_image1.jpg" alt="Battleship" style="width: 1000px; height: 1000px; display: block; margin-left: auto; margin-right: auto">
-</div>
-<form action="/vote" method="post" class="vote-buttons">
-    <button type="submit" name="option" value="yes">Yes</button>
-    <button type="submit" name="option" value="no" style="float: right;">No</button>
+<div class="container">
+    <h1>Cast your Votes!</h1>
+    <h2>Is the Battleship in Wilmington, North Carolina really haunted?</h2>
+    <div class="voting-image">
+        <img src="static\images\voting_page_image1.jpg" alt="Battleship" style="max-width: 100%; height: auto;">
+    </div>
+    <form action="/vote" method="post" class="vote-buttons">
+        <button type="submit" name="option" value="yes">Yes</button>
+        <button type="submit" name="option" value="no">No</button>
     </form>
-</form>
-<div class="result-bar">
-    <div class="bar-fill yes-fill" style="width: {{ (votes['yes'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
-    <div class="bar-fill no-fill" style="width: {{ (votes['no'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
+    <div class="result-bar">
+        <div class="bar-fill yes-fill" style="width: {{ (votes['yes'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
+        <div class="bar-fill no-fill" style="width: {{ (votes['no'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
+    </div>
+    <div class="result-text">
+        <span>{{ votes['yes'] }} number of users say it is haunted</span>
+        <span>{{ votes['no'] }} number of users say it is not haunted</span>
+    </div>
 </div>
-<p>
-    <span style="float: left">{{ votes['yes'] }} number of users say it is haunted</span>
-    <span style="float: right">{{ votes['no'] }} number of users say it is not haunted</span>
-</p>
-<br>
-<br>
+<br><br><br>
 {% endblock %}

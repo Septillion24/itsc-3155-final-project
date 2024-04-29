@@ -1,56 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Result</title>
-    <!-- Add Google Maps API script -->
-    <script src="{{googleKey}}"></script>
+{% extends '_layout.html' %}
+
+{% block title %}Horror Forum Location Search Page{% endblock %}
+
+{% block scripts %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkaqZWoj0HgduAKegpLcz0NRfZ4iIg_JY"></script>
+<script>
+    function initMap(latitude, longitude) {
+        var myLatLng = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: myLatLng,
+            zoom: 15
+        });
+        var marker = new google.maps.Marker({
+            map: map,
+            position: myLatLng,
+            title: 'Location'
+        });
+    }
+    function initializeMap() {
+        var lat = "{{ lat }}";
+        var lng = "{{ lng }}";
+        initMap(lat, lng);
+    }
+    google.maps.event.addDomListener(window, 'load', initializeMap);
+</script>
+{% endblock %}
+
+{% block stylesheet %}
     <style>
-        /* Set the size of the map container */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .map-container {
+            width: 80%;
+            margin: 0 auto;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
         #map {
             height: 400px;
             width: 100%;
-            margin-bottom: 20px;
         }
     </style>
-    <script>
-        // Function to initialize the map
-        function initMap(latitude, longitude) {
-            // Create a LatLng object
-            var myLatLng = { lat: parseFloat(latitude), lng: parseFloat(longitude) };
-            // Create a map object and specify the DOM element for display
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: myLatLng,
-                zoom: 15 // Adjust the zoom level as needed
-            });
-            // Create a marker and set its position
-            var marker = new google.maps.Marker({
-                map: map,
-                position: myLatLng,
-                title: 'Location'
-            });
-        }
-        // Call the initMap function after the Google Maps API is loaded
-        function initializeMap() {
-            // Get latitude and longitude from the template
-            var lat = "{{ lat }}";
-            var lng = "{{ lng }}";
-            // Pass latitude and longitude values to initMap function
-            initMap(lat, lng);
-        }
-        // Initialize the map when the page is fully loaded
-        google.maps.event.addDomListener(window, 'load', initializeMap);
-    </script>
-</head>
+{% endblock stylesheet %}
+{% block body %}
 <body>
     <h1>Result</h1>
-    <p>Location: {{ location }}</p>
-    <p>Latitude: {{ lat }}</p>
-    <p>Longitude: {{ lng }}</p>
-    <p>Elevation: {{ elevation }}</p>
-    <p>Haunted Status: {{ haunted }}</p>
-    <!-- Map container -->
-    <div id="map"></div>
+    <div>
+        <p><strong>Location:</strong> {{ location }}</p>
+        <p><strong>Latitude:</strong> {{ lat }}</p>
+        <p><strong>Longitude:</strong> {{ lng }}</p>
+        <p><strong>Elevation:</strong> {{ elevation }} ft</p>
+        <p><strong>Haunted Status:</strong> {{ haunted }}</p>
+    </div>
+    <div class ="map-container">
+        <div id="map"></div>
+    </div>
 </body>
-</html>
+{% endblock %}
