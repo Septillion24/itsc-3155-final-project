@@ -99,8 +99,8 @@ def getPostsByUserID(userID:int):
 
 @app.get("/user/<int:userID>/comments")
 def getCommentsByUserID(userID:int):
-    posts = db.getCommentsByUserID(userID)
-    return jsonify(posts)
+    comments = db.getCommentsByUserID(userID)
+    return jsonify(comments)
     
 #voting
 
