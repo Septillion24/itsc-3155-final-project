@@ -41,8 +41,10 @@ if __name__ == '__main__':
 
 @app.route('/')
 def index():
-    email = session.get('email')
-    return redirect("/forum")
+    logged_in = False
+    if 'email' in session:
+        logged_in = True
+    return render_template('forum.html', logged_in=logged_in)
 
 #account management
 
@@ -88,7 +90,8 @@ def logout():
 
 @app.get("/forum")
 def forumPage():
-    return render_template("forum.html")
+    logged_in = session.get('authenticated', False)
+    return render_template("forum.html", logged_in = logged_in)
 
 @app.get("/forum/getposts")
 def getPostsForForumPage():
@@ -154,13 +157,15 @@ def castVote():
     
 @app.get('/vote')
 def votePage():
-    return render_template('voting.html', votes=votes)
+    logged_in = session.get('authenticated', False)
+    return render_template('voting.html', votes = votes, logged_in = logged_in)
 
 #maps
 
 @app.get('/newsearch')
 def newPostPage():
-    return render_template('search.html')
+    logged_in = session.get('authenticated', False)
+    return render_template('search.html', logged_in = logged_in)
 
 @app.route('/search', methods=['POST'])
 def search():

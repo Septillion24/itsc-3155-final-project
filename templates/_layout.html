@@ -29,7 +29,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link{% if signup %} active{% endif %}" href="/signup">Sign Up</a>
+            <a class="nav-link{% if user %} active{% endif %}" href="/about">About</a>
           </li>
           <li class="nav-item">
             <a class="nav-link{% if vote %} active{% endif %}" href="/vote">Voting</a>
@@ -42,6 +42,15 @@
           </li>
         </ul>
       </div>
+      {% if logged_in %}
+    <form action="/logout" method="get">
+        <button type="submit">Log Out</button>
+    </form>
+      {% else %}
+    <form action="/login" method="get">
+        <button type="submit">Sign Up/Login</button>
+    </form>
+      {% endif %}
       <button id="theme-toggle" class="btn" aria-label="Toggle theme">
         🌙<span id="theme-icon" style="display:none;">☀️</span>
       </button>
