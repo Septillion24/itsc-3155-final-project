@@ -1,4 +1,5 @@
-from flask import Flask, abort, jsonify, redirect, render_template, request
+from flask import Flask, abort, jsonify, redirect, render_template, request, url_for, session
+from authlib.integrations.flask_client import OAuth
 from classes.DataBaseHandler import DataBaseHandler
 from classes.DataTypes import Post, User, Comment
 from dotenv import load_dotenv
@@ -9,7 +10,24 @@ import os
 app = Flask(__name__)
 load_dotenv()
 
+app.secret_key = 'secret_key'
+
 db = DataBaseHandler.getInstance()
+
+
+oauth = OAuth(app)
+google = oauth.register(
+    name='google',
+    client_id='',
+    client_secret='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',
+    authorize_url='https://accounts.google.com/o/oauth2/auth',
+    authorize_params=None,
+    access_token_url='https://accounts.google.com/o/oauth2/token',
+    access_token_params=None,
+    refresh_token_url=None,
+    client_kwargs={'scope': 'openid email profile'},
+)
+
 
 
 votes = {'yes': 0, 'no': 0}
@@ -19,6 +37,8 @@ if __name__ == '__main__':
 
 @app.route('/')
 def index():
+    email = session.get('email')
+    print(email) #remove later
     return redirect("/forum")
 
 #account management
@@ -38,12 +58,23 @@ def signup():
         return "Failed to create an account", 400
 
 @app.get('/login')
-def loginPage():
-    return render_template("login.html")
+# def loginPage():
+#     return render_template("login.html")
+def login():
+    redirect_uri = url_for('authorize', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+@app.route('/authorize')
+def authorize():
+    token = google.authorize_access_token()
+    resp = google.get('userinfo')
+    user_info = resp.json()
+    session['email'] = user_info['email']
+    return redirect('/')
 
 @app.post('/login')
 def login():
-    username = request.form['usermame']
+    username = request.form['username']
     password = request.form['password']  # TODO: set up OAuth2
     result = doLoginProcess()
     if result:
