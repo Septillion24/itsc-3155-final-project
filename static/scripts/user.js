@@ -10,22 +10,28 @@ defaultDisplay = document.getElementById("commentsContainer").style.display;
 function toggleCommentsPosts() {
     // show posts
     if (commentsShown) {
+        console.log("Switching to posts!");
         if (!postsPopulated) {
             populateProfilePosts();
         }
         commentsShown = false;
         postsShown = true;
+
+        document.getElementById("currentlyDisplaying").innerText = "Showing comments by this user...";
         document.getElementById("commentPostsButton").innerText = "Show Posts";
+
         document.getElementById("postsContainer").style.display = defaultDisplay;
         document.getElementById("commentsContainer").style.display = "none";
     }
     // show comments
-    if (postsShown) {
+    else if (postsShown) {
+        console.log("Switching to comments!");
         if (!commentsPopulated) {
             populateProfileComments();
         }
         commentsShown = true;
         postsShown = false;
+        document.getElementById("currentlyDisplaying").innerText = "Showing posts by this user...";
         document.getElementById("commentPostsButton").innerText = "Show Comments";
         document.getElementById("postsContainer").style.display = "none";
         document.getElementById("commentsContainer").style.display = defaultDisplay;
@@ -60,6 +66,7 @@ function populateProfileComments() {
             });
         })
         .catch((error) => console.error("Error fetching posts:", error));
+    commentsPopulated = true;
 }
 
 function getRelativeTime(timestamp) {
@@ -118,6 +125,7 @@ function populateProfilePosts() {
             });
         })
         .catch((error) => console.error("Error fetching posts:", error));
+    postsPopulated = true;
 }
 
 function getRelativeTime(timestamp) {
