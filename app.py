@@ -39,6 +39,11 @@ currentPollID = 1
 if __name__ == '__main__':
     app.run(debug=True)
 
+
+@app.context_processor
+def inject_variables():
+    return {'user': db.getUserByID(session.get('user_id', -1))}
+
 @app.route('/')
 def index():
     logged_in = False
@@ -140,7 +145,7 @@ def getPostsByUserID(userID:int):
 @app.get("/user/<int:userID>/comments")
 def getCommentsByUserID(userID:int):
     posts = db.getCommentsByUserID(userID)
-    return jsonify([post.to_dict() for post in posts]), 200
+    return jsonify([post.to_dict() for post in posts])
     
 #voting
     

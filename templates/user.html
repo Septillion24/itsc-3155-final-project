@@ -11,6 +11,7 @@
 
 {% block stylesheet %}
     <style src="static/css/main.css"></style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
 {% endblock stylesheet %}
 
 {% block body %}
@@ -20,11 +21,12 @@
             <div class="username">{{ user.username }}</div>
         </div>
         <div class="content-buttons"> <!-- Add buttons  -->
+            <p id="currentlyDisplaying">Showing posts by this user...</p>
             <button id="commentPostsButton" onclick="toggleCommentsPosts()">Show Comments</button>
         </div>
 
         <!-- Add functionality to load posts and comments based on button press. -->
-        <div id="postsContainer"></div>
+        <div id="postsContainer" onload="populateProfilePosts"></div>
         <div id="commentsContainer"></div>
     </div>
 {% endblock %}
