@@ -105,7 +105,7 @@ def getPostFromID(post_id):
 
 @app.post("/forum/makepost")
 def createPost():
-    if not 'authenticated' in session.keys() or session['authenticated'] != True:
+    if session.get('authenticated',False) != True:
         return "Not authorized", 401
     
     user_id = session['user_id']
@@ -141,7 +141,7 @@ def getCommentsByUserID(userID:int):
     
 @app.post('/vote')
 def castVote():
-    if session['authenticated'] != True:
+    if session.get('authenticated',False) != True:
         return "Not authorized", 401
     
     user_id = session['user_id']
