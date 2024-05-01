@@ -3,11 +3,14 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block scripts %}
-    <script src="static\scripts\loadProfilePosts.js"></script>
-    <script src="static\scripts\loadProfileComments.js"></script>
-{% endblock scripts %}
+<script>
+    userID= {{user.user_id}};
+</script>
+    <script src="/static/scripts/user.js" defer></script>
+{% endblock %}
 
 {% block stylesheet %}
+    <style src="static/css/main.css"></style>
 {% endblock stylesheet %}
 
 {% block body %}
@@ -17,11 +20,11 @@
             <div class="username">{{ user.username }}</div>
         </div>
         <div class="content-buttons"> <!-- Add buttons  -->
-            
+            <button id="commentPostsButton" onclick="toggleCommentsPosts()">Show Comments</button>
         </div>
 
         <!-- Add functionality to load posts and comments based on button press. -->
-        <div class="postsContainer"></div>
-        <div class="commentsContainer"></div>
+        <div id="postsContainer"></div>
+        <div id="commentsContainer"></div>
     </div>
 {% endblock %}
