@@ -129,6 +129,12 @@ def createPost():
     else:
         return "Failed to create post", 400
 
+@app.get("/forum/post/<int:post_id>/comments")
+def getCommentsOnPost(post_id):
+    comments = db.getCommentsByPostID(post_id)
+    return jsonify([comment.to_dict() for comment in comments]), 200
+    
+
 #/user
 
 
