@@ -135,8 +135,14 @@ def getCommentsOnPost(post_id):
     return jsonify([comment.to_dict() for comment in comments]), 200
     
 
-#/user
+#about
 
+@app.get('/about')
+def getAbout():
+    logged_in = session.get('authenticated', False)
+    return render_template("about.html", logged_in = logged_in)
+
+#/user
 
 @app.get('/user/<int:userID>')
 def getUserByID(userID:int):
