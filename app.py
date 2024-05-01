@@ -1,7 +1,7 @@
 from flask import Flask, abort, jsonify, redirect, render_template, request, url_for, session
 from authlib.integrations.flask_client import OAuth
 from classes.DataBaseHandler import DataBaseHandler
-from classes.DataTypes import Post, User, Comment
+from classes.DataTypes import Post, User, Comment, Image
 from dotenv import load_dotenv
 import requests
 import base64
@@ -65,6 +65,8 @@ def authorize():
     user = db.getUserByID(user_id)
     session['email'] = id_token.get('email')
     session['username'] = session['email'].split('@')[0]
+    session['user_id'] = user_id
+    session['authenticated'] = True
     if (user == None):
         db.createUser(
             userID= user_id,
@@ -73,10 +75,12 @@ def authorize():
             firstname=id_token.get('given_name'),
             lastname=id_token.get('family_name')
             )
-    
-    
-    
     return redirect('/')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('forum'))
 
 # @app.post('/login')
 # def login():
@@ -109,10 +113,16 @@ def getPostFromID(post_id):
 
 @app.post("/forum/makepost")
 def createPost():
+    if not session['authenticated']:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
     title = request.post["title"]
     postContent = request.post["postContent"]
-    user = request.post["user"] #TODO: authentication
-    response = db.createPost(user,title,postContent)
+    image_url = request.post["imageURL"]
+    image = db.createImage(url=image_url,author=user_id)
+    
+    response = db.createPost(user_id,title,image_id=image)
     if response:
         return "OK", 200
     else:
