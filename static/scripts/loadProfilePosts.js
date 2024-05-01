@@ -1,5 +1,5 @@
 function populateProfilePosts() {
-    fetch("/user/<int:userID>/posts")
+    fetch("/user/${userID}/posts")
         .then((response) => response.json())
         .then((data) => {
             console.log(data);

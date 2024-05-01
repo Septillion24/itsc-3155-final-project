@@ -1,5 +1,5 @@
 function populateProfileComments() {
-    fetch("/user/<int:userID>/comments")
+    fetch("/user/${userID}/comments")
     .then((response) => response.json())
     .then((data) => {
         console.log(data);

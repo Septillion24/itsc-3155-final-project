@@ -1,10 +1,10 @@
 {% extends '_layout.html' %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}Profile{% endblock %}
 
 {% block scripts %}
-    <script src="static\scripts\loadProfilePosts.js"></script>
-    <script src="static\scripts\loadProfileComments.js"></script>
+    <script src="static\scripts\loadProfilePosts.js" defer></script>
+    <script src="static\scripts\loadProfileComments.js" defer></script>
 {% endblock scripts %}
 
 {% block stylesheet %}
@@ -17,7 +17,8 @@
             <div class="username">{{ user.username }}</div>
         </div>
         <div class="content-buttons"> <!-- Add buttons  -->
-            
+            <button onclick="populateProfilePosts('{{ user.id }}')">Posts</button>
+            <button onclick="loadProfileComments('{{ user.id }}')">Comments</button>
         </div>
 
         <!-- Add functionality to load posts and comments based on button press. -->
