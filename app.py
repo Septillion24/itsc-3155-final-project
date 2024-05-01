@@ -106,6 +106,7 @@ def getPostFromID(post_id):
 
 @app.post("/forum/makepost")
 def createPost():
+    print("aaa!")
     if session['authenticated'] != True:
         return "Not authorized", 401
     
