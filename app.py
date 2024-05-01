@@ -39,6 +39,11 @@ currentPollID = 1
 if __name__ == '__main__':
     app.run(debug=True)
 
+
+@app.context_processor
+def inject_variables():
+    return {'user': db.getUserByID(session.get('user_id', -1))}
+
 @app.route('/')
 def index():
     logged_in = False
@@ -83,14 +88,15 @@ def authorize():
 @app.route('/logout')
 def logout():
     session.clear()
-    return render_template('forum.html')
+    return redirect(url_for('forum'))
 
 
 #/forum
 
 @app.get("/forum")
 def forumPage():
-    return render_template("forum.html")
+    logged_in = session.get('authenticated', False)
+    return render_template("forum.html", logged_in = logged_in)
 
 @app.get("/forum/getposts")
 def getPostsForForumPage():
@@ -107,7 +113,7 @@ def getPostFromID(post_id):
 
 @app.post("/forum/makepost")
 def createPost():
-    if not 'authenticated' in session.keys() or session['authenticated'] != True:
+    if session.get('authenticated',False) != True:
         return "Not authorized", 401
     
     user_id = session['user_id']
@@ -125,25 +131,27 @@ def createPost():
 
 #/user
 
+
 @app.get('/user/<int:userID>')
 def getUserByID(userID:int):
     user = db.getUserByID(userID)
     return render_template("user.html", user=user)
+
 @app.get("/user/<int:userID>/posts")
 def getPostsByUserID(userID:int):
     posts = db.getPostsByUserID(userID)
-    return jsonify(posts)
+    return jsonify([post.to_dict() for post in posts]), 200
+
 @app.get("/user/<int:userID>/comments")
 def getCommentsByUserID(userID:int):
     posts = db.getCommentsByUserID(userID)
     return jsonify(posts)
     
-    
 #voting
     
 @app.post('/vote')
 def castVote():
-    if session['authenticated'] != True:
+    if session.get('authenticated',False) != True:
         return "Not authorized", 401
     
     user_id = session['user_id']
@@ -155,13 +163,14 @@ def castVote():
 @app.get('/vote')
 def votePage():
     logged_in = session.get('authenticated', False)
-    return render_template('voting.html', votes=votes, logged_in=logged_in)
+    return render_template('voting.html', votes = votes, logged_in = logged_in)
 
 #maps
 
 @app.get('/newsearch')
 def newPostPage():
-    return render_template('search.html')
+    logged_in = session.get('authenticated', False)
+    return render_template('search.html', logged_in = logged_in)
 
 @app.route('/search', methods=['POST'])
 def search():

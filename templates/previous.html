@@ -1,0 +1,28 @@
+{% extends '_layout.html' %}
+
+{% block title %}Horror Forum Voting Page{% endblock %}
+
+{% block stylesheet %}
+<style src="/static/css/main.css"></style>
+{% endblock stylesheet %}
+{% block body %}
+<nav>
+    <span class="forwards"><a href="/vote">Go Back to Current Poll →</a></span>
+</nav>
+<div class="container">
+    <h1>Cast your Votes!</h1>
+    <h2>Is Cape Hatteras Lighthouse in the Outer Banks, North Carolina really haunted?</h2>
+    <div class="voting-image">
+        <img src="/static/images/voting_page_image2.jpg" alt="Lighthouse" style="max-width: 100%; height: auto;">
+    </div>
+    <div class="result-bar">
+        <div class="bar-fill yes-fill" style="width: 67%;"></div>
+        <div class="bar-fill no-fill" style="width: 42%;"></div>
+    </div>
+    <div class="result-text">
+        <span>67 number of users said it is haunted</span>
+        <span>42 number of users said it is not haunted</span>
+    </div>
+</div>
+<br><br><br>
+{% endblock %}

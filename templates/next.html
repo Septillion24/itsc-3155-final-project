@@ -1,0 +1,20 @@
+{% extends '_layout.html' %}
+
+{% block title %}Horror Forum Voting Page{% endblock %}
+
+{% block stylesheet %}
+<style src="/static/css/main.css"></style>
+{% endblock stylesheet %}
+{% block body %}
+<nav>
+    <span class="backwards"><a href="/vote">← Go Back to Current Poll</a></span>
+</nav>
+<div class="container">
+    <br>
+    <h2>Is the Biltmore Estate in Asheville, North Carolina really haunted?</h2>
+    <div class="voting-image">
+        <img src="/static/images/voting_page_image3.jpg" alt="Biltmore" style="max-width: 100%; height: auto;">
+    </div>
+</div>
+<br><br><br>
+{% endblock %}
