@@ -4,6 +4,7 @@ from classes.DataBaseHandler import DataBaseHandler
 from classes.DataTypes import Post, User, Comment
 from dotenv import load_dotenv
 import requests
+import base64
 import random
 import os
 
@@ -58,17 +59,22 @@ def signup():
     else:
         return "Failed to create an account", 400
 
-@app.get('/login')
-# def loginPage():
-#     return render_template("login.html")
 def login():
+    nonce = generate_nonce()
+    session['nonce'] = nonce  # Store nonce in session for later validation
     redirect_uri = url_for('authorize', _external=True)
-    return google.authorize_redirect(redirect_uri)
+    return google.authorize_redirect(redirect_uri, nonce=nonce)
 
 @app.route('/authorize')
 def authorize():
     token = google.authorize_access_token()
-    user_info = google.parse_id_token(token)
+    try:
+        id_token = google.parse_id_token(token, nonce=session.get('nonce'))
+    except ValueError as e:
+        print("Nonce mismatch or other token validation error:", e)
+        return "Token validation error", 400
+    
+    user_info = id_token
     session['email'] = user_info.get('email')
     return redirect('/')
 
@@ -183,3 +189,6 @@ def doSignInProcess():
 
 def getTopPosts(numPosts:int) -> list[Post]:
     pass
+
+def generate_nonce(length=16):
+    return base64.urlsafe_b64encode(os.urandom(length)).decode('utf-8')
