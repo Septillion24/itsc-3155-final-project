@@ -82,15 +82,6 @@ def logout():
     session.clear()
     return redirect(url_for('forum'))
 
-# @app.post('/login')
-# def login():
-#     username = request.form['username']
-#     password = request.form['password']  # TODO: set up OAuth2
-#     result = doLoginProcess()
-#     if result:
-#         return redirect("/index")
-#     else:
-#         return "Failed to log in", 401    
 
 #/forum
 
