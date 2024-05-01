@@ -16,7 +16,7 @@ function populatePosts() {
                     <div class="userInfo">
                         <div class="userAvatar"><img src="static/images/avatar2.png" /></div>
                         <div>
-                            <div class="postUser">${item.owner}</div>
+                            <div class="postUser"><a href="/user/${item.owner}">${item.owner}</a></div>
                             <div class="postTimestamp">${relativeTime}</div>
                         </div>
                     </div>
