@@ -111,9 +111,9 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT VoteID, Owner, PollID, VoteFor FROM Vote ORDER BY VoteID DESC LIMIT 1')
+                cur.execute('SELECT VoteID, Owner, PollID, VoteFor, Timestamp FROM Vote ORDER BY VoteID DESC LIMIT 1')
                 rows = cur.fetchall()
-                mostRecentVote = Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3])
+                mostRecentVote = Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4])
                 return mostRecentVote
     def getPostsByUserID(self, userID: int) -> list[Post]:
         pool = get_pool()
