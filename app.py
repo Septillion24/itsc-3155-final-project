@@ -117,9 +117,9 @@ def createPost():
         return "Not authorized", 401
     
     user_id = session['user_id']
-    title = requests.post["title"]
-    text_content = requests.post["postContent"]
-    image_url = requests.post["imageURL"]
+    title = request.form["title"]
+    text_content = request.form["postContent"]
+    image_url = request.form["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
     print("Creating post: " + title + ", '" + text_content + "'")
     response = db.createPost(user_id,title,image_id=image, text_content=text_content)
