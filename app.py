@@ -26,6 +26,7 @@ google = oauth.register(
     access_token_params=None,
     refresh_token_url=None,
     client_kwargs={'scope': 'openid email profile'},
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
 )
 
 
