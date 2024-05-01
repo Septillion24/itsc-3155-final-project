@@ -3,10 +3,12 @@ from authlib.integrations.flask_client import OAuth
 from classes.DataBaseHandler import DataBaseHandler
 from classes.DataTypes import Post, User, Comment, Image
 from dotenv import load_dotenv
+from datetime import datetime
 import requests
 import base64
 import random
 import os
+
 
 app = Flask(__name__)
 load_dotenv()
@@ -113,7 +115,7 @@ def createPost():
     image_url = request.post["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
     
-    response = db.createPost(user_id,title,image_id=image)
+    response = db.createPost(user_id,title, image.image_id, postContent, datetime.now())
     if response:
         return "OK", 200
     else:
