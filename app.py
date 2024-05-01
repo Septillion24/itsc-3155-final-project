@@ -83,7 +83,7 @@ def authorize():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('forum'))
+    return render_template('forum.html')
 
 
 #/forum
