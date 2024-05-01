@@ -68,9 +68,8 @@ def login():
 @app.route('/authorize')
 def authorize():
     token = google.authorize_access_token()
-    resp = google.get('userinfo')
-    user_info = resp.json()
-    session['email'] = user_info['email']
+    user_info = google.parse_id_token(token)
+    session['email'] = user_info.get('email')
     return redirect('/')
 
 # @app.post('/login')
