@@ -170,12 +170,20 @@ def search():
         elevation_data = elevation_response.json()
         if elevation_data['status'] == 'OK':
             elevation = elevation_data['results'][0]['elevation']
+
+            if elevation < 50:
+                haunted = "Definitely Haunted"
+            elif elevation < 200:
+                haunted = "Probably Haunted"
+            else:
+                haunted = "Not Haunted (as far as we know)"
+                
         else:
             elevation = 'Unknown'
-        haunted = random.choice(["Definitely Haunted", "Probably Haunted", "Not Haunted (as far as we know)"])
+            haunted = "Unknown"
         return render_template('result.html', location=location, lat=lat, lng=lng, elevation=elevation, haunted = haunted, googleKey = os.getenv('MapsKey', ''))
     else:
-        return 400, "Unsuccessful"
+        return "Unsuccessful", 400
 
 
 
