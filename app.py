@@ -45,26 +45,12 @@ def index():
 
 #account management
 
-@app.get('/signup')
-def signupPage():
-    return render_template("signup.html")
-
-@app.post('/signup')
-def signup():
-    username = request.form['username']
-    password = request.form['password']  # TODO: set up 
-    result = doSignInProcess()
-    if result:    
-        return redirect("/index")
-    else:
-        return "Failed to create an account", 400
-
 @app.route('/login')
 def login():
     nonce = generate_nonce()
     session['nonce'] = nonce  # Store nonce in session for later validation
-    redirect_uri = url_for('authorize', _external=True)
-    return google.authorize_redirect(redirect_uri, nonce=nonce)
+    redirect_url = url_for('authorize', _external=True)
+    return google.authorize_redirect(redirect_url, nonce=nonce)
 
 @app.route('/authorize')
 def authorize():
@@ -75,8 +61,21 @@ def authorize():
         print("Nonce mismatch or other token validation error:", e)
         return "Token validation error", 400
     
-    user_info = id_token
-    session['email'] = user_info.get('email')
+    user_id = id_token.get('sub')
+    user = db.getUserByID(user_id)
+    session['email'] = id_token.get('email')
+    session['username'] = session['email'].split('@')[0]
+    if (user == None):
+        db.createUser(
+            userID= user_id,
+            username=session['username'],
+            email=session['email'],
+            firstname=id_token.get('given_name'),
+            lastname=id_token.get('family_name')
+            )
+    
+    
+    
     return redirect('/')
 
 # @app.post('/login')
