@@ -58,7 +58,7 @@ class DataBaseHandler:
                 return self.getMostRecentPost()
         
                 
-    def getPostByID(self, postID: int, owner: int, title: str, image_id: int, text_content: str, timestamp: datetime) -> Post: #needs testing
+    def getPostByID(self, postID: int) -> Post: #needs testing
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
@@ -97,7 +97,6 @@ class DataBaseHandler:
                 if cur.rowcount == 0:
                     return None
                 rows = cur.fetchall()
-
                 userrow = rows[0]
                 return User(userrow[0], userrow[1], userrow[2], userrow[3], userrow[4])
         
