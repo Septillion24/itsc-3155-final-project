@@ -1,0 +1,28 @@
+{% extends '_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block scripts %}
+    
+{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
+    <style src="static/css/main.css"></style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h4 style="color:green" class="text-center">{{post.title}}</h4>
+    <h1 class="mb-4 text-center">{{post.content}}</h1>
+    <img src="{{post.imageURL}}" class="img-fluid" alt="Responsive image">
+    <br><br>
+    
+    
+
+    
+
+    
+    
+</div>
+{% endblock %}
