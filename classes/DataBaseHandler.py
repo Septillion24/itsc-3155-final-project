@@ -218,7 +218,7 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''SELECT CommentID, PostID, Owner, Text, Timestamp FROM Comment WHERE Owner = {userID}; ''')
+                cur.execute(f'''SELECT CommentID, PostID, Owner, Content, Timestamp FROM Comment WHERE Owner = {userID}; ''')
                 rows = cur.fetchall()
                 comments = []
                 for commentrow in rows:
