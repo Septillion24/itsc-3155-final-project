@@ -4,7 +4,7 @@
 
 {% block scripts %}
 <script>
-    userID= {{user.user_id}};
+    var userID = "{{ user.user_id }}";
 </script>
     <script src="/static/scripts/user.js" defer></script>
 {% endblock %}
