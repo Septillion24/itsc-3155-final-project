@@ -77,13 +77,13 @@ class DataBaseHandler:
                     users.append(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5]))
                 return users
             
-    def createUser(self, UserID: str, Username: str, Email: str, FirstName: str, LastName: str, Password: str) -> None: #needs testing
+    def createUser(self, userID: str, username: str, email: str, firstname: str, lastname: str) -> None: #needs testing
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''INSERT INTO Users (UserID, Username, Email, FirstName, LastName, Password) 
-                            VALUES ('{UserID}', '{Username}', '{Email}', '{FirstName}', '{LastName}', 
-                            '{Password}'); ''')
+                cur.execute(f'''INSERT INTO Users (UserID, Username, Email, FirstName, LastName) 
+                            VALUES ('{userID}', '{username}', '{email}', '{firstname}', '{lastname}' 
+                            ); ''')
                 
             
     def getUserByID(self, userID: str) -> User:#needs testing
