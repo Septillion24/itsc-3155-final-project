@@ -123,19 +123,21 @@ def createPost():
 
 #/user
 
+
 @app.get('/user/<int:userID>')
 def getUserByID(userID:int):
     user = db.getUserByID(userID)
     return render_template("user.html", user=user)
+
 @app.get("/user/<int:userID>/posts")
 def getPostsByUserID(userID:int):
     posts = db.getPostsByUserID(userID)
-    return jsonify(posts)
+    return jsonify([post.to_dict() for post in posts]), 200
+
 @app.get("/user/<int:userID>/comments")
 def getCommentsByUserID(userID:int):
     posts = db.getCommentsByUserID(userID)
     return jsonify(posts)
-    
     
 #voting
     
