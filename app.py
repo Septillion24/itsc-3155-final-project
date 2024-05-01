@@ -1,60 +1,94 @@
-from flask import Flask, abort, jsonify, redirect, render_template, request
+from flask import Flask, abort, jsonify, redirect, render_template, request, url_for, session
+from authlib.integrations.flask_client import OAuth
 from classes.DataBaseHandler import DataBaseHandler
-from classes.DataTypes import Post, User, Comment
+from classes.DataTypes import Post, User, Comment, Image
 from dotenv import load_dotenv
+from datetime import datetime
 import requests
+import base64
+import random
 import os
 
 app = Flask(__name__)
 load_dotenv()
 
+app.secret_key = 'secret_key'
+
 db = DataBaseHandler.getInstance()
 
 
+oauth = OAuth(app)
+google = oauth.register(
+    name='google',
+    client_id=os.getenv('ClientID', ''),
+    client_secret=os.getenv('ClientSecret', ''),
+    # authorize_url='https://accounts.google.com/o/oauth2/auth',
+    authorize_params=None,
+    # access_token_url='https://accounts.google.com/o/oauth2/token',
+    access_token_params=None,
+    refresh_token_url=None,
+    client_kwargs={'scope': 'openid email profile'},
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+)
+
+
+
 votes = {'yes': 0, 'no': 0}
+currentPollID = 1
 
 if __name__ == '__main__':
     app.run(debug=True)
 
 @app.route('/')
 def index():
+    email = session.get('email')
     return redirect("/forum")
 
 #account management
 
-@app.get('/signup')
-def signupPage():
-    return render_template("signup.html")
-
-@app.post('/signup')
-def signup():
-    username = request.form['username']
-    password = request.form['password']  # TODO: set up 
-    result = doSignInProcess()
-    if result:    
-        return redirect("/index")
-    else:
-        return "Failed to create an account", 400
-
-@app.get('/login')
-def loginPage():
-    return render_template("login.html")
-
-@app.post('/login')
+@app.route('/login')
 def login():
-    username = request.form['usermame']
-    password = request.form['password']  # TODO: set up OAuth2
-    result = doLoginProcess()
-    if result:
-        return redirect("/index")
-    else:
-        return "Failed to log in", 401    
+    nonce = generate_nonce()
+    session['nonce'] = nonce  # Store nonce in session for later validation
+    redirect_url = url_for('authorize', _external=True)
+    return google.authorize_redirect(redirect_url, nonce=nonce)
+
+@app.route('/authorize')
+def authorize():
+    token = google.authorize_access_token()
+    try:
+        id_token = google.parse_id_token(token, nonce=session.get('nonce'))
+    except ValueError as e:
+        print("Nonce mismatch or other token validation error:", e)
+        return "Token validation error", 400
+    
+    user_id = id_token.get('sub')
+    user = db.getUserByID(user_id)
+    session['email'] = id_token.get('email')
+    session['username'] = session['email'].split('@')[0]
+    session['user_id'] = user_id
+    session['authenticated'] = True
+    if (user == None):
+        db.createUser(
+            userID= user_id,
+            username=session['username'],
+            email=session['email'],
+            firstname=id_token.get('given_name'),
+            lastname=id_token.get('family_name')
+            )
+    return redirect('/')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('forum'))
+
 
 #/forum
 
 @app.get("/forum")
 def forumPage():
-    return render_template("home_jinja.html")
+    return render_template("forum.html")
 
 @app.get("/forum/getposts")
 def getPostsForForumPage():
@@ -71,12 +105,19 @@ def getPostFromID(post_id):
 
 @app.post("/forum/makepost")
 def createPost():
+    if not 'authenticated' in session.keys() or session['authenticated'] != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
     title = request.post["title"]
-    postContent = request.post["postContent"]
-    user = request.post["user"] #TODO: authentication
-    response = db.createPost(user,title,postContent)
+    text_content = request.post["postContent"]
+    image_url = request.post["imageURL"]
+    image = db.createImage(url=image_url,author=user_id)
+    print("Creating post: " + title + ", '" + text_content + "'")
+    response = db.createPost(user_id,title,image_id=image, text_content=text_content)
+    print(response)
     if response:
-        return "OK", 200
+        return redirect(f"/forum/post/{response.post_id}")
     else:
         return "Failed to create post", 400
 
@@ -97,15 +138,20 @@ def getCommentsByUserID(userID:int):
     
     
 #voting
-
-@app.route('/vote', methods=['GET', 'POST'])
-def vote():
-    if request.method == 'POST':
-        option = request.form['option']
-        if option == 'yes': # we will fix this later
-            votes['yes'] += 1
-        elif option == 'no':
-            votes['no'] += 1
+    
+@app.post('/vote')
+def castVote():
+    if session['authenticated'] != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    option = request.form['option']
+    
+    db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
+    
+    
+@app.get('/vote')
+def votePage():
     return render_template('voting.html', votes=votes)
 
 #maps
@@ -159,3 +205,6 @@ def doSignInProcess():
 
 def getTopPosts(numPosts:int) -> list[Post]:
     pass
+
+def generate_nonce(length=16):
+    return base64.urlsafe_b64encode(os.urandom(length)).decode('utf-8')
