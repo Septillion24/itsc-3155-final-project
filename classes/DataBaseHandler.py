@@ -64,7 +64,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Post.postID = {postID}')
                 rows = cur.fetchall()
-                selectedPost = Post(rows[0][0], rows[0][1], rows[0][2], rows[0][3], rows[0][4], rows[0][5])
+                selectedPost = Post(rows[0][0], rows[0][1], rows[0][2], rows[0][3], rows[0][4], rows[0][5], self.numberOfComments(rows[0][0]))
                 return selectedPost
             
             
