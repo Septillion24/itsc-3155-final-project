@@ -1,14 +1,15 @@
 {% extends '_layout.html' %}
 
-{% block title %}Horror Forum New Post Page{% endblock %}
+{% block title %}Horror Forum Location Search Page{% endblock %}
 
 {% block stylesheet %}
+<style src="static/css/main.css"></style>
 {% endblock stylesheet %}
 
 {% block body %}
-<body>
-    <h1>Search Location</h1>
-    <form action="/search" method="post">
+<body class ="bodySearch">
+    <h1 class ="search">Search Location</h1>
+    <form action="/search" method="post" class="bodyForm">
         <input type="text" name="location" placeholder="Enter a location">
         <button type="submit">Search</button>
     </form>
