@@ -174,12 +174,21 @@ class DataBaseHandler:
                 for friendrow in rows:
                     friends.append(User(friendrow[0], friendrow[1]))
                 return friends
-    def createImage(self, url: str, author: int) -> None: #TODO: This should return a class instance.
+    def createImage(self, url: str, author: int) -> None: 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Image (URL, Author) VALUES ('{url}', {author}); ''')
-    def createComment(self, post: Post, owner: User, text: str, timestamp: datetime) -> None: #TODO: This should return a class instance.
+            return self.getMostRecentImage()
+    def getMostRecentImage(self) -> Image:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('SELECT ImageID, URL, Author FROM Image ORDER BY ImageID DESC LIMIT 1')
+                rows = cur.fetchall()
+                mostRecentImage = Image(rows[0].keys[0], rows[0].keys[1], rows[0].keys[2])
+                return mostRecentImage
+    def createComment(self, post: Post, owner: User, text: str, timestamp: datetime) -> None: 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
