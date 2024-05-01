@@ -1,0 +1,350 @@
+.spooky {
+    font-family: 'Courier', 'Garamond', monospace;
+    color: #000;
+    text-shadow: 2px 2px 0px rgba(255,255,255,0.5),
+                 3px 3px 0px rgba(0,0,0,0.2);
+    transform: skew(-5deg);
+  }
+
+
+
+
+/* Style for the brand name */
+#brand-name {
+  font-size: 1.5rem;
+  font-family: 'Chiller';
+  font-weight: bold;
+}
+
+
+#brand-name.dark-mode {
+    font-size: 1.5rem;
+    font-family: 'Chiller';
+    font-weight: bold;
+    color: #ffffff; /* Light text */
+  }
+
+
+
+
+body {
+    background-color: #ffffff; /* Light background */
+    color: #000000; /* Dark text */
+    font-family: 'Arial', sans-serif;
+}
+
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #2b2b2b; /* Dark background */
+    color: #ffffff; /* Light text */
+}
+
+
+/* Navbar styling */
+.navbar {
+    background-color: #f8f9fa; /* Light navbar for light mode */
+    border-bottom: 1px solid #ccc;
+}
+
+
+body.dark-mode .navbar {
+    background-color: #1c1c1c; /* Dark navbar for dark mode */
+    border-bottom: 1px solid #333;
+}
+
+
+.navbar a {
+    color: #007bff; /* Default link color */
+}
+
+
+.navbar a:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+
+/* Typography for headings and content */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Trebuchet MS', sans-serif;
+    color: #212529; /* Dark text for light mode */
+}
+
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+    color: #eaeaea; /* Light text for dark mode */
+}
+
+
+/* Specific styles for .spooky class in dark mode */
+.dark-mode .spooky {
+    font-family: 'Courier', 'Garamond', monospace;
+    color: #000;
+    text-shadow: 2px 2px 0px rgba(255,255,255,0.5),
+                 3px 3px 0px rgba(0,0,0,0.2);
+    transform: skew(-5deg);
+}
+
+
+/* Styling for forum posts and comments */
+.post, .comment {
+    background-color: #e9ecef; /* Light background for posts in light mode */
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+body.dark-mode .post, body.dark-mode .comment {
+    background-color: #1e1e1e; /* Dark background for posts in dark mode */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+ 
+  /* New Post Form styling */
+  #newPostForm {
+    background-color: #242424;
+    padding: 20px;
+    border-radius: 5px;
+  }
+ 
+  #newPostForm input[type="text"],
+  #newPostForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: #ddd;
+  }
+ 
+  #newPostForm button {
+    background-color: #4b9cd3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+ 
+  #newPostForm button:hover {
+    background-color: #66c0f4;
+  }
+ 
+  /* Voting page styling */
+nav .backwards,
+nav .forwards {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #007bff;
+    border: 1px solid #fff;
+    border-radius: 5px;
+}
+
+nav .backwards {
+    float: left;
+}
+
+nav .forwards {
+    float: right;
+    margin-left: 10px;
+}
+
+nav .backwards a,
+nav .forwards a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+h1 {
+    color: black;
+}
+
+.voting-image {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.vote-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.vote-buttons button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.vote-buttons button[value="yes"] {
+    background-color: green;
+    color: white;
+}
+
+.vote-buttons button[value="no"] {
+    background-color: red;
+    color: white;
+}
+
+.result-bar {
+    width: 100%;
+    height: 20px;
+    border: 1px solid #000;
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.yes-fill {
+    background-color: green;
+    left: 0;
+}
+
+.no-fill {
+    background-color: red;
+    right: 0;
+}
+
+.result-text {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Result Page Styling */
+.bodyResult {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+.result {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.stats {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.map-container {
+    width: 80%;
+    margin: 0 auto;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Search Page Styling */
+.bodySearch {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+
+.search {
+    text-align: center;
+    margin-top: 50px;
+    color: #333;
+}
+
+.bodyForm {
+    text-align: center;
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Modal Styling */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 100px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.mb-4 text-center {
+    color: black;
+}
