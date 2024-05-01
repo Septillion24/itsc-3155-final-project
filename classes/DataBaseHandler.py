@@ -119,11 +119,11 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent FROM Post WHERE Owner = '{userID}'; ''')
+                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Owner = '{userID}'; ''')
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
-                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4]))
+                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
                 return posts
     def getMostRecentPost(self) -> Post: #needs testing
         pool = get_pool()
