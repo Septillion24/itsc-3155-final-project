@@ -88,7 +88,7 @@ def authorize():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('forum'))
+    return redirect('/')
 
 
 #/forum
@@ -122,7 +122,7 @@ def createPost():
     image_url = request.form["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
     print("Creating post: " + title + ", '" + text_content + "'")
-    response = db.createPost(user_id,title,image_id=image, text_content=text_content)
+    response = db.createPost(user_id,title,image=image, text_content=text_content)
     print(response)
     if response:
         return redirect(f"/forum/post/{response.post_id}")
