@@ -64,7 +64,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Post.postID = {postID}')
                 rows = cur.fetchall()
-                selectedPost = Post(rows[0].keys[0], rows[0].keys[1], rows[0].keys[2], rows[0].keys[3], rows[0].keys[4], rows[0].keys[5])
+                selectedPost = Post(rows[0][0], rows[0][1], rows[0][2], rows[0][3], rows[0][4], rows[0][5])
                 return selectedPost
             
             
@@ -76,7 +76,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 users = []
                 for userrow in rows:
-                    users.append(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4]))
+                    users.append(User(userrow[0], userrow[1], userrow[2], userrow[3], userrow[4]))
                 return users
             
     def createUser(self, userID: str, username: str, email: str, firstname: str, lastname: str) -> User: 
