@@ -107,7 +107,7 @@ def getPostFromID(post_id):
 @app.post("/forum/makepost")
 def createPost():
     print("aaa!")
-    if session['authenticated'] != True:
+    if not 'authenticated' in session.keys() or session['authenticated'] != True:
         return "Not authorized", 401
     
     user_id = session['user_id']
@@ -119,7 +119,7 @@ def createPost():
     response = db.createPost(user_id,title,image_id=image, text_content=text_content)
     print(response)
     if response:
-        return "OK", 200
+        return redirect(f"/forum/post/{response.post_id}")
     else:
         return "Failed to create post", 400
 
