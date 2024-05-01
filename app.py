@@ -122,11 +122,7 @@ def createPost():
     image_url = requests.post["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
     print("Creating post: " + title + ", '" + text_content + "'")
-<<<<<<< Updated upstream
     response = db.createPost(user_id,title,image=image, text_content=text_content)
-=======
-    response = db.createPost(user_id,title,image=image, text_content=text_content, date=datetime.now())
->>>>>>> Stashed changes
     print(response)
     if response:
         return redirect(f"/forum/post/{response.post_id}")
