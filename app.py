@@ -87,7 +87,7 @@ def logout():
 
 @app.get("/forum")
 def forumPage():
-    return render_template("home_jinja.html")
+    return render_template("forum.html")
 
 @app.get("/forum/getposts")
 def getPostsForForumPage():
