@@ -49,7 +49,8 @@ class DataBaseHandler:
                 return posts
 
                 
-    def createPost(self, owner: str, title: str, image_id: int, text_content: str, timestamp: datetime): #needs testing 
+    def createPost(self, owner: int, title: str, image_id: int, text_content: str, timestamp: datetime): #TODO: This should return a class instance.
+        #TODO: This should recieve an Image instance, not an image id
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
@@ -77,7 +78,7 @@ class DataBaseHandler:
                     users.append(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5]))
                 return users
             
-    def createUser(self, userID: str, username: str, email: str, firstname: str, lastname: str) -> None: #needs testing
+    def createUser(self, userID: str, username: str, email: str, firstname: str, lastname: str) -> None: #TODO: This should return a class instance.
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
@@ -95,7 +96,7 @@ class DataBaseHandler:
                 userrow = rows[0]
                 return User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5])
         
-    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> None:
+    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> None: #TODO: This should return a class instance.
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
@@ -153,12 +154,12 @@ class DataBaseHandler:
                 for friendrow in rows:
                     friends.append(User(friendrow[0], friendrow[1]))
                 return friends
-    def createImage(self, url: str, author: int) -> None:
+    def createImage(self, url: str, author: int) -> None: #TODO: This should return a class instance.
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Image (URL, Author) VALUES ('{url}', {author}); ''')
-    def createComment(self, postID: int, owner: int, text: str, timestamp: datetime) -> None:
+    def createComment(self, postID: int, owner: int, text: str, timestamp: datetime) -> None: #TODO: This should return a class instance.
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
