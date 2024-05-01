@@ -90,7 +90,8 @@ def logout():
 
 @app.get("/forum")
 def forumPage():
-    return render_template("forum.html")
+    logged_in = session.get('authenticated', False)
+    return render_template("forum.html", logged_in = logged_in)
 
 @app.get("/forum/getposts")
 def getPostsForForumPage():
@@ -139,6 +140,13 @@ def getCommentsByUserID(userID:int):
     return jsonify(posts)
     
     
+#about
+@app.get('/about')
+def aboutPage():
+    logged_in = session.get('authenticated', False)
+    return render_template('about.html', logged_in = logged_in)
+
+
 #voting
     
 @app.post('/vote')
@@ -155,13 +163,14 @@ def castVote():
 @app.get('/vote')
 def votePage():
     logged_in = session.get('authenticated', False)
-    return render_template('voting.html', votes=votes, logged_in=logged_in)
+    return render_template('voting.html', votes = votes, logged_in = logged_in)
 
 #maps
 
 @app.get('/newsearch')
 def newPostPage():
-    return render_template('search.html')
+    logged_in = session.get('authenticated', False)
+    return render_template('search.html', logged_in = logged_in)
 
 @app.route('/search', methods=['POST'])
 def search():
