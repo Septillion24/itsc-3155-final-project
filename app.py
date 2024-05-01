@@ -88,7 +88,7 @@ def authorize():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('forum'))
+    return redirect('/')
 
 
 #/forum
@@ -117,9 +117,9 @@ def createPost():
         return "Not authorized", 401
     
     user_id = session['user_id']
-    title = request.post["title"]
-    text_content = request.post["postContent"]
-    image_url = request.post["imageURL"]
+    title = request.form["title"]
+    text_content = request.form["postContent"]
+    image_url = request.form["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
     print("Creating post: " + title + ", '" + text_content + "'")
     response = db.createPost(user_id,title,image_id=image, text_content=text_content, date=datetime.now())
