@@ -86,7 +86,7 @@ class Post:
             'post_id': self.post_id,
             'owner': self.owner,
             'title': self.title,
-            'image_id': self.image_id,
+            'image': self.image,
             'text_content': self.text_content,
             'timestamp': str(self.timestamp)
         }
