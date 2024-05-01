@@ -10,7 +10,7 @@ function populatePosts() {
                 postDiv.innerHTML = `
                 <div class="postContainer">
                     <div class="postTitle">
-                        <p>${item.title}</p>
+                        <a href="/forum/post/${item.post_id}">${item.title}</a>
                     </div>
 
                     <div class="userInfo">
