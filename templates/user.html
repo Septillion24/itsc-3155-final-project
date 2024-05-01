@@ -12,8 +12,6 @@
 {% block stylesheet %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
-<style>
-</style>
 {% endblock %}
 
 {% block body %}
@@ -24,7 +22,7 @@
             <div class="username">{{ user.username }}</div>
         </div>
         <div class="content-buttons">
-            <p id="currentlyDisplaying">Showing posts by {{ user.username }}</p>
+            <p id="currentlyDisplaying">Showing posts by this user...</p>
             <button id="commentPostsButton" onclick="toggleCommentsPosts()">Show Comments</button>
         </div>
 
