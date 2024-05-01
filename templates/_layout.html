@@ -38,7 +38,7 @@
             <a class="nav-link{% if user %} active{% endif %}" href="/newsearch">Location Search</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link{% if user %} active{% endif %}" href="/user/{{ user }}">My Profile</a>
+            <a class="nav-link{% if user %} active{% endif %}" href="/user/{{ user.user_id }}">My Profile</a>
           </li>
         </ul>
       </div>
