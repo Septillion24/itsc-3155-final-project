@@ -9,7 +9,6 @@ import base64
 import random
 import os
 
-
 app = Flask(__name__)
 load_dotenv()
 
@@ -35,6 +34,7 @@ google = oauth.register(
 
 
 votes = {'yes': 0, 'no': 0}
+currentPollID = 1
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -106,7 +106,7 @@ def getPostFromID(post_id):
 
 @app.post("/forum/makepost")
 def createPost():
-    if not session['authenticated']:
+    if session['authenticated'] != True:
         return "Not authorized", 401
     
     user_id = session['user_id']
@@ -115,7 +115,7 @@ def createPost():
     image_url = request.post["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
     
-    response = db.createPost(user_id,title, image.image_id, postContent, datetime.now())
+    response = db.createPost(user_id,title,image_id=image)
     if response:
         return "OK", 200
     else:
@@ -138,15 +138,20 @@ def getCommentsByUserID(userID:int):
     
     
 #voting
-
-@app.route('/vote', methods=['GET', 'POST'])
-def vote():
-    if request.method == 'POST':
-        option = request.form['option']
-        if option == 'yes': # we will fix this later
-            votes['yes'] += 1
-        elif option == 'no':
-            votes['no'] += 1
+    
+@app.post('/vote')
+def castVote():
+    if session['authenticated'] != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    option = request.form['option']
+    
+    db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
+    
+    
+@app.get('/vote')
+def votePage():
     return render_template('voting.html', votes=votes)
 
 #maps
