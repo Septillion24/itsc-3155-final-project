@@ -3,52 +3,31 @@
 {% block title %}Horror Forum Voting Page{% endblock %}
 
 {% block stylesheet %}
-<style>
-    .result-bar {
-        width: auto;
-        height: 20px;
-        border: 1px solid #000;
-        margin-bottom: 10px;
-        position: relative;
-    }
-    .bar-fill {
-        height: 100%;
-        position: absolute;
-        top: 0;
-    }
-    .yes-fill {
-        background-color: green;
-        left: 0;
-    }
-    .no-fill {
-        background-color: red;
-        right: 0;
-    }
-</style>
+<style src="/static/css/main.css"></style>
 {% endblock stylesheet %}
 {% block body %}
 <nav>
-    <span class="backwards" style="float: left"><a href="/vote/previous">← Previous Week's Poll</a></span>
-    <span class="forwards" style="float: right"><a href="/vote/next">Preview Next Week's Poll →</a></span>
+    <span class="backwards"><a href="/vote/previous">← Previous Week's Poll</a></span>
+    <span class="forwards"><a href="/vote/next">Preview Next Week's Poll →</a></span>
 </nav>
-<h1 style="color:green; text-align:center;">Cast your Votes!</h1>
-<h2 style="text-align:center">Is the Battleship in Wilmington, North Carolina really haunted?</h2>
-<div class="voting-image">
-    <img src="static\images\voting_page_image1.jpg" alt="Battleship" style="width: 1000px; height: 1000px; display: block; margin-left: auto; margin-right: auto">
-</div>
-<form action="/vote" method="post" class="vote-buttons">
-    <button type="submit" name="option" value="yes">Yes</button>
-    <button type="submit" name="option" value="no" style="float: right;">No</button>
+<div class="container">
+    <h1>Cast your Votes!</h1>
+    <h2>Is the Battleship in Wilmington, North Carolina really haunted?</h2>
+    <div class="voting-image">
+        <img src="static\images\voting_page_image1.jpg" alt="Battleship" style="max-width: 100%; height: auto;">
+    </div>
+    <form action="/vote" method="post" class="vote-buttons">
+        <button type="submit" name="option" value="yes">Yes</button>
+        <button type="submit" name="option" value="no">No</button>
     </form>
-</form>
-<div class="result-bar">
-    <div class="bar-fill yes-fill" style="width: {{ (votes['yes'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
-    <div class="bar-fill no-fill" style="width: {{ (votes['no'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
+    <div class="result-bar">
+        <div class="bar-fill yes-fill" style="width: {{ (votes['yes'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
+        <div class="bar-fill no-fill" style="width: {{ (votes['no'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
+    </div>
+    <div class="result-text">
+        <span>{{ votes['yes'] }} number of users say it is haunted</span>
+        <span>{{ votes['no'] }} number of users say it is not haunted</span>
+    </div>
 </div>
-<p>
-    <span style="float: left">{{ votes['yes'] }} number of users say it is haunted</span>
-    <span style="float: right">{{ votes['no'] }} number of users say it is not haunted</span>
-</p>
-<br>
-<br>
+<br><br><br>
 {% endblock %}

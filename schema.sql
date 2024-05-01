@@ -1,10 +1,9 @@
 CREATE TABLE IF NOT EXISTS Users (
-    UserID serial PRIMARY KEY,
+    UserID PRIMARY KEY,
     Username varchar(255),
     Email varchar(255),
     FirstName varchar(255),
-    LastName varchar(255),
-    Password varchar(255)
+    LastName varchar(255)
 );
 CREATE TABLE IF NOT EXISTS FriendRelationship (
     id serial PRIMARY KEY,
@@ -45,9 +44,9 @@ CREATE TABLE IF NOT EXISTS Vote (
     Timestamp timestamp without time zone
 );
 
-INSERT INTO Users (Username, Email, FirstName, LastName, Password) VALUES
-('john_doe', 'john.doe@example.com', 'John', 'Doe', 'hashedpassword1'),
-('jane_smith', 'jane.smith@example.com', 'Jane', 'Smith', 'hashedpassword2');
+INSERT INTO Users (Username, Email, FirstName, LastName) VALUES
+('john_doe', 'john.doe@example.com', 'John', 'Doe'),
+('jane_smith', 'jane.smith@example.com', 'Jane', 'Smith');
 
 INSERT INTO FriendRelationship (user1, user2) VALUES
 (1, 2);
