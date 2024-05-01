@@ -108,6 +108,14 @@ def vote():
             votes['no'] += 1
     return render_template('voting.html', votes=votes)
 
+@app.route('/vote/previous', methods=['GET', 'POST'])
+def indexPrevious():
+    return render_template('previous.html')
+
+@app.route('/vote/next', methods=['GET', 'POST'])
+def indexNext():
+    return render_template('next.html')
+
 #maps
 
 @app.get('/newsearch')
