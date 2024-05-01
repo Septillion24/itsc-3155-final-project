@@ -104,7 +104,7 @@ def getPostFromID(post_id):
     post = db.getPostByID(post_id)
     if post is None:
         abort(404)
-    return render_template("forum.html", post = post), 200
+    return render_template("singlePost.html", post = post), 200
 
 @app.post("/forum/makepost")
 def createPost():

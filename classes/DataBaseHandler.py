@@ -119,11 +119,7 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-<<<<<<< Updated upstream
-                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent FROM Post WHERE Owner = {userID}; ''')
-=======
                 cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Owner = '{userID}'; ''')
->>>>>>> Stashed changes
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
