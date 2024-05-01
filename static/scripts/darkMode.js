@@ -1,37 +1,22 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
     const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
     const body = document.body;
 
-
-    // Set light mode as default unless dark mode is explicitly set
-    if (localStorage.getItem('theme') === 'dark') {
-        body.classList.add('dark-mode');
-        themeToggleBtn.textContent = '☀️';
-        themeIcon.style.display = "";
-        themeIcon.textContent = '🌙';
-    } else {
-        // Ensure light mode is active by default
-        body.classList.add('light-mode');
-        localStorage.setItem('theme', 'light');
-        themeToggleBtn.textContent = '🌙';
-        themeIcon.style.display = "none";
-        themeIcon.textContent = '☀️';
+    function applyTheme(isDarkMode) {
+        body.classList.toggle('dark-mode', isDarkMode);
+        themeToggleBtn.textContent = isDarkMode ? '☀️' : '🌙';
+        localStorage.setItem('theme', isDarkMode ? 'dark-mode' : 'light-mode');
     }
 
+    const isDarkMode = localStorage.getItem('theme') === 'dark-mode';
+    applyTheme(isDarkMode);
 
     themeToggleBtn.addEventListener('click', function() {
-        var isDarkMode = body.classList.toggle('dark-mode');
-        if (isDarkMode) {
-            localStorage.setItem('theme', 'dark');
-            themeToggleBtn.textContent = '☀️';
-            themeIcon.style.display = "";
-            themeIcon.textContent = '🌙';
-        } else {
-            localStorage.setItem('theme', 'light');
-            themeToggleBtn.textContent = '🌙';
-            themeIcon.style.display = "none";
-            themeIcon.textContent = '☀️';
-        }
+        const isCurrentlyDark = body.classList.contains('dark-mode');
+        body.classList.add('transitioning');
+        setTimeout(() => {
+            applyTheme(!isCurrentlyDark);
+            body.classList.remove('transitioning');
+        }, 300);
     });
 });
