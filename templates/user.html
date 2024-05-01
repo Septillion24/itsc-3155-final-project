@@ -1,27 +1,30 @@
 {% extends '_layout.html' %}
 
-{% block title %}{{user.username}}'s page{% endblock %}
+{% block title %}{{ user.username }}'s Profile{% endblock %}
 
 {% block scripts %}
 <script>
     var userID = "{{ user.user_id }}";
 </script>
-    <script src="/static/scripts/user.js" defer></script>
+<script src="/static/scripts/user.js" defer></script>
 {% endblock %}
 
 {% block stylesheet %}
-    <style src="static/css/main.css"></style>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
-{% endblock stylesheet %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
+<style>
+</style>
+{% endblock %}
 
 {% block body %}
+<div class="profile-wrapper">
     <div class="profile-container">
         <div class="profile-header">
             <img src="static/images/avatar2.png" alt="User Profile Picture" class="profile-picture"> <!-- Assuming we will enable users to upload custom profile pictures, need to jinja later -->
             <div class="username">{{ user.username }}</div>
         </div>
-        <div class="content-buttons"> <!-- Add buttons  -->
-            <p id="currentlyDisplaying">Showing posts by this user...</p>
+        <div class="content-buttons">
+            <p id="currentlyDisplaying">Showing posts by {{ user.username }}</p>
             <button id="commentPostsButton" onclick="toggleCommentsPosts()">Show Comments</button>
         </div>
 
@@ -29,4 +32,5 @@
         <div id="postsContainer" onload="populateProfilePosts"></div>
         <div id="commentsContainer"></div>
     </div>
+</div>
 {% endblock %}
