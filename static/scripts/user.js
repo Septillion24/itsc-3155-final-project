@@ -5,23 +5,28 @@ console.log("aaa");
 
 let commentsShown = false;
 let postsShown = true;
-defaultDisplay = document.getElementById("commentsContainer").style.display
+defaultDisplay = document.getElementById("commentsContainer").style.display;
 
 function toggleCommentsPosts() {
-    if (!commentsPopulated) {
-        populateProfileComments();
-    }
+    // show posts
     if (commentsShown) {
+        if (!postsPopulated) {
+            populateProfilePosts();
+        }
         commentsShown = false;
         postsShown = true;
-        document.getElementById("commentPostsButton").innerText = 'Show Posts'
+        document.getElementById("commentPostsButton").innerText = "Show Posts";
         document.getElementById("postsContainer").style.display = defaultDisplay;
         document.getElementById("commentsContainer").style.display = "none";
     }
+    // show comments
     if (postsShown) {
+        if (!commentsPopulated) {
+            populateProfileComments();
+        }
         commentsShown = true;
         postsShown = false;
-        document.getElementById("commentPostsButton").innerText = 'Show Comments'
+        document.getElementById("commentPostsButton").innerText = "Show Comments";
         document.getElementById("postsContainer").style.display = "none";
         document.getElementById("commentsContainer").style.display = defaultDisplay;
     }
