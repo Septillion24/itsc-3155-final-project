@@ -1,0 +1,48 @@
+{% extends '_layout.html' %}
+
+{% block title %}Forum Discussion | MySite{% endblock %}
+
+{% block body %}
+<div class="container">
+  <!-- Breadcrumb for navigation -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/forum">Forum</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Discussion</li>
+    </ol>
+  </nav>
+  
+  <!-- Discussion Content -->
+  <div class="discussion-content">
+    <h2>Is this a confirmed paranormal site?</h2>
+    <div class="user-info">
+      <p>Posted by <strong>Generic User</strong> - 2 Hours Ago</p>
+    </div>
+    <img src="{{ url_for('static', filename=discussion.image_url) }}" alt="Discussion Image" class="img-fluid">
+    <!-- Comments Section -->
+    <div class="comments-section">
+      <h3>9 Comments</h3>
+      {% for comment in comments %}
+      <div class="comment">
+        <div class="user-avatar">
+            <img src="{{ url_for('static', filename=comment.avatar_url) }}" alt="User Avatar" style="width: 100px; height: 100px;">
+        </div>
+        </div>
+        <div class="comment-body">
+          <div class="comment-user">
+            <strong>{{ comment.username }}</strong> - {{ comment.posted_time }} Ago
+          </div>
+          <div class="comment-content">
+            {{ comment.content }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <form action="/post_comment" method="POST">
+        <textarea name="comment" class="form-control" rows="3" placeholder="Write a meaningful comment..."></textarea>
+        <button type="submit" class="btn btn-primary">Comment</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
