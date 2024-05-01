@@ -142,7 +142,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
-                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
+                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5], self.numberOfComments(postrow[0])))
                 return posts
     def numberOfComments(self, postID: int) -> int:
         pool = get_pool()
