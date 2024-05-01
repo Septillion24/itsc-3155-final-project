@@ -96,7 +96,7 @@ class DataBaseHandler:
                 cur.execute(f'SELECT UserID, Username, Email, FirstName, LastName FROM Users WHERE UserID = \'{userID}\'')
                 rows = cur.fetchall()
                 userrow = rows[0]
-                return User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4])
+                return User(userrow[0], userrow[1], userrow[2], userrow[3], userrow[4])
         
     def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> Vote: 
         pool = get_pool()
@@ -111,7 +111,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute('SELECT VoteID, Owner, PollID, VoteFor FROM Vote ORDER BY VoteID DESC LIMIT 1')
                 rows = cur.fetchall()
-                mostRecentVote = Vote(rows[0].keys[0], self.getUserByID(rows[0].keys[1]), rows[0].keys[2], rows[0].keys[3])
+                mostRecentVote = Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3])
                 return mostRecentVote
     def getPostsByUserID(self, userID: int) -> list[Post]:
         pool = get_pool()
@@ -129,7 +129,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post ORDER BY PostID DESC LIMIT 1')
                 rows = cur.fetchall()
-                mostRecentPost = Post(rows[0].keys[0], self.getUserByID(rows[0].keys[1]), rows[0].keys[2], rows[0].keys[3], rows[0].keys[4], rows[0].keys[5])
+                mostRecentPost = Post(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4], rows[0][5])
                 return mostRecentPost
             
     def getTopPosts(self, numberOfPosts: int) -> list[Post]:
@@ -186,7 +186,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute('SELECT ImageID, URL, Author FROM Image ORDER BY ImageID DESC LIMIT 1')
                 rows = cur.fetchall()
-                mostRecentImage = Image(rows[0].keys[0], rows[0].keys[1], rows[0].keys[2])
+                mostRecentImage = Image(rows[0][0], rows[0][1], rows[0][2])
                 return mostRecentImage
     def createComment(self, post: Post, owner: User, text: str, timestamp: datetime) -> None: 
         pool = get_pool()
@@ -200,7 +200,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute('SELECT CommentID, PostID, Owner, Text, Timestamp FROM Comment ORDER BY CommentID DESC LIMIT 1')
                 rows = cur.fetchall()
-                mostRecentComment = Comment(rows[0].keys[0], self.getPostByID(rows[0].keys[1]), self.getUserByID(rows[0].keys[2]), rows[0].keys[3], rows[0].keys[4])
+                mostRecentComment = Comment(rows[0][0], self.getPostByID(rows[0][1]), self.getUserByID(rows[0][2]), rows[0][3], rows[0][4])
                 return mostRecentComment
     def getCommentsByPostID(self, postID: int) -> list[Comment]:
         pool = get_pool()
