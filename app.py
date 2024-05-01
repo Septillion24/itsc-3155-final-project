@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
 @app.context_processor
 def inject_variables():
-    return {'user': db.getUserByID(session.get('user_id', -1))}
+    return {'template_user': db.getUserByID(session.get('user_id', -1))}
 
 @app.route('/')
 def index():
