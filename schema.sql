@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Users (
-    UserID serial PRIMARY KEY,
+    UserID PRIMARY KEY,
     Username varchar(255),
     Email varchar(255),
     FirstName varchar(255),
