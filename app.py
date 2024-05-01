@@ -154,7 +154,8 @@ def castVote():
     
 @app.get('/vote')
 def votePage():
-    return render_template('voting.html', votes=votes)
+    logged_in = session.get('authenticated', False)
+    return render_template('voting.html', votes=votes, logged_in=logged_in)
 
 #maps
 
