@@ -71,14 +71,14 @@ class Post:
     timestamp: datetime = None
     number_of_comments: int = None
 
-    def __init__(self, post_id: int, owner: User, title: str, image: Image, text_content: str, timestamp: datetime) -> None:
+    def __init__(self, post_id: int, owner: User, title: str, image: Image, text_content: str, timestamp: datetime, number_of_comments: int) -> None:
         self.post_id = post_id
         self.owner = owner
         self.title = title
         self.image= image
         self.text_content = text_content
         self.timestamp = timestamp
-        self.number_of_comments = (post_id)
+        self.number_of_comments = number_of_comments
 
     def to_dict(self) -> dict:
         return {

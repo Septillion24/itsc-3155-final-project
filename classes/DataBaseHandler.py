@@ -148,9 +148,10 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''SELECT COUNT(*) FROM Comment WHERE PostID = '{postID}'; ''')
+                cur.execute(f'''SELECT COUNT(CommentID) FROM Comment WHERE PostID = '{postID}'; ''')
                 rows = cur.fetchall()
-                return rows[0]
+                print(rows)
+                return rows[0][0]
             
     def getImageByID(self, imageID: int) -> str:
         pool = get_pool()
@@ -218,7 +219,7 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''SELECT CommentID, PostID, Owner, Text, Timestamp FROM Comment WHERE Owner = {userID}; ''')
+                cur.execute(f'''SELECT CommentID, PostID, Owner, Content, Timestamp FROM Comment WHERE Owner = '{userID}'; ''')
                 rows = cur.fetchall()
                 comments = []
                 for commentrow in rows:

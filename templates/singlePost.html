@@ -1,6 +1,6 @@
 {% extends '_layout.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Post{% endblock %}
 
 {% block scripts %}
     
@@ -15,13 +15,7 @@
 <div class="container mt-4">
     <h4 style="color:green" class="text-center">{{post.title}}</h4>
     <h1 class="mb-4 text-center">{{post.content}}</h1>
-    <img src="{{post.imageURL}}" class="img-fluid" alt="Responsive image">
-    <br><br>
-    
-    
-
-    
-
+    <img src="{{post.image.image_url}}" class="img-fluid" alt="Responsive image">
     
     
 </div>
