@@ -179,11 +179,20 @@ class DataBaseHandler:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Image (URL, Author) VALUES ('{url}', {author}); ''')
-    def createComment(self, postID: int, owner: int, text: str, timestamp: datetime) -> None: #TODO: This should return a class instance.
+    def createComment(self, post: Post, owner: User, text: str, timestamp: datetime) -> None: #TODO: This should return a class instance.
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''INSERT INTO Comment (PostID, Owner, Text, Timestamp) VALUES ({postID}, {owner}, '{text}', '{timestamp}'); ''')
+                cur.execute(f'''INSERT INTO Comment (PostID, Owner, Text, Timestamp) VALUES ({post.post_id}, {owner.user_id}, '{text}', '{timestamp}'); ''')
+            return self.getMostRecentComment()
+    def getMostRecentComment(self) -> Comment: 
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('SELECT CommentID, PostID, Owner, Text, Timestamp FROM Comment ORDER BY CommentID DESC LIMIT 1')
+                rows = cur.fetchall()
+                mostRecentComment = Comment(rows[0].keys[0], self.getPostByID(rows[0].keys[1]), self.getUserByID(rows[0].keys[2]), rows[0].keys[3], rows[0].keys[4])
+                return mostRecentComment
     def getCommentsByPostID(self, postID: int) -> list[Comment]:
         pool = get_pool()
         with pool.connection() as conn:

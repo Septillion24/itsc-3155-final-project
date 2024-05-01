@@ -94,8 +94,8 @@ class Post:
 
 class Comment:
     comment_id: int = None
-    owner: int = None
-    post_id: int = None
+    owner: User = None
+    post: Post = None
     content: str = None
     timestamp: datetime = None
 
@@ -110,7 +110,7 @@ class Comment:
         return {
             'comment_id': self.comment_id,
             'owner': self.owner,
-            'post_id': self.post_id,
+            'post': self.post,
             'content': self.content,
             'timestamp': self.timestamp
         }
