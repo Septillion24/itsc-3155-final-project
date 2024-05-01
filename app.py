@@ -111,11 +111,12 @@ def createPost():
     
     user_id = session['user_id']
     title = request.post["title"]
-    postContent = request.post["postContent"]
+    text_content = request.post["postContent"]
     image_url = request.post["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
-    
-    response = db.createPost(user_id,title,image_id=image)
+    print("Creating post: " + title + ", '" + text_content + "'")
+    response = db.createPost(user_id,title,image_id=image, text_content=text_content)
+    print(response)
     if response:
         return "OK", 200
     else:
