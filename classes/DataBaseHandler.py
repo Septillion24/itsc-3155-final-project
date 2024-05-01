@@ -150,7 +150,6 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'''SELECT COUNT(CommentID) FROM Comment WHERE PostID = '{postID}'; ''')
                 rows = cur.fetchall()
-                print(rows)
                 return rows[0][0]
             
     def getImageByID(self, imageID: int) -> str:
