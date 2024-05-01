@@ -42,7 +42,6 @@ if __name__ == '__main__':
 @app.route('/')
 def index():
     email = session.get('email')
-    print(email) #remove later
     return redirect("/forum")
 
 #account management
@@ -106,7 +105,6 @@ def getPostFromID(post_id):
 
 @app.post("/forum/makepost")
 def createPost():
-    print("aaa!")
     if not 'authenticated' in session.keys() or session['authenticated'] != True:
         return "Not authorized", 401
     
