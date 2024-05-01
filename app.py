@@ -59,6 +59,7 @@ def signup():
     else:
         return "Failed to create an account", 400
 
+@app.route('/login')
 def login():
     nonce = generate_nonce()
     session['nonce'] = nonce  # Store nonce in session for later validation
