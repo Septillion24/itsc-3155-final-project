@@ -50,7 +50,7 @@ function populateProfileComments() {
                 postDiv.innerHTML = `
             <div class="commentContainer">
                 <div class="userInfo">
-                    <div class="userAvatar"><img src="static/images/avatar2.png" /></div>
+                    <div class="userAvatar"><img src="/static/images/avatar2.png" /></div>
                     <div>
                         <div class="commentUser">${item.owner}</div>
                         <div class="commentTimestamp">${relativeTime}</div>
@@ -106,7 +106,7 @@ function populateProfilePosts() {
                     </div>
 
                     <div class="userInfo">
-                        <div class="userAvatar"><img src="static/images/avatar2.png" /></div>
+                        <div class="userAvatar"><img src="/static/images/avatar2.png" /></div>
                         <div>
                             <div class="postUser">${item.owner}</div>
                             <div class="postTimestamp">${relativeTime}</div>
