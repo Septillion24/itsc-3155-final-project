@@ -1,0 +1,30 @@
+{% extends '_layout.html' %}
+
+{% block title %}{{user.username}}'s page{% endblock %}
+
+{% block scripts %}
+<script>
+    var userID = "{{ user.user_id }}";
+</script>
+    <script src="/static/scripts/user.js" defer></script>
+{% endblock %}
+
+{% block stylesheet %}
+    <style src="static/css/main.css"></style>
+{% endblock stylesheet %}
+
+{% block body %}
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="static/images/avatar2.png" alt="User Profile Picture" class="profile-picture"> <!-- Assuming we will enable users to upload custom profile pictures, need to jinja later -->
+            <div class="username">{{ user.username }}</div>
+        </div>
+        <div class="content-buttons"> <!-- Add buttons  -->
+            <button id="commentPostsButton" onclick="toggleCommentsPosts()">Show Comments</button>
+        </div>
+
+        <!-- Add functionality to load posts and comments based on button press. -->
+        <div id="postsContainer"></div>
+        <div id="commentsContainer"></div>
+    </div>
+{% endblock %}
