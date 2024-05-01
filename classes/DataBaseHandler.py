@@ -49,7 +49,7 @@ class DataBaseHandler:
                 return posts
 
                 
-    def createPost(self, owner: int, title: str, image_id: int, text_content: str, timestamp: datetime): #needs testing 
+    def createPost(self, owner: str, title: str, image_id: int, text_content: str, timestamp: datetime): #needs testing 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
