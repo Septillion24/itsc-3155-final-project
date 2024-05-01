@@ -6,15 +6,14 @@ class User:
     email  = None
     first_name  = None
     last_name  = None
-    password = None
 
-    def __init__(self, user_id: str, username: str, email: str, first_name: str, last_name: str, password: str) -> None:
+    def __init__(self, user_id: str, username: str, email: str, first_name: str, last_name: str, ) -> None:
         self.user_id = user_id
         self.username = username
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
-        self.password = password
+        
 
     def to_dict(self) -> dict:
         return {
@@ -23,7 +22,7 @@ class User:
             'email': self.email,
             'first_name': self.first_name,
             'last_name': self.last_name,
-            'password': self.password
+            
         }
     
 class FriendRelationship:
@@ -118,12 +117,12 @@ class Comment:
     
 class Vote:
     vote_id: int = None
-    owner: int = None
+    owner: User = None
     poll_id: int = None
     vote_for: bool = None
     timestamp: datetime = None
 
-    def __init__(self, vote_id: int, owner: int, poll_id: int, vote_for: bool, timestamp: datetime) -> None:
+    def __init__(self, vote_id: int, owner: User, poll_id: int, vote_for: bool, timestamp: datetime) -> None:
         self.vote_id = vote_id
         self.owner = owner
         self.poll_id = poll_id

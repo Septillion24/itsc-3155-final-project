@@ -1,4 +1,4 @@
-from classes.DataTypes import User, Post, Comment, Image
+from classes.DataTypes import User, Post, Comment, Image, Vote
 import psycopg
 from dotenv import load_dotenv
 import datetime
@@ -49,13 +49,14 @@ class DataBaseHandler:
                 return posts
 
                 
-    def createPost(self, owner: int, title: str, image_id: int, text_content: str, timestamp: datetime): #TODO: This should return a class instance.
-        #TODO: This should recieve an Image instance, not an image id
+    def createPost(self, owner: str, title: str, image: Image, text_content: str, timestamp: datetime) ->   Post: 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(F'''INSERT INTO Post (Owner, Title, ImageID, TextContent, Timestamp) VALUES
-                    ('{owner}', '{title}', '{image_id}', '{text_content}', '{timestamp}')''')
+                    ('{owner}', '{title}', '{image.image_id}', '{text_content}', '{timestamp}')''')
+                return self.getMostRecentPost()
+        
                 
     def getPostByID(self, postID: int, owner: int, title: str, image_id: int, text_content: str, timestamp: datetime) -> Post: #needs testing
         pool = get_pool()
@@ -71,37 +72,47 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT UserID, Username, Email, FirstName, LastName, Password FROM Users;')
+                cur.execute('SELECT UserID, Username, Email, FirstName, LastName FROM Users;')
                 rows = cur.fetchall()
                 users = []
                 for userrow in rows:
-                    users.append(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5]))
+                    users.append(User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4]))
                 return users
             
-    def createUser(self, userID: str, username: str, email: str, firstname: str, lastname: str) -> None: #TODO: This should return a class instance.
+    def createUser(self, userID: str, username: str, email: str, firstname: str, lastname: str) -> User: 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Users (UserID, Username, Email, FirstName, LastName) 
                             VALUES ('{userID}', '{username}', '{email}', '{firstname}', '{lastname}' 
                             ); ''')
+                return User(userID, username, email, firstname, lastname)
                 
             
     def getUserByID(self, userID: str) -> User:#needs testing
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'SELECT UserID, Username, Email, FirstName, LastName, Password FROM Users WHERE UserID = \'{userID}\'')
+                cur.execute(f'SELECT UserID, Username, Email, FirstName, LastName FROM Users WHERE UserID = \'{userID}\'')
                 rows = cur.fetchall()
                 userrow = rows[0]
-                return User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4], userrow.keys[5])
+                return User(userrow.keys[0], userrow.keys[1], userrow.keys[2], userrow.keys[3], userrow.keys[4])
         
-    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> None: #TODO: This should return a class instance.
+    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> Vote: 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
                                 VALUES ({userID}, {pollID}, {voteFor}); ''')
+                return self.getMostRecentVote()
+    def getMostRecentVote(self) -> Vote: 
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('SELECT VoteID, Owner, PollID, VoteFor FROM Vote ORDER BY VoteID DESC LIMIT 1')
+                rows = cur.fetchall()
+                mostRecentVote = Vote(rows[0].keys[0], self.getUserByID(rows[0].keys[1]), rows[0].keys[2], rows[0].keys[3])
+                return mostRecentVote
     def getPostsByUserID(self, userID: int) -> list[Post]:
         pool = get_pool()
         with pool.connection() as conn:
@@ -112,6 +123,15 @@ class DataBaseHandler:
                 for postrow in rows:
                     posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4]))
                 return posts
+    def getMostRecentPost(self) -> Post: #needs testing
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post ORDER BY PostID DESC LIMIT 1')
+                rows = cur.fetchall()
+                mostRecentPost = Post(rows[0].keys[0], self.getUserByID(rows[0].keys[1]), rows[0].keys[2], rows[0].keys[3], rows[0].keys[4], rows[0].keys[5])
+                return mostRecentPost
+            
     def getTopPosts(self, numberOfPosts: int) -> list[Post]:
         pool = get_pool()
         with pool.connection() as conn:
