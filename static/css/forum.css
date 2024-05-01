@@ -93,3 +93,14 @@ body.dark-mode .postComments {
 body.dark-mode .userInfo {
     color: #ddd; /* Light color for user info area in dark mode */
 }
+
+/* Dark mode specific styles */
+body.dark-mode .container.pt-4 {
+    background-color: #333333; /* example color for dark mode */
+    color: #ffffff;
+}
+
+body.dark-mode .container.mt-4 {
+    background-color: #333333; /* example color for dark mode */
+    color: #ffffff;
+}

@@ -427,3 +427,89 @@ button[type="submit"]:hover {
 #commentsContainer .comment p {
     color: #666;
 }
+
+body.dark-mode .container {
+    background-color: #333333; 
+    color: #ffffff;
+}
+
+body.dark-mode .modal-content {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+body.dark-mode .list-group-item {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+body.dark-mode .form-control {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+body.dark-mode .profile-container {
+    background-color: #2b2b2b;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .profile-header {
+    background-color: #2b2b2b;
+    color: #ffffff;
+}
+
+body.dark-mode .profile-wrapper {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+body.dark-mode .postContainer {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+body, .container, nav, h1, p, .postContainer, .navbar {
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+img .logo {
+    filter: grayscale(0%); 
+    transition: filter 0.3s;
+}
+
+body.dark-mode img logo{
+    filter: grayscale(100%); 
+}
+
+body.dark-mode .navbar {
+    background-color: #343a40; 
+    color: #ffffff; 
+}
+
+body.dark-mode .navbar a, body.dark-mode .navbar-brand {
+    color: #ffffff; 
+}
+
+body.dark-mode .navbar.navbar-expand-lg.navbar-light.bg-light {
+    background-color: #343a40 !important; /* Overriding Bootstrap's background color */
+    color: #ffffff !important; /* Overriding Bootstrap's text color */
+}
+
+.navbar .nav-link {
+    color: #007bff; 
+}
+
+body.dark-mode .navbar .nav-link {
+    color: #ffffff; 
+    transition: color 0.3s ease;
+}
+
+.logo {
+    transition: filter 0.3s ease; 
+}
+
+
+body.dark-mode .logo {
+    filter: invert(100%) brightness(200%);
+}
