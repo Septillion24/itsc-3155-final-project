@@ -122,7 +122,7 @@ def createPost():
     image_url = request.post["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
     print("Creating post: " + title + ", '" + text_content + "'")
-    response = db.createPost(user_id,title,image_id=image, text_content=text_content)
+    response = db.createPost(user_id,title,image_id=image, text_content=text_content, date=datetime.now())
     print(response)
     if response:
         return redirect(f"/forum/post/{response.post_id}")
