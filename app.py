@@ -41,8 +41,10 @@ if __name__ == '__main__':
 
 @app.route('/')
 def index():
-    email = session.get('email')
-    return redirect("/forum")
+    logged_in = False
+    if 'email' in session:
+        logged_in = True
+    return render_template('forum.html', logged_in=logged_in)
 
 #account management
 
