@@ -94,7 +94,10 @@ class DataBaseHandler:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'SELECT UserID, Username, Email, FirstName, LastName FROM Users WHERE UserID = \'{userID}\'')
+                if cur.rowcount == 0:
+                    return None
                 rows = cur.fetchall()
+
                 userrow = rows[0]
                 return User(userrow[0], userrow[1], userrow[2], userrow[3], userrow[4])
         
