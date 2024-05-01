@@ -3,7 +3,10 @@
 {% block title %}Post{% endblock %}
 
 {% block scripts %}
-    
+    <script>
+        postID = {{post.post_id}}
+    </script>
+    <script src="/static/scripts/loadComments.js"></script>
 {% endblock %}
 
 {% block stylesheet %}
