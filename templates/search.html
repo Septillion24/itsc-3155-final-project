@@ -3,54 +3,13 @@
 {% block title %}Horror Forum Location Search Page{% endblock %}
 
 {% block stylesheet %}
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f7f7f7;
-}
-
-h1 {
-    text-align: center;
-    margin-top: 50px;
-    color: #333;
-}
-
-form {
-    text-align: center;
-    margin-top: 20px;
-}
-
-input[type="text"] {
-    padding: 10px;
-    width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button[type="submit"]:hover {
-    background-color: #0056b3;
-}
-</style>
-
+<style src="static/css/main.css"></style>
 {% endblock stylesheet %}
 
 {% block body %}
-<body>
-    <h1>Search Location</h1>
-    <form action="/search" method="post">
+<body class ="bodySearch">
+    <h1 class ="search">Search Location</h1>
+    <form action="/search" method="post" class="bodyForm">
         <input type="text" name="location" placeholder="Enter a location">
         <button type="submit">Search</button>
     </form>
