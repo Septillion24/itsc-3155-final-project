@@ -83,7 +83,7 @@ def authorize():
 @app.route('/logout')
 def logout():
     session.clear()
-    return render_template('forum.html')
+    return redirect(url_for('forum'))
 
 
 #/forum
@@ -126,27 +126,22 @@ def createPost():
 
 #/user
 
+
 @app.get('/user/<int:userID>')
 def getUserByID(userID:int):
     user = db.getUserByID(userID)
     return render_template("user.html", user=user)
+
 @app.get("/user/<int:userID>/posts")
 def getPostsByUserID(userID:int):
     posts = db.getPostsByUserID(userID)
-    return jsonify(posts)
+    return jsonify([post.to_dict() for post in posts]), 200
+
 @app.get("/user/<int:userID>/comments")
 def getCommentsByUserID(userID:int):
     posts = db.getCommentsByUserID(userID)
     return jsonify(posts)
     
-    
-#about
-@app.get('/about')
-def aboutPage():
-    logged_in = session.get('authenticated', False)
-    return render_template('about.html', logged_in = logged_in)
-
-
 #voting
     
 @app.post('/vote')
@@ -164,14 +159,6 @@ def castVote():
 def votePage():
     logged_in = session.get('authenticated', False)
     return render_template('voting.html', votes = votes, logged_in = logged_in)
-
-@app.route('/vote/previous', methods=['GET', 'POST'])
-def indexPrevious():
-    return render_template('previous.html')
-
-@app.route('/vote/next', methods=['GET', 'POST'])
-def indexNext():
-    return render_template('next.html')
 
 #maps
 
