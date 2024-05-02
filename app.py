@@ -171,6 +171,17 @@ def votePage():
     logged_in = session.get('authenticated', False)
     return render_template('voting.html', votes = votes, logged_in = logged_in)
 
+@app.get('/vote/next')
+def nextPage():
+    logged_in = session.get('authenticated', False)
+    return render_template('next.html', logged_in = logged_in)
+
+@app.get('/vote/previous')
+def previousPage():
+    logged_in = session.get('authenticated', False)
+    return render_template('previous.html', logged_in = logged_in)
+
+
 #maps
 
 @app.get('/newsearch')
