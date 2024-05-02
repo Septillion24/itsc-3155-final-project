@@ -259,6 +259,7 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
+                cur.execute(f'''DELETE FROM Comment WHERE PostID = {postID}; ''')
                 cur.execute(f'''DELETE FROM Post WHERE PostID = {postID}; ''')
     def deleteUser(self, userID: int) -> None:
         pool = get_pool()
