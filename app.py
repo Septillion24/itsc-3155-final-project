@@ -184,8 +184,10 @@ def castVote():
     option = request.form['option']
     vote = db.getVoteByUserID(user_id)
     if (vote != None):
+        print("changinv cvote")
         db.changeVote(vote.vote_id, option == 'yes')
     else:
+        print("adding new vote")
         vote = db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
     
     votes = {'yes': db.getVotesForPoll(1), 'no': db.getVotesAgainstPoll(1)}
