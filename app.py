@@ -158,7 +158,7 @@ def getCommentsByUserID(userID:int):
     
 #voting
     
-@app.post('/vote', methods=['GET', 'POST'])
+@app.post('/vote')
 def castVote():
     logged_in = session.get('authenticated', False)
     if session.get('authenticated',False) != True:
