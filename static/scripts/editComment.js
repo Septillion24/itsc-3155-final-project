@@ -1,24 +1,31 @@
-function editComment(commentID, newContent) {
-    const newCommentContent = prompt('Enter your new username:');
+function editComment(commentID) {
+    var newContent = prompt('Edit your comment:');
     
-    fetch('/edit/comment', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            commentID: commentID,
-            newContent: newCommentContent
+    if (newContent !== null) {
+        fetch('/edit/comment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain', 
+            },
+            body: newContent
         })
-    })
-    .then(response => {
-        if (response.ok) {
-            // If the update was successful, you can handle the response here if needed
-            console.log('Comment edited successfully');
-            window.location.href = `/forum/post/${postID}`;
-        } else {
-            console.error('Failed to edit comment:', response.status);
-        }
-    })
-    .catch(error => console.error('Error editing comment:', error));
+        .then(response => {
+            if (response.ok) {
+                console.log('Comment edited successfully');
+            } else {
+                console.error('Failed to edit comment:', response.status);
+            }
+        })
+        .catch(error => console.error('Error editing comment:', error));
+    }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var editCommentButton = document.getElementById('editCommentButton');
+    if (editCommentButton) {
+        var commentID = editCommentButton.dataset.commentId;
+        editCommentButton.addEventListener('click', function() {
+            editComment(commentID);
+        });
+    }
+});
