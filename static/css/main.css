@@ -513,3 +513,34 @@ body.dark-mode .navbar .nav-link {
 body.dark-mode .logo {
     filter: invert(100%) brightness(200%);
 }
+
+.search-form {
+    position: relative; /* Ensures button can be absolutely positioned */
+    display: flex;      /* Flex display to align input and button */
+    align-items: center; /* Center items vertically */
+}
+
+.form-control {
+    flex-grow: 1;       /* Input takes up remaining space */
+    border: 1px solid #ccc;
+    padding-right: 40px; /* Padding to prevent text from hiding behind icon */
+}
+
+.search-button {
+    position: absolute;
+    right: 0;           /* Position it to the far right */
+    border: none;       /* Remove border */
+    background: transparent; /* Make background transparent */
+    cursor: pointer;    /* Change cursor to pointer to indicate clickable */
+    color: inherit;     /* Inherit color from parent */
+    padding: 0 15px;    /* Padding on the sides */
+    height: 100%;       /* Match height with the input */
+}
+
+body.dark-mode .search-button {
+    border : 1px solid #ffffff;
+}
+
+.search-button i {
+    font-size: 1rem;    /* Adjust size of the icon */
+}
