@@ -176,9 +176,10 @@ def getUserByID(userID:int):
     user = db.getUserByID(userID)
     logged_in = session.get('authenticated', False)
     user_id = session.get('user_id', None)
-    owner = userID == user_id
+    owner = int(userID) == int(user_id)
     print (userID)
     print (user_id)
+    print(owner)
     return render_template("user.html", user=user, logged_in=logged_in, owner=owner)
 
 @app.get("/user/<int:userID>/posts")
