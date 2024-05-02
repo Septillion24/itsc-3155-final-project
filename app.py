@@ -289,9 +289,8 @@ def deletePost():
         return "Not authorized", 401
     
     user_id = session['user_id']
-    postID = request.form["postID"]
-    
     print("Userid" + user_id)
+    postID = request.form["postID"]
     print("Postid" +  postID)
     if db.getPostByID(postID).owner != user_id:
         return "Not authorized", 401
