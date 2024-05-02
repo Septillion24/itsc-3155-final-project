@@ -285,6 +285,7 @@ def search():
 
 @app.post('/delete/post')
 def deletePost():
+    print("HELLO????")
     if session.get('authenticated', False) != True:
         return "Not authorized", 401
     
