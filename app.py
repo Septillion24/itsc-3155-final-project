@@ -291,13 +291,13 @@ def deletePost():
     
     if db.getPostByID(postID).owner != user_id:
         return "Not authorized", 401
-    try:
-        db.deletePost(postID)
-        return "Successfully deleted", 200
+    # try:
+    db.deletePost(postID)
+    return "Successfully deleted", 200
     
-    except Exception as e:
-        print(e)
-        return "Could not delete post", 400
+    # except Exception as e:
+    #     print(e)
+    #     return "Could not delete post", 400
 
 @app.post('/delete/comment/')
 def deleteComment():
