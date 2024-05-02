@@ -277,3 +277,21 @@ class DataBaseHandler:
                 for postrow in rows:
                     posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
                 return posts
+    def editPost(self, postID: int, text_content: str) -> Post:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'UPDATE Post SET TextContent = \'{text_content}\' WHERE PostID = {postID};')
+                return self.getPostByID(postID)
+    def editUser(self, userID: str, username: str) -> User:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'UPDATE Users SET Username = \'{username}\' WHERE UserID = \'{userID}\';')
+                return self.getUserByID(userID)
+    def editComment(self, commentID: int, content: str) -> Comment:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'UPDATE Comment SET Content = \'{content}\' WHERE CommentID = {commentID};')
+                return self.getCommentByCommentID(commentID)
