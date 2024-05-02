@@ -16,7 +16,7 @@
 {% block body %}
 <div class="single-container mt-4">
     <h4 class="single-title">{{ post.title }}</h4>
-    <img src="{{image_url}}" class="single-img" alt="Responsive image">
+    <img src="{{ post.image.url }}" class="single-img" alt="Responsive image">
     <p class="single-paragraph">{{ post.text_content }}</p>
 
     <div id="commentsContainer"></div>
