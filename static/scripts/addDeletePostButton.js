@@ -19,3 +19,5 @@ function deletePost() {
         }
     });
 }
+
+addDeleteButton();

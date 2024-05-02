@@ -7,6 +7,11 @@
     var userID = "{{ user.user_id }}";
 </script>
 <script src="/static/scripts/user.js" defer></script>
+
+{% if owner %}
+<script src="/static/scripts/addDeleteUserButton.js" defer></script>
+{% endif %}
+
 {% endblock %}
 
 {% block stylesheet %}
@@ -25,7 +30,7 @@
             <p id="currentlyDisplaying">Showing posts by this user...</p>
             <button id="commentPostsButton" onclick="toggleCommentsPosts()">Show Comments</button>
         </div>
-
+        <div id="deleteButtonContainer"></div>
         <!-- Add functionality to load posts and comments based on button press. -->
         <div id="postsContainer" onload="populateProfilePosts"></div>
         <div id="commentsContainer" style="display:none"></div>

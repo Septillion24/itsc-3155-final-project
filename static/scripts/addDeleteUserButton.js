@@ -19,3 +19,5 @@ function deleteUser() {
         }
     });
 }
+
+addDeleteButton();

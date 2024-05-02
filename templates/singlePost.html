@@ -7,7 +7,10 @@
         postID = {{ post.post_id }};
     </script>
     <script src="/static/scripts/loadComments.js" defer></script>
+    {% if owner %}
     <script src="/static/scripts/addDeletePostButton.js" defer></script>
+    {% endif %}
+
 {% endblock %}
 
 {% block stylesheet %}
