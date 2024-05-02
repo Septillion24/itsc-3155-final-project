@@ -191,7 +191,7 @@ body.dark-mode a:visited {
 
 /* Style for the edit button */
 .editButton {
-    background-color: #007bff; 
+    background-color: #e0a83f; 
     color: #fff; 
     border: none; 
     padding: 8px 16px; 
@@ -200,5 +200,19 @@ body.dark-mode a:visited {
 }
 
 .editButton:hover {
-    background-color: #0056b3; 
+    background-color: #9c7b0c; 
+}
+
+/* Style for the Delete button */
+.deleteButton {
+    background-color: #bb4040; 
+    color: #fff; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+
+.deleteButton:hover {
+    background-color: #8b0808; 
 }
