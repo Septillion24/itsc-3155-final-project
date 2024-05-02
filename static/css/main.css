@@ -594,3 +594,18 @@ body.dark-mode .new-comment-box {
 .new-comment-box button:hover {
     background-color: #66c0f4;
 }
+
+/* Delete Buttons */
+.deleteButton {
+    background-color: #ff0000; 
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background-color: #cc0000; 
+}
+
