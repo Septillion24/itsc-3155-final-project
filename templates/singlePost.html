@@ -4,25 +4,21 @@
 
 {% block scripts %}
     <script>
-        postID = {{post.post_id}};
+        postID = {{ post.post_id }};
     </script>
     <script src="/static/scripts/loadComments.js" defer></script>
 {% endblock %}
 
 {% block stylesheet %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
-    <style src="static/css/main.css"></style>
 {% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <h4 style="color:green" class="">{{post.title}}</h4>
-    <img src="{{post.image.image_url}}" class="img-fluid" alt="Responsive image">
-    <p class="mb-4">{{post.text_content}}</p>
-    
+<div class="single-container mt-4">
+    <h4 class="single-title">{{ post.title }}</h4>
+    <img src="{{ post.image.image_url }}" class="single-img" alt="Responsive image">
+    <p class="single-paragraph">{{ post.text_content }}</p>
 
     <div id="commentsContainer"></div>
-
-    
 </div>
 {% endblock %}
