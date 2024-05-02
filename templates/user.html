@@ -29,6 +29,9 @@
         <div class="content-buttons">
             <p id="currentlyDisplaying">Showing posts by this user...</p>
             <button id="commentPostsButton" onclick="toggleCommentsPosts()">Show Comments</button>
+            {%if owner%}
+                <button class="deleteButton" onclick="deleteUser()">Delete user</button>
+            {%endif%}
         </div>
         <div id="deleteButtonContainer"></div>
         <div id="loadingWidget"><p>Loading...</p></div>
