@@ -1,4 +1,6 @@
 function editComment(commentID, newContent) {
+    const newUsername = prompt('Enter your new username:', currentUsername);
+    
     fetch('/edit/comment', {
         method: 'POST',
         headers: {
@@ -6,7 +8,7 @@ function editComment(commentID, newContent) {
         },
         body: JSON.stringify({
             commentID: commentID,
-            newContent: newContent
+            newContent: newUsername
         })
     })
     .then(response => {
