@@ -1,10 +1,12 @@
 {% extends '_layout.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Post{% endblock %}
 
 {% block scripts %}
-    <script src="static/scripts/loadPosts.js" defer></script>
-    <script src="static/scripts/modal.js"></script>
+    <script>
+        postID = {{post.post_id}};
+    </script>
+    <script src="/static/scripts/loadComments.js" defer></script>
 {% endblock %}
 
 {% block stylesheet %}
@@ -14,51 +16,13 @@
 
 {% block body %}
 <div class="container mt-4">
-    <h6 style="color:green" class="text-center">Forum Discussion</h6>
-    <h1 class="mb-4 text-center">Horror/Paranormal Sightings</h1>
-
-    <!-- Search bar (does nothing rn) -->
-    <div class="mb-3 form-outline" data-mdb-input-init>
-        <input type="search" id="form1" class="form-control" placeholder="Search by Discussion Title" aria-label="Search" />
-    </div>
-
-    <!-- Button to trigger modal -->
-    <button type="button" class="btn btn-primary" onclick="openModal()">
-        Create New Post
-    </button>
-
-    <!-- Modal -->
-    <div id="createPostModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <!-- Form to create a new post -->
-            <form action="/forum/makepost" method="POST">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
-                </div>
-                <div class="form-group">
-                    <label for="postContent">Image URL</label>
-                    <textarea class="form-control" id="imageURL" name="imageURL" rows="3" placeholder="Enter URL for externally-hosted image"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="postContent">Content</label>
-                    <textarea class="form-control" id="postContent" name="postContent" rows="3" placeholder="Enter content"></textarea>
-                </div>
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </div>
-    <br><br>
-    <div id="postsContainer"></div>
+    <h4 style="color:green" class="">{{post.title}}</h4>
+    <img src="{{post.image.image_url}}" class="img-fluid" alt="Responsive image">
+    <p class="mb-4">{{post.text_content}}</p>
     
-    <nav aria-label="Forum page navigation">
-        <ul class="pagination justify-content-center">
-            {% for page_num in pagination_pages %}
-            <li class="page-item"><a class="page-link" href="{{ url_for('forum_page', page=page_num) }}">{{ page_num }}</a></li>
-            {% endfor %}
-        </ul>
-    </nav>
+
+    <div id="commentsContainer"></div>
+
+    
 </div>
 {% endblock %}

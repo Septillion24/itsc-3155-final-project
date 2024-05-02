@@ -27,7 +27,7 @@ function toggleCommentsPosts() {
     else if (postsShown) {
         console.log("Switching to comments!");
         if (!commentsPopulated) {
-            populateProfileComments();
+            populatePostComments();
         }
         commentsShown = true;
         postsShown = false;
@@ -38,7 +38,7 @@ function toggleCommentsPosts() {
     }
 }
 
-function populateProfileComments() {
+function populatePostComments() {
     fetch(`/user/${userID}/comments`)
         .then((response) => response.json())
         .then((data) => {
@@ -88,7 +88,7 @@ function getRelativeTime(timestamp) {
     }
 }
 
-console.log(populateProfileComments());
+console.log(populatePostComments());
 
 function populateProfilePosts() {
     fetch(`/user/${userID}/posts`)
