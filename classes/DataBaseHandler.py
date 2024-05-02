@@ -224,6 +224,7 @@ class DataBaseHandler:
                 for commentrow in rows:
                     comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
                 return comments
+    
     def getVoteByUserID(self, userID: str) -> Vote:
         pool = get_pool()
         with pool.connection() as conn:
@@ -234,5 +235,6 @@ class DataBaseHandler:
                     return None
                 votes = []
                 for voterow in rows:
-                    votes.append(Vote(voterow[0], self.getUserByID(voterow[1]), self.getPollByID(voterow[2]), voterow[3], voterow[4]))
+                    votes.append(Vote(voterow[0], self.getUserByID(voterow[1]), voterow[2], voterow[3], voterow[4]))
                 return votes
+    
