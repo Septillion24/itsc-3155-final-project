@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import datetime
 import os
 from psycopg_pool import ConnectionPool
+import time
 
 
 load_dotenv()
@@ -55,6 +56,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(F'''INSERT INTO Post (Owner, Title, ImageID, TextContent, Timestamp) VALUES
                     ('{owner}', '{title}', '{image.image_id}', '{text_content}', '{timestamp}')''')
+                time.sleep(0.1)
                 return self.getMostRecentPost()
         
                 
