@@ -285,17 +285,16 @@ def search():
 
 @app.post('/delete/post')
 def deletePost():
-    print("1")
     if session.get('authenticated', False) != True:
         return "Not authorized", 401
-    print("2")
     
     user_id = session['user_id']
     postID = request.form["postID"]
     
+    print("Userid" + user_id)
+    print("Postid" +  postID)
     if db.getPostByID(postID).owner != user_id:
         return "Not authorized", 401
-    print("3")
     print(f"Post found: {postID}")
     # try:
     print("Deleting post!")
