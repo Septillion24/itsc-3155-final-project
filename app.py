@@ -285,17 +285,14 @@ def search():
 
 @app.post('/delete/post')
 def deletePost():
-    print("1")
     if session.get('authenticated', False) != True:
         return "Not authorized", 401
-    print("2")
     
     user_id = session['user_id']
-    postID = request.form["postID"]
+    postID = request.json['postID']
     
     if db.getPostByID(postID).owner != user_id:
         return "Not authorized", 401
-    print("3")
     print(f"Post found: {postID}")
     # try:
     print("Deleting post!")
@@ -312,7 +309,7 @@ def deleteComment():
         return "Not authorized", 401
     
     user_id = session['user_id']
-    commentID = request.form["commentID"]
+    commentID = request.json["commentID"]
     
     if db.getCommentByID(commentID).owner != user_id:
         return "Not authorized", 401
@@ -330,7 +327,7 @@ def deleteUser():
         return "Not authorized", 401
     
     user_id = session['user_id']
-    deletedUserID = request.form["userID"]
+    deletedUserID = request.json["userID"]
     
     if deletedUserID != user_id:
         return "Not authorized", 401
