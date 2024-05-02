@@ -158,7 +158,7 @@ def getCommentsByUserID(userID:int):
     
 #voting
     
-@app.post('/vote')
+@app.post('/vote', methods=['GET', 'POST'])
 def castVote():
     logged_in = session.get('authenticated', False)
     if session.get('authenticated',False) != True:
@@ -166,6 +166,11 @@ def castVote():
     
     user_id = session['user_id']
     option = request.form['option']
+    
+    if option == 'yes':
+        votes['yes'] += 1
+    elif option == 'no':
+        votes['no'] += 1
     
     db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
     return render_template('voting.html', votes = votes, logged_in = logged_in)
