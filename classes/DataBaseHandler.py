@@ -209,10 +209,8 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 if cur.rowcount == 0:
                     return None
-                votes = []
-                for voterow in rows:
-                    votes.append(Vote(voterow[0], self.getUserByID(voterow[1]), voterow[2], voterow[3], voterow[4]))
-                return votes
+                return (Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4]))
+                
     def getVotesForPoll(self, pollID: int) -> int:
         pool = get_pool()
         with pool.connection() as conn:
