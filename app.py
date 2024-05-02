@@ -385,10 +385,11 @@ def editComment():
     comment = db.getCommentByCommentID(commentID)
     if comment == None:
         return "Comment not found", 404
-    if comment.owner != user_id:
+    if comment.owner.user_id != user_id:
         return "Not authorized", 401
     
     newContent = request.json['newContent']
+    print(f"Editing comment with ID {commentID} with the new content of {newContent}")
     db.editComment(commentID, newContent)
 
     return redirect(url_for('getPostFromID', post_id=comment.post_id))
