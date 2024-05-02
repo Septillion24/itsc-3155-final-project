@@ -1,5 +1,5 @@
 function editComment(commentID, newContent) {
-    const newUsername = prompt('Enter your new username:', currentUsername);
+    const newCommentContent = prompt('Enter your new username:');
     
     fetch('/edit/comment', {
         method: 'POST',
@@ -8,13 +8,14 @@ function editComment(commentID, newContent) {
         },
         body: JSON.stringify({
             commentID: commentID,
-            newContent: newUsername
+            newContent: newCommentContent
         })
     })
     .then(response => {
         if (response.ok) {
             // If the update was successful, you can handle the response here if needed
             console.log('Comment edited successfully');
+            window.location.href = `/forum/post/${postID}`;
         } else {
             console.error('Failed to edit comment:', response.status);
         }
