@@ -68,6 +68,7 @@ class Post:
     title: str = None
     image: Image = None
     text_content: str = None
+    owner_name: str = None
     timestamp: datetime = None
     number_of_comments: int = None
 
@@ -87,6 +88,7 @@ class Post:
             'title': self.title,
             'image': self.image,
             'text_content': self.text_content,
+            'owner_name':self.owner_name,
             'timestamp': str(self.timestamp)
         }
     def updateNumberOfComments(self, db): 

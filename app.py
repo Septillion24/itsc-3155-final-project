@@ -104,7 +104,8 @@ def getPostsForForumPage():
     topPosts = db.getTopPosts(numPosts)
     for post in topPosts:
         postOwner = db.getUserByID(post.owner)
-        post.owner = postOwner.first_name + " " + postOwner.last_name
+        print (postOwner)
+        post.owner_name = postOwner.first_name + " " + postOwner.last_name
     return jsonify([post.to_dict() for post in topPosts]), 200
 
 @app.get('/forum/post/<int:post_id>')
