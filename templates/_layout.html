@@ -36,11 +36,11 @@
           <li class="nav-item">
             <a class="nav-link{% if newsearch %} active{% endif %}" href="/newsearch">Location Search</a>
           </li>
-          <li class="nav-item">
-            {% if template_user %}
+          {% if template_user %}
+            <li class="nav-item">
               <a class="nav-link{% if user %} active{% endif %}" href="/user/{{ template_user.user_id }}">My Profile</a>
-            {% endif %}
-          </li>
+            </li>
+        {% endif %}
         </ul>
       </div>
       {% if logged_in %}
