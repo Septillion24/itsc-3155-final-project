@@ -124,7 +124,7 @@ def createPost():
     image_url = request.form["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
     print("Creating post: " + title + ", '" + text_content + "'")
-    response = db.createPost(user_id,title,image_id=image, text_content=text_content, timestamp=datetime.now())
+    response = db.createPost(user_id,title,image=image, text_content=text_content, timestamp=datetime.now())
     print(response)
     if response:
         return redirect(f"/forum/post/{response.post_id}")
@@ -143,7 +143,8 @@ def getAbout():
 @app.get('/user/<int:userID>')
 def getUserByID(userID:int):
     user = db.getUserByID(userID)
-    return render_template("user.html", user=user)
+    logged_in = session.get('authenticated', False)
+    return render_template("user.html", user=user, logged_in = logged_in)
 
 @app.get("/user/<int:userID>/posts")
 def getPostsByUserID(userID:int):
