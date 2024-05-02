@@ -41,18 +41,9 @@ function populatePostComments() {
                             <p id="comment-${item.comment_id}">${item.content}</p>
                         </div>
                         ${userID === item.owner ? `<button onclick="deleteComment(${item.comment_id})">Delete</button>` : "" }
+                        ${userID === item.owner ? `<button onclick="editComment(${item.comment_id})">edit</button>` : "" }
                     </div>
                 `;
-
-                if (userID === item.owner) {
-                    const editButton = document.createElement("button");
-                    editButton.textContent = "Edit";
-                    editButton.classList.add("editButton");
-                    editButton.addEventListener("click", () => editComment(item.comment_id));
-                    postDiv.querySelector(".commentContainer").appendChild(editButton);
-                }
-                
-                container.appendChild(postDiv);
             });
         })
         .catch((error) => console.error("Error fetching posts:", error));
