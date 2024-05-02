@@ -18,7 +18,7 @@ function populatePosts() {
                     <div class="userInfo">
                         <div class="userAvatar"><img src="static/images/avatar2.png" /></div>
                         <div>
-                            <div class="postUser"><a href="/user/${item.owner}">${item.owner}</a></div>
+                            <div class="postUser"><a href="/user/${item.owner}">${item.owner_name}</a></div>
                             <div class="postTimestamp">${relativeTime}</div>
                         </div>
                     </div>
@@ -32,6 +32,7 @@ function populatePosts() {
                 <div>
                 `; // off-brand jsx
                 container.appendChild(postDiv);
+                console.log(item.owner)
             });
             loadingWidget.remove();
         })
