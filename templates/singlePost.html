@@ -5,6 +5,7 @@
 {% block scripts %}
     <script>
         postID = {{ post.post_id }};
+        userID = "{{user_id}}";
     </script>
     <script src="/static/scripts/loadComments.js" defer></script>
     {% if owner %}

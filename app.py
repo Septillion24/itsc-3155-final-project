@@ -121,7 +121,7 @@ def getPostFromID(post_id):
         owner = False
 
     logged_in = session.get('authenticated', False)
-    return render_template("singlePost.html", post=post, logged_in=logged_in, owner = owner)
+    return render_template("singlePost.html", post=post, logged_in=logged_in, owner = owner, user_id = user_id)
 
 @app.post("/forum/makepost")
 def createPost():
