@@ -283,7 +283,7 @@ def search():
 
 #deleting
 
-@app.post('/delete/post/')
+@app.post('/delete/post')
 def deletePost():
     if session.get('authenticated', False) != True:
         return "Not authorized", 401
@@ -301,7 +301,7 @@ def deletePost():
     #     print(e)
     #     return "Could not delete post", 400
 
-@app.post('/delete/comment/')
+@app.post('/delete/comment')
 def deleteComment():
     if session.get('authenticated', False) != True:
         return "Not authorized", 401
@@ -319,7 +319,7 @@ def deleteComment():
         print(e)
         return "Could not delete comment", 400
 
-@app.post('/delete/user/')
+@app.post('/delete/user')
 def deleteUser():
     if session.get('authenticated', False) != True:
         return "Not authorized", 401

@@ -7,14 +7,16 @@ function addDeleteButton() {
 
 function deletePost() {
     fetch("/delete/post", {
-        method: "POST", 
+        method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({ postID: postID }),
     }).then((response) => {
         if (response.status === 200) {
-            window.location.href = '/';
+            window.location.href = "/";
+        } else {
+            console.log(response);
         }
     });
 }

@@ -15,6 +15,8 @@ function deleteComment(commentID) {
     }).then((response) => {
         if (response.status === 200) {
             window.location.href = "/";
+        } else {
+            console.log(response);
         }
     });
 }
