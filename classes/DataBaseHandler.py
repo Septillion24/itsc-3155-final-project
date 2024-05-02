@@ -267,6 +267,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'''DELETE FROM Vote WHERE Owner = '{userID}'; ''')
                 cur.execute(f'''DELETE FROM Comment WHERE Owner = '{userID}'; ''')
+                cur.execute(f'''DELETE FROM IMAGE WHERE Author = '{userID}'; ''')
                 cur.execute(f'''DELETE FROM Post WHERE Owner = '{userID}'; ''')
                 cur.execute(f'''DELETE FROM Users WHERE UserID = '{userID}'; ''')
 
