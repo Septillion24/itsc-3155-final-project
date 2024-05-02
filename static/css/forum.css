@@ -60,6 +60,8 @@ body {
     background-color: rgba(246, 248, 253, 255);
 }
 
+/* Single Page Styling */
+
 .single-body {
     font-family: 'Arial', sans-serif;
 }
@@ -131,4 +133,21 @@ body.dark-mode .container.pt-4 {
 body.dark-mode .container.mt-4 {
     background-color: #333333; /* example color for dark mode */
     color: #ffffff;
+}
+
+/* Single Page Dark Mode */
+
+body.dark-mode .single-body {
+    background-color: #333333; 
+    color: #ffffff;
+}
+
+body.dark-mode .single-container {
+    padding: 20px;
+    background-color: #000000; 
+    color: #ffffff; 
+}
+
+body.dark-mode .single-paragraph {
+    color: #ccc;
 }
