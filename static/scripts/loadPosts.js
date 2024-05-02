@@ -4,9 +4,11 @@ function populatePosts() {
         .then((data) => {
             console.log(data);
             const container = document.getElementById("postsContainer");
+            const loadingWidget = document.getElementById("loadingWidget");
+
             data.forEach((item) => {
                 const postDiv = document.createElement("div");
-                const relativeTime = getRelativeTime(item.timestamp)
+                const relativeTime = getRelativeTime(item.timestamp);
                 postDiv.innerHTML = `
                 <div class="postContainer">
                     <div class="postTitle">
@@ -31,6 +33,7 @@ function populatePosts() {
                 `; // off-brand jsx
                 container.appendChild(postDiv);
             });
+            loadingWidget.remove();
         })
         .catch((error) => console.error("Error fetching posts:", error));
 }
@@ -44,10 +47,10 @@ function getRelativeTime(timestamp) {
         return "just now";
     } else if (diffInSeconds < 3600) {
         const diff = Math.floor(diffInSeconds / 60);
-        return `${diff} minute${diff === 1 ?"" : "s"} ago`;
+        return `${diff} minute${diff === 1 ? "" : "s"} ago`;
     } else if (diffInSeconds < 86400) {
         const diff = Math.floor(diffInSeconds / 3600);
-        return `${diff} hour${diff === 1 ?"" : "s"} ago`;
+        return `${diff} hour${diff === 1 ? "" : "s"} ago`;
     } else {
         const diff = Math.floor(diffInSeconds / 86400);
         return `${diff} day${diff === 1 ? "" : "s"} ago`; // i am a master of js, bow to me.
