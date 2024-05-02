@@ -2,12 +2,12 @@ function addDeleteButton() {
     if (owner === true) {
         const container = document.getElementById("deleteButtonContainer");
         const postDiv = document.createElement("div");
-        postDiv.innerHTML = `<button class="deleteButton" onclick="deletePost()">Delete</button>`;
+        postDiv.innerHTML = `<button class="deleteButton" onclick="deleteComment()">Delete</button>`;
     }
 }
 
-function deletePost() {
-    fetch("/delete/post", {
+function deleteComment() {
+    fetch("/", {
         method: "POST", 
         headers: {
             "Content-Type": "application/json",
