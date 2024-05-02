@@ -191,15 +191,14 @@ class DataBaseHandler:
                 for commentrow in rows:
                     comments.append(Comment(commentrow[0], commentrow[2], commentrow[1], commentrow[3], commentrow[4]))
                 return comments
-    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> Vote: 
-        time = datetime.now()
+    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool, timestamp: datetime) -> Vote: 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
-                                VALUES ({userID}, {pollID}, {voteFor}, {time}) RETURNING VoteID; ''')
+                                VALUES ({userID}, {pollID}, {voteFor}, {timestamp}) RETURNING VoteID; ''')
                 rows = cur.fetchall()
-                return Vote(int(rows[0][0]), self.getUserByID(userID), pollID, voteFor, time)
+                return Vote(int(rows[0][0]), self.getUserByID(userID), pollID, voteFor, timestamp)
             
     def getVoteByUserID(self, userID: str) -> Vote:
         pool = get_pool()
