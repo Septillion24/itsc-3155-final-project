@@ -110,11 +110,18 @@ def getPostsForForumPage():
 @app.get('/forum/post/<int:post_id>')
 def getPostFromID(post_id):
     post = db.getPostByID(post_id)
+    user_id = session.get('user_id', None)
+    
     if post is None:
         abort(404)
 
+    if post.owner == user_id:
+        owner = True
+    else:
+        owner = False
+
     logged_in = session.get('authenticated', False)
-    return render_template("singlePost.html", post=post, logged_in=logged_in)
+    return render_template("singlePost.html", post=post, logged_in=logged_in, owner = owner)
 
 @app.post("/forum/makepost")
 def createPost():
@@ -243,6 +250,65 @@ def search():
     else:
         return "Unsuccessful", 400
 
+
+#deleting
+
+@app.post('/delete/post/')
+def deletePost():
+    if session.get('authenticated', False) != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    postID = request.form["postID"]
+    
+    if db.getPostByID(postID).owner != user_id:
+        return "Not authorized", 401
+    try:
+        db.deletePost(postID)
+        return "Successfully deleted", 200
+    
+    except:
+        return "Could not delete post", 400
+
+@app.post('/delete/comment/')
+def deleteComment():
+    if session.get('authenticated', False) != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    commentID = request.form["commentID"]
+    
+    if db.getCommentByID(commentID).owner != user_id:
+        return "Not authorized", 401
+    try:
+        db.deleteComment(commentID)
+        return "Successfully deleted", 200
+    
+    except:
+        return "Could not delete comment", 400
+
+@app.post('/delete/user/')
+def deleteUser():
+    if session.get('authenticated', False) != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    deletedUserID = request.form["userID"]
+    
+    if deletedUserID != user_id:
+        return "Not authorized", 401
+    try:
+        for post in db.getPostsByUserID(deletedUserID):
+            db.deletePost(post.post_id)
+        for comment in db.getCommentsByUserID(deletedUserID):
+            db.deletePost(comment.comment_id)
+        
+        db.deleteUser(deletedUserID)
+        
+        return "Successfully deleted", 200
+    
+    except:
+        return "Could not delete user", 400
 
 
 if __name__ == '__main__':
