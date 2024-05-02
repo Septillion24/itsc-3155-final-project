@@ -293,7 +293,9 @@ def deletePost():
     
     if db.getPostByID(postID).owner != user_id:
         return "Not authorized", 401
+    print(f"Post found: {postID}")
     # try:
+    print("Deleting post!")
     db.deletePost(postID)
     return "Successfully deleted", 200
     
