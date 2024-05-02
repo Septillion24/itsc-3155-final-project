@@ -139,6 +139,8 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'''SELECT ImageID, URL, Author FROM Image WHERE ImageID = {imageID}; ''')
                 rows = cur.fetchall()
+                if rows[0] == None:
+                    return None
                 return Image(rows[0][0], rows[0][1], rows[0][2])
     
     def createFriendRelationship(self, user1: int, user2: int) -> None:
