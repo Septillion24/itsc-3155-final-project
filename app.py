@@ -167,6 +167,7 @@ def castVote():
     option = request.form['option']
     
     db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
+    return "Vote cast successfully", 200
     
     
 @app.get('/vote')
