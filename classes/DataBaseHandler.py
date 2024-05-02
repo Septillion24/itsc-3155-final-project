@@ -277,3 +277,19 @@ class DataBaseHandler:
                 for postrow in rows:
                     posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
                 return posts
+    def updateUsername(self, user_id, new_username):
+        pool = get_pool()
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cursor:
+                    # Execute a SQL update query to update the username
+                    sql = "UPDATE Users SET Username = %s WHERE UserID = %s::VARCHAR"
+                    cursor.execute(sql, (new_username, user_id))
+                    # Commit the transaction
+                    conn.commit()
+            return True  # This should be inside the try block
+        except Exception as e:
+            print("Error updating username:", e)
+            # Rollback the transaction in case of an error
+            conn.rollback()
+            return False
