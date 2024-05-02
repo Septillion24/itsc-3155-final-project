@@ -160,6 +160,7 @@ def getCommentsByUserID(userID:int):
     
 @app.post('/vote')
 def castVote():
+    logged_in = session.get('authenticated', False)
     if session.get('authenticated',False) != True:
         return "Not authorized", 401
     
@@ -167,7 +168,7 @@ def castVote():
     option = request.form['option']
     
     db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
-    return "Vote cast successfully", 200
+    return render_template('voting.html', votes = votes, logged_in = logged_in)
     
     
 @app.get('/vote')
