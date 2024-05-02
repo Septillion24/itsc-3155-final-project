@@ -295,3 +295,19 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'UPDATE Comment SET Content = \'{content}\' WHERE CommentID = {commentID};')
                 return self.getCommentByCommentID(commentID)
+    def updateUsername(self, user_id, new_username):
+        pool = get_pool()
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cursor:
+                    # Execute a SQL update query to update the username
+                    sql = "UPDATE Users SET Username = %s WHERE UserID = %s::VARCHAR"
+                    cursor.execute(sql, (new_username, user_id))
+                    # Commit the transaction
+                    conn.commit()
+            return True  # This should be inside the try block
+        except Exception as e:
+            print("Error updating username:", e)
+            # Rollback the transaction in case of an error
+            conn.rollback()
+            return False

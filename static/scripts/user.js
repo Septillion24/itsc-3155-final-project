@@ -148,3 +148,36 @@ function getRelativeTime(timestamp) {
 }
 
 console.log(populateProfilePosts());
+
+function editUsername() {
+    // Get the current username
+    const currentUsername = document.querySelector('.username').innerText;
+
+    // Prompt the user for a new username
+    const newUsername = prompt('Enter your new username:', currentUsername);
+
+    // If the user entered a new username and it's different from the current one
+    if (newUsername && newUsername !== currentUsername) {
+        // Send a request to update the username
+        fetch(`/user/${userID}/edit-username`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ newUsername: newUsername })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Update the displayed username
+                document.querySelector('.username').innerText = newUsername;
+                alert('Username updated successfully!');
+            } else {
+                alert('Failed to update username. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating username:', error);
+            alert('An error occurred while updating the username. Please try again later.');
+        });
+    }
+}
