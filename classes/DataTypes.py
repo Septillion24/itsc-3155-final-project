@@ -44,39 +44,24 @@ class FriendRelationship:
         
 
 
-class Image:
-    image_id: int = None
-    url: str = None
-    author: int = None
 
-    def __init__(self, image_id: int, url: str, author: int) -> None:
-        self.image_id = image_id
-        self.url = url
-        self.author = author
-
-    def to_dict(self) -> dict:
-        return {
-            'image_id': self.image_id,
-            'url': self.url,
-            'author': self.author
-        }
 from datetime import datetime
 
 class Post:
     post_id: int = None
     owner: User = None
     title: str = None
-    image: Image = None
+    image_url: str = None
     text_content: str = None
     owner_name: str = None
     timestamp: datetime = None
     number_of_comments: int = None
 
-    def __init__(self, post_id: int, owner: User, title: str, image: Image, text_content: str, timestamp: datetime) -> None:
+    def __init__(self, post_id: int, owner: User, title: str, image_url: str, text_content: str, timestamp: datetime) -> None:
         self.post_id = post_id
         self.owner = owner
         self.title = title
-        self.image= image
+        self.image_url= image_url
         self.text_content = text_content
         self.timestamp = timestamp
         self.number_of_comments = (post_id)
@@ -86,7 +71,7 @@ class Post:
             'post_id': self.post_id,
             'owner': self.owner,
             'title': self.title,
-            'image': self.image,
+            'image_url': self.image_url,
             'text_content': self.text_content,
             'owner_name':self.owner_name,
             'timestamp': str(self.timestamp)

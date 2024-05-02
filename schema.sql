@@ -14,15 +14,11 @@ CREATE TABLE IF NOT EXISTS Post (
     PostID serial PRIMARY KEY,
     Owner int REFERENCES Users(UserID),
     Title varchar(255),
-    ImageID int,
+    ImageURL varchar(255),
     TextContent text,
     Timestamp timestamp without time zone
 );
-CREATE TABLE IF NOT EXISTS Image (
-    ImageID serial PRIMARY KEY,
-    URL text,
-    Author int REFERENCES Users(UserID)
-);
+
 CREATE TABLE IF NOT EXISTS Comment (
     CommentID serial PRIMARY KEY,
     Owner int REFERENCES Users(UserID),
@@ -44,31 +40,3 @@ CREATE TABLE IF NOT EXISTS Vote (
     Timestamp timestamp without time zone
 );
 
-INSERT INTO Users (Username, Email, FirstName, LastName) VALUES
-('john_doe', 'john.doe@example.com', 'John', 'Doe'),
-('jane_smith', 'jane.smith@example.com', 'Jane', 'Smith');
-
-INSERT INTO FriendRelationship (user1, user2) VALUES
-(1, 2);
-
-INSERT INTO Post (Owner, Title, ImageID, TextContent, Timestamp) VALUES
-(1, 'First Post', NULL, 'This is the content of the first post.', CURRENT_TIMESTAMP),
-(2, 'Second Post', NULL, 'Content of the second post here.', CURRENT_TIMESTAMP);
-
-INSERT INTO Image (URL, Author) VALUES
-('http://example.com/image1.jpg', 1),
-('http://example.com/image2.jpg', 2);
-
-
-INSERT INTO Comment (Owner, PostID, Content, Timestamp) VALUES
-(2, 1, 'Nice post!', CURRENT_TIMESTAMP),
-(1, 2, 'Thank you!', CURRENT_TIMESTAMP);
-
-
-INSERT INTO Poll (PostID, VotesFor, VotesAgainst) VALUES
-(1, 1, 1);
-
-
-INSERT INTO Vote (Owner, PollID, VoteFor, Timestamp) VALUES
-(1, 1, TRUE, CURRENT_TIMESTAMP),
-(2, 1, FALSE, CURRENT_TIMESTAMP);

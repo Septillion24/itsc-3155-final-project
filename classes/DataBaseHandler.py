@@ -42,7 +42,7 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post')
+                cur.execute('SELECT PostID, Owner, Title, ImageURL, TextContent, Timestamp FROM Post')
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
@@ -50,14 +50,14 @@ class DataBaseHandler:
                 return posts
 
                 
-    def createPost(self, owner: str, title: str, image: Image, text_content: str, timestamp: datetime) ->   Post: 
+    def createPost(self, owner: str, title: str, image_url: str, text_content: str, timestamp: datetime) ->   Post: 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(F'''INSERT INTO Post (Owner, Title, ImageID, TextContent, Timestamp) VALUES
-                    ('{owner}', '{title}', '{image.image_id}', '{text_content}', '{timestamp}') RETURNING PostID; ''')
+                cur.execute(F'''INSERT INTO Post (Owner, Title, ImageURL, TextContent, Timestamp) VALUES
+                    ('{owner}', '{title}', '{image_url}', '{text_content}', '{timestamp}') RETURNING PostID; ''')
                 rows = cur.fetchall()
-                return Post(rows[0][0], owner, title, image, text_content, timestamp)
+                return Post(rows[0][0], owner, title, image_url, text_content, timestamp)
             
         
                 
@@ -65,9 +65,9 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Post.postID = {postID}')
+                cur.execute(f'SELECT PostID, Owner, Title, ImageURL, TextContent, Timestamp FROM Post WHERE Post.postID = {postID}')
                 rows = cur.fetchall()
-                selectedPost = Post(rows[0][0], rows[0][1], rows[0][2], self.getImageByID(rows[0][3]), rows[0][4], rows[0][5])
+                selectedPost = Post(rows[0][0], rows[0][1], rows[0][2], rows[0][3], rows[0][4], rows[0][5])
                 return selectedPost
             
             
@@ -108,7 +108,7 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Owner = '{userID}'; ''')
+                cur.execute(f'''SELECT PostID, Owner, Title, ImageURL, TextContent, Timestamp FROM Post WHERE Owner = '{userID}'; ''')
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
@@ -119,7 +119,7 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post ORDER BY Timestamp DESC LIMIT {numberOfPosts}; ''')
+                cur.execute(f'''SELECT PostID, Owner, Title, ImageURL, TextContent, Timestamp FROM Post ORDER BY Timestamp DESC LIMIT {numberOfPosts}; ''')
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:
@@ -133,13 +133,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 return rows[0]
             
-    def getImageByID(self, imageID: int) -> str:
-        pool = get_pool()
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(f'''SELECT ImageID, URL, Author FROM Image WHERE ImageID = {imageID}; ''')
-                rows = cur.fetchall()
-                return Image(rows[0][0], rows[0][1], rows[0][2])
+   
     
     def createFriendRelationship(self, user1: int, user2: int) -> None:
         pool = get_pool()
@@ -157,13 +151,7 @@ class DataBaseHandler:
                 for friendrow in rows:
                     friends.append(User(friendrow[0], friendrow[1]))
                 return friends
-    def createImage(self, url: str, author: int) -> None: 
-        pool = get_pool()
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(f'''INSERT INTO Image (URL, Author) VALUES ('{url}', {author}) RETURNING ImageID; ''')
-                rows = cur.fetchall()
-                return Image(int(rows[0][0]), url, author)
+    
     def createComment(self, post: Post, owner: User, content: str, timestamp: datetime) -> None: 
         pool = get_pool()
         with pool.connection() as conn:
@@ -267,7 +255,6 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'''DELETE FROM Vote WHERE Owner = '{userID}'; ''')
                 cur.execute(f'''DELETE FROM Comment WHERE Owner = '{userID}'; ''')
-                cur.execute(f'''DELETE FROM IMAGE WHERE Author = '{userID}'; ''')
                 cur.execute(f'''DELETE FROM Post WHERE Owner = '{userID}'; ''')
                 cur.execute(f'''DELETE FROM Users WHERE UserID = '{userID}'; ''')
 
@@ -276,7 +263,7 @@ class DataBaseHandler:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 # Use ILIKE for case-insensitive search and % for wildcard characters before and after the query
-                cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Title ILIKE %s', ('%' + query + '%',))
+                cur.execute('SELECT PostID, Owner, Title, ImageURL, TextContent, Timestamp FROM Post WHERE Title ILIKE %s', ('%' + query + '%',))
                 rows = cur.fetchall()
                 posts = []
                 for postrow in rows:

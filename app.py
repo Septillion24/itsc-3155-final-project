@@ -1,7 +1,7 @@
 from flask import Flask, abort, jsonify, redirect, render_template, request, url_for, session
 from authlib.integrations.flask_client import OAuth
 from classes.DataBaseHandler import DataBaseHandler
-from classes.DataTypes import Post, User, Comment, Image
+from classes.DataTypes import Post, User, Comment
 from dotenv import load_dotenv
 from datetime import datetime
 import requests
@@ -132,8 +132,7 @@ def createPost():
     title = request.form["title"]
     text_content = request.form["postContent"]
     image_url = request.form["imageURL"]
-    image = db.createImage(url=image_url,author=user_id)
-    response = db.createPost(user_id,title,image=image, text_content=text_content, timestamp=datetime.now())
+    response = db.createPost(user_id,title,image=image_url, text_content=text_content, timestamp=datetime.now())
     if response:
         return redirect(f"/forum/post/{response.post_id}")
     else:
