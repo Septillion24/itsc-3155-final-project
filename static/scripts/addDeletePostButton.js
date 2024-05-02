@@ -1,9 +1,7 @@
 function addDeleteButton() {
-    if (owner === true) {
-        const container = document.getElementById("deleteButtonContainer");
-        const postDiv = document.createElement("div");
-        postDiv.innerHTML = `<button class="deleteButton" onclick="deletePost()">Delete</button>`;
-    }
+    const container = document.getElementById("deleteButtonContainer");
+    const buttonDiv = document.createElement("div");
+    buttonDiv.innerHTML = `<button class="deleteButton" onclick="deletePost()">Delete</button>`;
 }
 
 function deletePost() {
