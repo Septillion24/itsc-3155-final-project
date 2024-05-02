@@ -106,10 +106,12 @@ def getPostsForForumPage():
 
 @app.get('/forum/post/<int:post_id>')
 def getPostFromID(post_id):
-    discussion = db.getPostByID(post_id)
-    if discussion is None:
+    post = db.getPostByID(post_id)
+    if post is None:
         abort(404)
-    return discussion, 200
+
+    logged_in = session.get('authenticated', False)
+    return render_template("singlePost.html", post=post, logged_in=logged_in)
 
 @app.post("/forum/makepost")
 def createPost():
