@@ -41,15 +41,15 @@
             <form action="/forum/makepost" method="POST">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" required>
                 </div>
                 <div class="form-group">
                     <label for="postContent">Image URL</label>
-                    <textarea class="form-control" id="imageURL" name="imageURL" rows="3" placeholder="Enter URL for externally-hosted image"></textarea>
+                    <textarea class="form-control" id="imageURL" name="imageURL" rows="3" placeholder="Enter URL for externally-hosted image" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="postContent">Content</label>
-                    <textarea class="form-control" id="postContent" name="postContent" rows="3" placeholder="Enter content"></textarea>
+                    <textarea class="form-control" id="postContent" name="postContent" rows="3" placeholder="Enter content" required></textarea>
                 </div>
                 <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                 <button type="submit" class="btn btn-primary">Submit</button>
