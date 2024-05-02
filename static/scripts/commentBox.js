@@ -6,7 +6,7 @@ function postComment() {
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: "commentContent=" + encodeURIComponent(commentContent) + "&postID={{ post.post_id }}"
+        body: "commentContent=" + encodeURIComponent(commentContent) + `&postID=${postID}`
     }).then(response => {
         if (response.ok) {
             window.location.reload(); // Reload the page after successful comment creation
