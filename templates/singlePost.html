@@ -5,16 +5,15 @@
 {% block scripts %}
     <script>
         postID = {{ post.post_id }};
-        userID = "{{user_id}}";
+        userID = "{{ user_id }}";
     </script>
     <script src="/static/scripts/loadComments.js" defer></script>
     {% if owner %}
     <script src="/static/scripts/addDeletePostButton.js" defer></script>
+    <script src="/static/scripts/editPost.js" defer></script>
     {% endif %}
-    <script src="/static/scripts/addDeleteCommentButton.js" defer></script>
-
+    <script src="/static/scripts/editComment.js" defer></script>
     <script src="/static/scripts/commentBox.js" defer></script>
-    
 {% endblock %}
 
 {% block stylesheet %}
@@ -26,8 +25,12 @@
     <h4 class="single-title">{{ post.title }}</h4>
     <img src="{{ post.image.url }}" class="single-img" alt="Responsive image">
     <p class="single-paragraph">{{ post.text_content }}</p>
-
+    
+    {% if owner %}
+    <button id="editPostButton" class="btn btn-secondary">Edit Post</button>
     <div id="deleteButtonContainer"></div>
+    {% endif %}
+    
     <div id="commentsContainer"></div>
 
     <!-- New comment form -->
