@@ -295,7 +295,8 @@ def deletePost():
         db.deletePost(postID)
         return "Successfully deleted", 200
     
-    except:
+    except Exception as e:
+        print(e)
         return "Could not delete post", 400
 
 @app.post('/delete/comment/')
@@ -312,7 +313,8 @@ def deleteComment():
         db.deleteComment(commentID)
         return "Successfully deleted", 200
     
-    except:
+    except Exception as e:
+        print(e)
         return "Could not delete comment", 400
 
 @app.post('/delete/user/')
@@ -335,7 +337,8 @@ def deleteUser():
         
         return "Successfully deleted", 200
     
-    except:
+    except Exception as e:
+        print(e)
         return "Could not delete user", 400
 
 
