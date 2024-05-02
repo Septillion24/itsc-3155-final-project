@@ -64,7 +64,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Post.postID = {postID}')
                 rows = cur.fetchall()
-                selectedPost = Post(rows[0][0], rows[0][1], rows[0][2], rows[0][3], rows[0][4], rows[0][5])
+                selectedPost = Post(rows[0][0], rows[0][1], rows[0][2], self.getImageByID(rows[0][3]), rows[0][4], rows[0][5])
                 return selectedPost
             
             
@@ -224,3 +224,15 @@ class DataBaseHandler:
                 for commentrow in rows:
                     comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
                 return comments
+    def getVoteByUserID(self, userID: str) -> Vote:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT VoteID, Owner, PollID, VoteFor, Timestamp FROM Vote WHERE Owner = '{userID}'; ''')
+                rows = cur.fetchall()
+                if cur.rowcount == 0:
+                    return None
+                votes = []
+                for voterow in rows:
+                    votes.append(Vote(voterow[0], self.getUserByID(voterow[1]), self.getPollByID(voterow[2]), voterow[3], voterow[4]))
+                return votes
