@@ -239,13 +239,14 @@ h1 {
 .bodyResult {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0px;
     background-color: #f7f7f7;
 }
 
 .result {
     text-align: center;
     margin-bottom: 20px;
+    padding: 20px;
     color: #333;
 }
 
@@ -543,4 +544,35 @@ body.dark-mode .search-button {
 
 .search-button i {
     font-size: 1rem;    /* Adjust size of the icon */
+}
+
+/* New comment form styling */
+.new-comment-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.new-comment-box textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-color: #333;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+}
+
+.new-comment-box button {
+    background-color: #4b9cd3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.new-comment-box button:hover {
+    background-color: #66c0f4;
 }
