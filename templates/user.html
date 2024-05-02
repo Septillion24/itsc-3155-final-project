@@ -7,7 +7,11 @@
     var userID = "{{ user.user_id }}";
 </script>
 <script src="/static/scripts/user.js" defer></script>
+
+{% if owner %}
 <script src="/static/scripts/addDeleteUserButton.js" defer></script>
+{% endif %}
+
 {% endblock %}
 
 {% block stylesheet %}
