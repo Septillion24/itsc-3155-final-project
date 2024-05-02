@@ -189,6 +189,20 @@ def getPostsByUserID(userID:int):
 def getCommentsByUserID(userID:int):
     posts = db.getCommentsByUserID(userID)
     return jsonify([post.to_dict() for post in posts])
+
+@app.route('/user/<int:user_id>/edit-username', methods=['POST'])
+def edit_username(user_id):
+    new_username = request.json.get('newUsername')
+    if not new_username:
+        return jsonify({'error': 'New username not provided'}), 400
+    
+    # Update the username in the database
+    success = db.updateUsername(user_id, new_username)
+    if success:
+        return jsonify({'message': 'Username updated successfully'}), 200
+    else:
+        return jsonify({'error': 'Failed to update username'}), 500
+
     
 #voting
     
