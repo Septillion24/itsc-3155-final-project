@@ -328,3 +328,14 @@ def getTopPosts(numPosts:int) -> list[Post]:
 
 def generate_nonce(length=16):
     return base64.urlsafe_b64encode(os.urandom(length)).decode('utf-8')
+
+@app.route('/search_results')
+def search_results():
+    search_query = request.args.get('search_query', '')
+    print(f"Searching for posts with query: {search_query}")
+    if search_query:
+        posts = db.searchPosts(search_query)
+        print(f"Found posts: {posts}")
+        return render_template('search_results.html', posts=posts)
+    else:
+        return render_template('search_results.html', posts=[], error="No search term provided.")
