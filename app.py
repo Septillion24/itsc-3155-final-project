@@ -304,7 +304,7 @@ def deleteComment():
     user_id = session['user_id']
     commentID = request.json["commentID"]
     
-    if db.getCommentByCommentID(commentID).owner != user_id:
+    if db.getCommentByCommentID(commentID).owner.user_id != user_id:
         return "Not authorized", 401
     try:
         db.deleteComment(commentID)
