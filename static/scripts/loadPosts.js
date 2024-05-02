@@ -24,9 +24,6 @@ function populatePosts() {
                     <div class="postBody">
                         <p>${item.text_content}</p>
                     </div>
-                    <div class="postComments">
-                        <p>${item.num_comments}</p>
-                    </div>
                 <div>
                 `; // off-brand jsx
                 container.appendChild(postDiv);
