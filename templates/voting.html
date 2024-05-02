@@ -5,6 +5,7 @@
 {% block stylesheet %}
 <style src="/static/css/main.css"></style>
 {% endblock stylesheet %}
+
 {% block body %}
 <nav>
     <span class="backwards"><a href="/vote/previous">← Previous Week's Poll</a></span>
@@ -14,15 +15,18 @@
     <h1>Cast your Votes!</h1>
     <h2>Is the Battleship in Wilmington, North Carolina really haunted?</h2>
     <div class="voting-image">
-        <img src="static\images\voting_page_image1.jpg" alt="Battleship" style="max-width: 100%; height: auto;">
+        <img src="static/images/voting_page_image1.jpg" alt="Battleship" style="max-width: 100%; height: auto;">
     </div>
     <form action="/vote" method="post" class="vote-buttons">
         <button type="submit" name="option" value="yes">Yes</button>
         <button type="submit" name="option" value="no">No</button>
     </form>
     <div class="result-bar">
-        <div class="bar-fill yes-fill" style="width: {{ (votes['yes'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
-        <div class="bar-fill no-fill" style="width: {{ (votes['no'] / (votes['yes'] + votes['no']) if votes['yes'] + votes['no'] > 0 else 0) * 100 }}%;"></div>
+        {% set total_votes = votes['yes'] + votes['no'] %}
+        {% set yes_percentage = (votes['yes'] / total_votes * 100) if total_votes > 0 else 0 %}
+        {% set no_percentage = (votes['no'] / total_votes * 100) if total_votes > 0 else 0 %}
+        <div class="bar-fill yes-fill" style="width: {{ yes_percentage }}%;"></div>
+        <div class="bar-fill no-fill" style="width: {{ no_percentage }}%;"></div>
     </div>
     <div class="result-text">
         <span>{{ votes['yes'] }} number of users say it is haunted</span>
