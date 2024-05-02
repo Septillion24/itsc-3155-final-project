@@ -1,0 +1,39 @@
+{% extends '_layout.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/forum.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="text-center">Search Results</h1>
+    <div id="postsContainer">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="postContainer">
+                    <div class="postTitle">
+                        <a href="{{ url_for('getPostFromID', post_id=post.post_id) }}">{{ post.title }}</a>
+                    </div>
+                    <div class="userInfo">
+                        <div class="userAvatar"><img src="static/images/avatar2.png" /></div>
+                        <div>
+                            <div class="postUser"><a href="{{ url_for('getUserByID', userID=post.owner) }}">{{ post.owner }}</a></div>
+                            <div class="postTimestamp">{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+                        </div>
+                    </div>
+                    <div class="postBody">
+                        <p>{{ post.text_content }}</p>
+                    </div>
+                    <div class="postComments">
+                        <p>{{ post.num_comments }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No posts found matching your query.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

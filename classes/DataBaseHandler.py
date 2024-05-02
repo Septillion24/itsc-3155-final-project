@@ -224,3 +224,15 @@ class DataBaseHandler:
                 for commentrow in rows:
                     comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
                 return comments
+            
+    def searchPosts(self, query: str) -> list[Post]:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                # Use ILIKE for case-insensitive search and % for wildcard characters before and after the query
+                cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post WHERE Title ILIKE %s', ('%' + query + '%',))
+                rows = cur.fetchall()
+                posts = []
+                for postrow in rows:
+                    posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
+                return posts
