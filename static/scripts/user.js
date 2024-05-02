@@ -52,7 +52,7 @@ function populatePostComments() {
                 <div class="userInfo">
                     <div class="userAvatar"><img src="/static/images/avatar2.png" /></div>
                     <div>
-                        <div class="commentUser">${item.owner}</div>
+                        <div class="commentUser"><a href="/user/${item.owner}">${item.owner_name}</a></div>
                         <div class="commentTimestamp">${relativeTime}</div>
                     </div>
                 </div>
