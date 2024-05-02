@@ -108,7 +108,7 @@ function populateProfilePosts() {
                     <div class="userInfo">
                         <div class="userAvatar"><img src="/static/images/avatar2.png" /></div>
                         <div>
-                            <div class="postUser">${item.owner}</div>
+                            <div class="postUser"><a href="/user/${item.owner}">${item.owner_name}</a></div>
                             <div class="postTimestamp">${relativeTime}</div>
                         </div>
                     </div>
@@ -116,9 +116,7 @@ function populateProfilePosts() {
                     <div class="postBody">
                         <p>${item.text_content}</p>
                     </div>
-                    <div class="postComments">
-                        <p>${item.num_comments}</p>
-                    </div>
+ 
                 <div>
                 `;
                 container.appendChild(postDiv);

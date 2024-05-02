@@ -165,6 +165,9 @@ def getUserByID(userID:int):
 @app.get("/user/<int:userID>/posts")
 def getPostsByUserID(userID:int):
     posts = db.getPostsByUserID(userID)
+    for post in posts:
+        postOwner = db.getUserByID(post.owner)
+        post.owner = postOwner.first_name + " " + postOwner.last_name
     return jsonify([post.to_dict() for post in posts]), 200
 
 @app.get("/user/<int:userID>/comments")
