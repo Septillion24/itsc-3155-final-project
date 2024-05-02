@@ -2,6 +2,7 @@ function addDeleteButton() {
     const container = document.getElementById("deleteButtonContainer");
     const buttonDiv = document.createElement("div");
     buttonDiv.innerHTML = `<button class="deleteButton" onclick="deleteUser()">Delete</button>`;
+    container.appendChild(buttonDiv);
 }
 
 function deleteUser() {
