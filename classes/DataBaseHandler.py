@@ -267,3 +267,23 @@ class DataBaseHandler:
                 cur.execute(f'''SELECT VoteID, Owner, PollID, VoteFor, Timestamp FROM Vote WHERE VoteID = {voteID}; ''')
                 rows = cur.fetchall()
                 return Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4])
+    def deleteVote(self, voteID: int) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''DELETE FROM Vote WHERE VoteID = {voteID}; ''')
+    def deleteComment(self, commentID: int) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''DELETE FROM Comment WHERE CommentID = {commentID}; ''')
+    def deletePost(self, postID: int) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''DELETE FROM Post WHERE PostID = {postID}; ''')
+    def deleteUser(self, userID: int) -> None:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''DELETE FROM Users WHERE UserID = {userID}; ''')
