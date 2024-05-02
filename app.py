@@ -198,10 +198,14 @@ def castVote():
     
     user_id = session['user_id']
     option = request.form['option']
+
     print(option)
     print(user_id)
+
     vote = db.getVoteByUserID(user_id)
+
     print(vote.vote_for)
+    
     if (vote != None):
         print("changinv cvote")
         db.changeVote(vote.vote_id, option == 'yes')
