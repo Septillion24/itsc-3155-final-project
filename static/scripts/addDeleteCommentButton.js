@@ -14,7 +14,7 @@ function deleteComment(commentID) {
         body: JSON.stringify({ commentID: commentID }),
     }).then((response) => {
         if (response.status === 200) {
-            window.location.href = "/";
+            window.location.href = `/forum/post/${postID}`;
         } else {
             console.log(response);
         }

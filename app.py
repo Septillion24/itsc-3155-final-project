@@ -382,7 +382,7 @@ def editComment():
     
     user_id = session['user_id']
     commentID = request.json["commentID"]
-    comment = db.getCommentByID(commentID)
+    comment = db.getCommentByCommentID(commentID)
     if comment == None:
         return "Comment not found", 404
     if comment.owner != user_id:
