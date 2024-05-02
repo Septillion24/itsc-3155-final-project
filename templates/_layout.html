@@ -38,7 +38,7 @@
           </li>
           {% if template_user %}
             <li class="nav-item">
-              <a class="nav-link{% if user %} active{% endif %}" href="/user/{{ template_user.user_id }}">My Profile</a>
+              <a class="nav-link{% if template_user and template_user.user_id  %} active{% endif %}" href="/user/{{ template_user.user_id }}">My Profile</a>
             </li>
         {% endif %}
         </ul>
