@@ -96,13 +96,14 @@ function populateProfilePosts() {
         .then((data) => {
             console.log(data);
             const container = document.getElementById("postsContainer");
+            const loadingWidget = document.getElementById("loadingWidget");
             data.forEach((item) => {
                 const postDiv = document.createElement("div");
                 const relativeTime = getRelativeTime(item.timestamp);
                 postDiv.innerHTML = `
                 <div class="postContainer">
                     <div class="postTitle">
-                        <p>${item.title}</p>
+                        <a href="/forum/post/${item.post_id}">${item.title}</a>
                     </div>
 
                     <div class="userInfo">
@@ -121,6 +122,7 @@ function populateProfilePosts() {
                 `;
                 container.appendChild(postDiv);
             });
+            loadingWidget.remove();
         })
         .catch((error) => console.error("Error fetching posts:", error));
     postsPopulated = true;
