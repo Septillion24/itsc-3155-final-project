@@ -40,6 +40,7 @@ function populatePostComments() {
                         <div class="commentBody">
                             <p id="comment-${item.comment_id}">${item.content}</p>
                         </div>
+                        ${userID === item.owner ? `<button onclick="deleteComment(${item.comment_id})">Delete</button>` : "" }
                     </div>
                 `;
 
