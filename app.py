@@ -175,7 +175,9 @@ def getAbout():
 def getUserByID(userID:int):
     user = db.getUserByID(userID)
     logged_in = session.get('authenticated', False)
-    return render_template("user.html", user=user, logged_in = logged_in)
+    user_id = session['user_id']
+    owner = userID == user_id
+    return render_template("user.html", user=user, logged_in = logged_in, owner=owner)
 
 @app.get("/user/<int:userID>/posts")
 def getPostsByUserID(userID:int):
