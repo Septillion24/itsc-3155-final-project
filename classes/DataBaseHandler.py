@@ -246,14 +246,14 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'''SELECT COUNT(*) FROM Vote WHERE PollID = {pollID} AND VoteFor = TRUE; ''')
                 rows = cur.fetchall()
-                return rows[0]
+                return int(rows[0][0])
     def getVotesAgainstPoll(self, pollID: int) -> int:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'''SELECT COUNT(*) FROM Vote WHERE PollID = {pollID} AND VoteFor = FALSE; ''')
                 rows = cur.fetchall()
-                return rows[0]
+                return int(rows[0][0])
     def changeVote(self, voteID: int, voteFor: bool) -> Vote:
         pool = get_pool()
         with pool.connection() as conn:
