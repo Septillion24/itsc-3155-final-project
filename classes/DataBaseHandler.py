@@ -261,11 +261,14 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(f'''DELETE FROM Comment WHERE PostID = {postID}; ''')
                 cur.execute(f'''DELETE FROM Post WHERE PostID = {postID}; ''')
-    def deleteUser(self, userID: int) -> None:
+    def deleteUser(self, userID: str) -> None:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''DELETE FROM Users WHERE UserID = {userID}; ''')
+                cur.execute(f'''DELETE FROM Vote WHERE Owner = '{userID}'; ''')
+                cur.execute(f'''DELETE FROM Comment WHERE Owner = '{userID}'; ''')
+                cur.execute(f'''DELETE FROM Post WHERE Owner = '{userID}'; ''')
+                cur.execute(f'''DELETE FROM Users WHERE UserID = '{userID}'; ''')
 
     def searchPosts(self, query: str) -> list[Post]:
         pool = get_pool()
