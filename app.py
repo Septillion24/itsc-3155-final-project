@@ -201,18 +201,11 @@ def castVote():
     user_id = session['user_id']
     option = request.form['option']
 
-    print(option)
-    print(user_id)
-
     vote = db.getVoteByUserID(user_id)
 
-    print(vote.vote_for)
-
     if (vote != None):
-        print("changinv cvote")
         db.changeVote(vote.vote_id, option == 'yes')
         vote = db.getVoteByUserID(user_id)
-        print(vote.vote_for)
     else:
         print("adding new vote")
         vote = db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
@@ -293,15 +286,13 @@ def deletePost():
     
     if db.getPostByID(postID).owner != user_id:
         return "Not authorized", 401
-    print(f"Post found: {postID}")
-    # try:
-    print("Deleting post!")
-    db.deletePost(postID)
-    return "Successfully deleted", 200
+    try:
+        db.deletePost(postID)
+        return "Successfully deleted", 200
     
-    # except Exception as e:
-    #     print(e)
-    #     return "Could not delete post", 400
+    except Exception as e:
+        print(e)
+        return "Could not delete post", 400
 
 @app.post('/delete/comment')
 def deleteComment():
@@ -338,13 +329,67 @@ def deleteUser():
             db.deletePost(comment.comment_id)
         
         db.deleteUser(deletedUserID)
-        
+        session.clear()
         return "Successfully deleted", 200
     
     except Exception as e:
         print(e)
         return "Could not delete user", 400
 
+# editing
+@app.post('/edit/post')
+def editPost():
+    if session.get('authenticated', False) != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    postID = request.json['postID']
+    post = db.getPostByID(postID)
+    if post == None:
+        return "Post not found", 404
+    if post.owner != user_id:
+        return "Not authorized", 401
+    
+    newContent = request.json['newContent']
+    db.editPost(postID, newContent)
+    
+    return redirect(f'/forum/post/{postID}')
+    
+    
+@app.post('/edit/comment')
+def editComment():
+    if session.get('authenticated', False) != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    commentID = request.json["commentID"]
+    comment = db.getCommentByID(commentID)
+    if comment == None:
+        return "Comment not found", 404
+    if comment.owner != user_id:
+        return "Not authorized", 401
+    
+    newContent = request.json['newContent']
+    db.editComment(commentID, newContent)
+    
+    
+    
+    
+@app.post('/edit/user')
+def editUser():
+    if session.get('authenticated', False) != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    editedUserID = request.json["userID"]
+    
+    if editedUserID != user_id:
+        return "Not authorized", 401
+    
+    newUsername = request.json['newUsername']
+    db.editUser(editedUserID, newUsername)
+    
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
