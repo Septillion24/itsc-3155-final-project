@@ -227,7 +227,7 @@ def castVote():
         vote = db.getVoteByUserID(user_id)
     else:
         print("adding new vote")
-        vote = db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
+        vote = db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes', datetime.now())
         
     
     votes = {'yes': db.getVotesForPoll(1), 'no': db.getVotesAgainstPoll(1)}
