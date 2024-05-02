@@ -470,7 +470,7 @@ body.dark-mode .postContainer {
 }
 
 body, .container, nav, h1, p, .postContainer, .navbar {
-    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    transition: none;
 }
 
 img .logo {
@@ -502,7 +502,7 @@ body.dark-mode .navbar.navbar-expand-lg.navbar-light.bg-light {
 
 body.dark-mode .navbar .nav-link {
     color: #ffffff; 
-    transition: color 0.3s ease;
+    transition: none;
 }
 
 .logo {
