@@ -1,7 +1,7 @@
 from classes.DataTypes import User, Post, Comment, Image, Vote
 import psycopg
 from dotenv import load_dotenv
-import datetime
+import datetime 
 import os
 from psycopg_pool import ConnectionPool
 import time
@@ -55,9 +55,10 @@ class DataBaseHandler:
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(F'''INSERT INTO Post (Owner, Title, ImageID, TextContent, Timestamp) VALUES
-                    ('{owner}', '{title}', '{image.image_id}', '{text_content}', '{timestamp}')''')
-                time.sleep(0.1)
-                return self.getMostRecentPost()
+                    ('{owner}', '{title}', '{image.image_id}', '{text_content}', '{timestamp}') RETURNING PostID; ''')
+                rows = cur.fetchall()
+                return Post(rows[0][0], owner, title, image, text_content, timestamp)
+            
         
                 
     def getPostByID(self, postID: int) -> Post: #needs testing
@@ -113,14 +114,6 @@ class DataBaseHandler:
                 for postrow in rows:
                     posts.append(Post(postrow[0], postrow[1], postrow[2], postrow[3], postrow[4], postrow[5]))
                 return posts
-    def getMostRecentPost(self) -> Post: #needs testing
-        pool = get_pool()
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute('SELECT PostID, Owner, Title, ImageID, TextContent, Timestamp FROM Post ORDER BY PostID DESC LIMIT 1')
-                rows = cur.fetchall()
-                mostRecentPost = Post(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4], rows[0][5])
-                return mostRecentPost
             
     def getTopPosts(self, numberOfPosts: int) -> list[Post]:
         pool = get_pool()
@@ -168,30 +161,16 @@ class DataBaseHandler:
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''INSERT INTO Image (URL, Author) VALUES ('{url}', {author}); ''')
-            return self.getMostRecentImage()
-    def getMostRecentImage(self) -> Image:
-        pool = get_pool()
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute('SELECT ImageID, URL, Author FROM Image ORDER BY ImageID DESC LIMIT 1')
+                cur.execute(f'''INSERT INTO Image (URL, Author) VALUES ('{url}', {author}) RETURNING ImageID; ''')
                 rows = cur.fetchall()
-                mostRecentImage = Image(rows[0][0], rows[0][1], rows[0][2])
-                return mostRecentImage
-    def createComment(self, post: Post, owner: User, text: str, timestamp: datetime) -> None: 
+                return Image(int(rows[0][0]), url, author)
+    def createComment(self, post: Post, owner: User, content: str, timestamp: datetime) -> None: 
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(f'''INSERT INTO Comment (PostID, Owner, Text, Timestamp) VALUES ({post.post_id}, {owner.user_id}, '{text}', '{timestamp}'); ''')
-            return self.getMostRecentComment()
-    def getMostRecentComment(self) -> Comment: 
-        pool = get_pool()
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute('SELECT CommentID, PostID, Owner, Text, Timestamp FROM Comment ORDER BY CommentID DESC LIMIT 1')
+                cur.execute(f'''INSERT INTO Comment (PostID, Owner, Content, Timestamp) VALUES ({post.post_id}, {owner.user_id}, '{content}', '{timestamp}') RETURNING CommentID; ''')
                 rows = cur.fetchall()
-                mostRecentComment = Comment(rows[0][0], self.getPostByID(rows[0][1]), self.getUserByID(rows[0][2]), rows[0][3], rows[0][4])
-                return mostRecentComment
+                return Comment(int(rows[0][0]), owner, post.post_id, content, timestamp)
     def getCommentsByPostID(self, postID: int) -> list[Comment]:
         pool = get_pool()
         with pool.connection() as conn:
@@ -213,20 +192,14 @@ class DataBaseHandler:
                     comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
                 return comments
     def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> Vote: 
+        time = datetime.now()
         pool = get_pool()
         with pool.connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
-                                VALUES ({userID}, {pollID}, {voteFor}); ''')
-                return self.getMostRecentVote()
-    def getMostRecentVote(self) -> Vote: 
-        pool = get_pool()
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute('SELECT VoteID, Owner, PollID, VoteFor, Timestamp FROM Vote ORDER BY VoteID DESC LIMIT 1')
+                                VALUES ({userID}, {pollID}, {voteFor}, {time}) RETURNING VoteID; ''')
                 rows = cur.fetchall()
-                mostRecentVote = Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4])
-                return mostRecentVote
+                return Vote(int(rows[0][0]), self.getUserByID(userID), pollID, voteFor, time)
             
     def getVoteByUserID(self, userID: str) -> Vote:
         pool = get_pool()
@@ -267,6 +240,13 @@ class DataBaseHandler:
                 cur.execute(f'''SELECT VoteID, Owner, PollID, VoteFor, Timestamp FROM Vote WHERE VoteID = {voteID}; ''')
                 rows = cur.fetchall()
                 return Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4])
+    def getCommentByCommentID(self, commentID: int) -> Comment:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT CommentID, Owner, PostID, Content, Timestamp FROM Comment WHERE CommentID = {commentID}; ''')
+                rows = cur.fetchall()
+                return Comment(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4])
     def deleteVote(self, voteID: int) -> None:
         pool = get_pool()
         with pool.connection() as conn:
