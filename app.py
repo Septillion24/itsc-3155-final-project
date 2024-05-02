@@ -157,7 +157,9 @@ def createComment():
 @app.get("/forum/<int:postID>/comments")
 def getCommentsOnPost(postID):
     comments = db.getCommentsByPostID(postID)
-    print(comments)
+    for comment in comments:
+        commentOwner = db.getUserByID(comment.owner)
+        comment.owner_name = commentOwner.first_name + " " + commentOwner.last_name
     return jsonify([comment.to_dict() for comment in comments])
 
 #about

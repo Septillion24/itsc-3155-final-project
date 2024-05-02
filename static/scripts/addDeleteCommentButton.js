@@ -4,13 +4,13 @@ function addDeleteButton() {
     buttonDiv.innerHTML = `<button class="deleteButton" onclick="deleteComment()">Delete</button>`;
 }
 
-function deleteComment() {
-    fetch("/", {
+function deleteComment(commentID) {
+    fetch("/delete/comment", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ postID: postID }),
+        body: JSON.stringify({ commentID: commentID }),
     }).then((response) => {
         if (response.status === 200) {
             window.location.href = "/";
