@@ -237,4 +237,17 @@ class DataBaseHandler:
                 for voterow in rows:
                     votes.append(Vote(voterow[0], self.getUserByID(voterow[1]), voterow[2], voterow[3], voterow[4]))
                 return votes
-    
+    def getVotesForPoll(self, pollID: int) -> int:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT COUNT(*) FROM Vote WHERE PollID = {pollID} AND VoteFor = TRUE; ''')
+                rows = cur.fetchall()
+                return rows[0]
+    def getVotesAgainstPoll(self, pollID: int) -> int:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT COUNT(*) FROM Vote WHERE PollID = {pollID} AND VoteFor = FALSE; ''')
+                rows = cur.fetchall()
+                return rows[0]
