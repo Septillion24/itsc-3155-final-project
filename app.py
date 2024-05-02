@@ -134,13 +134,26 @@ def createPost():
     text_content = request.form["postContent"]
     image_url = request.form["imageURL"]
     image = db.createImage(url=image_url,author=user_id)
-    print("Creating post: " + title + ", '" + text_content + "'")
     response = db.createPost(user_id,title,image=image, text_content=text_content, timestamp=datetime.now())
-    print(response)
     if response:
         return redirect(f"/forum/post/{response.post_id}")
     else:
         return "Failed to create post", 400
+
+@app.post("/forum/makeComment")
+def createComment():
+    if session.get('authenticated',False) != True:
+        return "Not authorized", 401
+    
+    user_id = session['user_id']
+    commentContent = request.form["commentContent"]
+    postID = request.form["postID"]
+    post = db.getPostByID(postID)
+    if post == None:
+        return "No post found with that ID", 404
+    owner = db.getUserByID(user_id)
+    db.createComment(post,owner,commentContent, datetime.now())
+    return redirect(f'/forum/post/{postID}')
 
 @app.get("/forum/<int:postID>/comments")
 def getCommentsOnPost(postID):
