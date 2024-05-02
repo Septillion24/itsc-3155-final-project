@@ -18,7 +18,6 @@ function getRelativeTime(timestamp) {
 }
 
 
-
 function populatePostComments() {
     fetch(`/forum/${postID}/comments`)
         .then((response) => response.json())
@@ -39,12 +38,19 @@ function populatePostComments() {
                         </div>
                     
                         <div class="commentBody">
-                            <p>${item.content}</p>
+                            <p id="comment-${item.comment_id}">${item.content}</p>
                         </div>
-                        ${userID === item.owner ? `<button onclick="deleteComment(${item.comment_id})">Delete</button>` : "" }
-                        
-                    <div>
-                    `;
+                    </div>
+                `;
+
+                if (userID === item.owner) {
+                    const editButton = document.createElement("button");
+                    editButton.textContent = "Edit";
+                    editButton.classList.add("editButton");
+                    editButton.addEventListener("click", () => editComment(item.comment_id));
+                    postDiv.querySelector(".commentContainer").appendChild(editButton);
+                }
+                
                 container.appendChild(postDiv);
             });
         })
