@@ -179,7 +179,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 comments = []
                 for commentrow in rows:
-                    comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
+                    comments.append(Comment(commentrow[0], commentrow[2], commentrow[1], commentrow[3], commentrow[4]))
                 return comments
     def getCommentsByUserID(self, userID: int) -> list[Comment]:
         pool = get_pool()
@@ -189,7 +189,7 @@ class DataBaseHandler:
                 rows = cur.fetchall()
                 comments = []
                 for commentrow in rows:
-                    comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
+                    comments.append(Comment(commentrow[0], commentrow[2], commentrow[1], commentrow[3], commentrow[4]))
                 return comments
     def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> Vote: 
         time = datetime.now()
