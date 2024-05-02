@@ -1,5 +1,5 @@
 function editComment(commentID, newContent) {
-    const newCommentContent = prompt('Enter your new username:');
+    const newCommentContent = prompt('Enter content for edited comment:');
     
     fetch('/edit/comment', {
         method: 'POST',
