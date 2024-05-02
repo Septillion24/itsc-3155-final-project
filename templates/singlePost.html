@@ -10,7 +10,8 @@
     {% if owner %}
     <script src="/static/scripts/addDeletePostButton.js" defer></script>
     {% endif %}
-
+    <script src="/static/scripts/commentBox.js" defer></script>
+    
 {% endblock %}
 
 {% block stylesheet %}
@@ -25,5 +26,12 @@
 
     <div id="deleteButtonContainer"></div>
     <div id="commentsContainer"></div>
+
+    <!-- New comment form -->
+    <div id="newCommentForm" class="new-comment-box">
+        <textarea id="commentContent" rows="4" placeholder="Write your comment here..." class="form-control"></textarea>
+        <button type="button" onclick="postComment()" class="btn btn-primary">Post Comment</button>
+    </div>
 </div>
+
 {% endblock %}
