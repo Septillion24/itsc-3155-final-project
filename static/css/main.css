@@ -553,6 +553,11 @@ body.dark-mode .search-button {
     border-radius: 5px;
 }
 
+body.dark-mode .new-comment-box {
+    background-color: #2b2b2b;
+    color: #ffffff;
+}
+
 .new-comment-box textarea {
     width: 100%;
     padding: 10px;
