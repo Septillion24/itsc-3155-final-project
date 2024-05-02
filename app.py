@@ -193,6 +193,9 @@ def getPostsByUserID(userID:int):
 @app.get("/user/<int:userID>/comments")
 def getCommentsByUserID(userID:int):
     posts = db.getCommentsByUserID(userID)
+    for post in posts:
+        postOwner = db.getUserByID(post.owner)
+        post.owner_name = postOwner.first_name + " " + postOwner.last_name
     return jsonify([post.to_dict() for post in posts])
 
 @app.route('/user/<int:user_id>/edit-username', methods=['POST'])
