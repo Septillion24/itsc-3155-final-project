@@ -172,11 +172,15 @@ def castVote():
     
     user_id = session['user_id']
     option = request.form['option']
+    vote = db.getVoteByUserID(user_id)
+    if (vote != None):
+        db.changeVote(vote.vote_id, option == 'yes')
+    else:
+        vote = db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
     
-    db.createUserVoteOnPoll(user_id, currentPollID, option == 'yes')
     votes = {'yes': db.getVotesForPoll(1), 'no': db.getVotesAgainstPoll(1)}
     
-    return render_template('voting.html', votes = votes, logged_in = logged_in)
+    return render_template('voting.html', votes = votes, logged_in = logged_in, uservote=vote)
     
     
 @app.get('/vote')
