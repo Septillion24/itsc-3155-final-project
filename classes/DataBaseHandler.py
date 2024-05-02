@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import datetime
 import os
 from psycopg_pool import ConnectionPool
+import time
 
 
 load_dotenv()
@@ -55,6 +56,7 @@ class DataBaseHandler:
             with conn.cursor() as cur:
                 cur.execute(F'''INSERT INTO Post (Owner, Title, ImageID, TextContent, Timestamp) VALUES
                     ('{owner}', '{title}', '{image.image_id}', '{text_content}', '{timestamp}')''')
+                time.sleep(0.1)
                 return self.getMostRecentPost()
         
                 
@@ -100,21 +102,7 @@ class DataBaseHandler:
                 userrow = rows[0]
                 return User(userrow[0], userrow[1], userrow[2], userrow[3], userrow[4])
         
-    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> Vote: 
-        pool = get_pool()
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
-                                VALUES ({userID}, {pollID}, {voteFor}); ''')
-                return self.getMostRecentVote()
-    def getMostRecentVote(self) -> Vote: 
-        pool = get_pool()
-        with pool.connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute('SELECT VoteID, Owner, PollID, VoteFor, Timestamp FROM Vote ORDER BY VoteID DESC LIMIT 1')
-                rows = cur.fetchall()
-                mostRecentVote = Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4])
-                return mostRecentVote
+    
     def getPostsByUserID(self, userID: int) -> list[Post]:
         pool = get_pool()
         with pool.connection() as conn:
@@ -224,7 +212,22 @@ class DataBaseHandler:
                 for commentrow in rows:
                     comments.append(Comment(commentrow[0], commentrow[1], commentrow[2], commentrow[3], commentrow[4]))
                 return comments
-    
+    def createUserVoteOnPoll(self, userID: int, pollID: int, voteFor: bool) -> Vote: 
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''INSERT INTO Vote (Owner, PollID, VoteFor)
+                                VALUES ({userID}, {pollID}, {voteFor}); ''')
+                return self.getMostRecentVote()
+    def getMostRecentVote(self) -> Vote: 
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute('SELECT VoteID, Owner, PollID, VoteFor, Timestamp FROM Vote ORDER BY VoteID DESC LIMIT 1')
+                rows = cur.fetchall()
+                mostRecentVote = Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4])
+                return mostRecentVote
+            
     def getVoteByUserID(self, userID: str) -> Vote:
         pool = get_pool()
         with pool.connection() as conn:
@@ -251,3 +254,16 @@ class DataBaseHandler:
                 cur.execute(f'''SELECT COUNT(*) FROM Vote WHERE PollID = {pollID} AND VoteFor = FALSE; ''')
                 rows = cur.fetchall()
                 return rows[0]
+    def changeVote(self, voteID: int, voteFor: bool) -> Vote:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''UPDATE Vote SET VoteFor = {voteFor} WHERE VoteID = {voteID}; ''')
+                return self.getVoteByVoteID(voteID)
+    def getVoteByVoteID(self, voteID: int) -> Vote:
+        pool = get_pool()
+        with pool.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f'''SELECT VoteID, Owner, PollID, VoteFor, Timestamp FROM Vote WHERE VoteID = {voteID}; ''')
+                rows = cur.fetchall()
+                return Vote(rows[0][0], self.getUserByID(rows[0][1]), rows[0][2], rows[0][3], rows[0][4])
